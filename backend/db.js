@@ -58,7 +58,7 @@ const jobSchema = new mongoose.Schema({
   created_by:{ type: mongoose.Schema.Types.ObjectId, ref: 'Landowner' }
 });
 
-// Mongoose schema requests
+
 const requestschema=new mongoose.Schema({
   labour_id:{ type: mongoose.Schema.Types.ObjectId, ref: 'Labour' },
   status:{type: Boolean },
