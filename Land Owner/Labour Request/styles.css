@@ -244,12 +244,11 @@ nav a:hover {
 }
 
 .container {
-    width: 70%;
     margin: auto;
     padding-top: 20px;
 }
 
-h1 {
+h2 {
     margin-top: 80px;
     margin-left: 80px;
     color: #333;
@@ -267,6 +266,13 @@ h1 {
 }
 
 .dropbtn {
+    position: absolute;
+    /* You can also try relative, fixed, or sticky */
+    top: 100px;
+    /* Adjust this value to move the datepicker vertically */
+    left: 1250px;
+    /* Adjust this value to move the datepicker horizontally */
+    height: 37px;
     background-color: #4CAF50;
     color: white;
     padding: 10px;
@@ -300,18 +306,31 @@ h1 {
 }
 
 .datepicker {
+    position: fixed;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     margin-left: 10px;
+    position: absolute;
+    width: 200px;
+    height: 37px;
+    /* You can also try relative, fixed, or sticky */
+    top: 100px;
+    /* Adjust this value to move the datepicker vertically */
+    left: 1000px;
+    /* Adjust this value to move the datepicker horizontally */
 }
 
 .labour-list {
-    margin-top: 20px;
+    margin-top: 10px;
+    gap: 10px;
 }
 
 .labour-card {
-    width: 75%;
+    position: absolute;
+    right: 70px;
+    width: 77%;
+    height: 90px;
     display: flex;
     justify-content: space-between;
     background-color: rgb(151, 151, 151);
@@ -323,12 +342,15 @@ h1 {
 }
 
 .labour-info {
-    padding: 13px;
+    font-size: small;
+    padding-left: 10px;
     flex: 1;
 }
 
 .location {
-    padding: 13px;
+    font-size: small;
+    padding-top: 2px;
+    padding-right: 20px;
     flex: 1;
     text-align: right;
 }
@@ -346,6 +368,39 @@ h1 {
     background-color: #ff3333;
 }
 
+/*Profile for the labours section*/
+.circle-container {
+    text-align: center;
+}
+
+.circle {
+    position: absolute;
+    top: 158px;
+    left: 123px;
+    width: 70px;
+    height: 70px;
+    background-color: #eaf6e4;
+    /* Light green background color */
+    border-radius: 50%;
+    border: 2px solid #666;
+    /* Grey border */
+    margin-bottom: 10px;
+    /* Space between the circle and stars */
+}
+
+.stars {
+    position: absolute;
+    left: 110px;
+    top: 230px;
+}
+
+.star {
+    font-size: 16px;
+    color: gold;
+    /* Star color */
+    margin: 0 1px;
+    /* Small spacing between stars */
+}
 
 
 /* Responsive */
@@ -375,6 +430,37 @@ h1 {
         position: fixed;
     }
 
+    .datepicker {
+        position: absolute;
+        font-size: 13px;
+        /* Reduce text size */
+        padding: 4px;
+        /* Adjust padding */
+        top: 100px;
+        /* Adjust vertical position */
+        left: 260px;
+        /* Adjust horizontal position */
+        width: 120px;
+        border-radius: 10px;
+    }
+
+    .dropbtn {
+        font-size: 14px;
+        /* Reduce text size */
+        padding: 8px;
+        /* Adjust padding */
+        top: 100px;
+        /* Adjust vertical position */
+        left: 400px;
+        /* Adjust horizontal position */
+    }
+
+    h1 {
+        font-size: 18px;
+        top: 100px;
+        margin-left: 50px;
+        color: #333;
+    }
 
 }
 
@@ -387,6 +473,34 @@ h1 {
     .profile h2 {
         font-size: 1.2em;
     }
+
+    .datepicker {
+        font-size: 12px;
+        /* Further reduce text size */
+        padding: 6px;
+        /* Adjust padding */
+        top: 100px;
+        /* Adjust vertical position */
+        left: 280px;
+        /* Adjust horizontal position */
+    }
+
+    .dropbtn {
+        font-size: 12px;
+        /* Further reduce text size */
+        padding: 6px;
+        /* Adjust padding */
+        top: 60px;
+        /* Adjust vertical position */
+        left: 100px;
+        /* Adjust horizontal position */
+    }
+
+    .labour-card {
+        position: absolute;
+        right: 56px;
+    }
+
 
 }
 
