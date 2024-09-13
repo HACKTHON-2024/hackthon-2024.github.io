@@ -270,7 +270,7 @@ h2 {
     /* You can also try relative, fixed, or sticky */
     top: 100px;
     /* Adjust this value to move the datepicker vertically */
-    left: 1250px;
+    right: 40px;
     /* Adjust this value to move the datepicker horizontally */
     height: 37px;
     background-color: #4CAF50;
@@ -315,9 +315,9 @@ h2 {
     width: 200px;
     height: 37px;
     /* You can also try relative, fixed, or sticky */
-    top: 100px;
+    top: 15.8%;
     /* Adjust this value to move the datepicker vertically */
-    left: 1000px;
+    right: 12%;
     /* Adjust this value to move the datepicker horizontally */
 }
 
@@ -328,15 +328,13 @@ h2 {
 
 .labour-card {
     position: absolute;
-    right: 70px;
-    width: 77%;
+    left: 17%;
+    right: 20px;
+    width: 80%;
     height: 90px;
     display: flex;
     justify-content: space-between;
     background-color: rgb(151, 151, 151);
-    margin-left: 320px;
-    margin-bottom: 10px;
-    margin-right: 10px;
     border-radius: 8px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -375,10 +373,10 @@ h2 {
 
 .circle {
     position: absolute;
-    top: 158px;
-    left: 123px;
-    width: 70px;
-    height: 70px;
+    top: 152px;
+    left: 9%;
+    width: 80px;
+    height: 80px;
     background-color: #eaf6e4;
     /* Light green background color */
     border-radius: 50%;
@@ -390,7 +388,7 @@ h2 {
 
 .stars {
     position: absolute;
-    left: 110px;
+    left: 8.4%;
     top: 230px;
 }
 
@@ -438,7 +436,7 @@ h2 {
         /* Adjust padding */
         top: 100px;
         /* Adjust vertical position */
-        left: 260px;
+        left: 55%;
         /* Adjust horizontal position */
         width: 120px;
         border-radius: 10px;
@@ -451,7 +449,7 @@ h2 {
         /* Adjust padding */
         top: 100px;
         /* Adjust vertical position */
-        left: 400px;
+        left: 83%;
         /* Adjust horizontal position */
     }
 
