@@ -4,7 +4,7 @@ const zod= require("zod");
 mongoose.connect("mongodb+srv://melvin:melvin0011@cluster0.do87x1x.mongodb.net/labour_field");
 // Mongoose schema for landowner
 const landownerSchema = new mongoose.Schema({
-    name: String,
+    username: String,
     gender: String,
     DOB: Date,
     aadhaar_ID: { type: String, required: true, unique: true },
@@ -27,7 +27,7 @@ const landownerSchema = new mongoose.Schema({
   
 // Mongoose schema for labours
 const labourSchema = new mongoose.Schema({
-  name:{ type: String, required: true },
+  username:{ type: String, required: true },
   gender:{ type: String, required: true },
   DOB:{ type: Date , required: true },
   aadhaar_ID: { type: String, required: true, unique: true },
@@ -55,7 +55,10 @@ const jobSchema = new mongoose.Schema({
   end_date: { type: Date, required: true },
   number_of_workers: { type: Number, required: true },
   worker_id: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Labour' }],
-  created_by:{ type: mongoose.Schema.Types.ObjectId, ref: 'Landowner' }
+  created_by:{ type: mongoose.Schema.Types.ObjectId, ref: 'Landowner' },
+  state: String,
+    city: String,
+    taluk: String,
 });
 
 
