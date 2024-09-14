@@ -244,13 +244,15 @@ nav a:hover {
 }
 
 .container {
-    margin: auto;
-    padding-top: 20px;
+    position: relative;
+    margin: 6%;
+    max-width: 90%;
+    margin-top: 8%;
 }
 
 h2 {
-    margin-top: 80px;
-    margin-left: 80px;
+    position: absolute;
+    top: 0%;
     color: #333;
 }
 
@@ -268,7 +270,7 @@ h2 {
 .dropbtn {
     position: absolute;
     /* You can also try relative, fixed, or sticky */
-    top: 15.8%;
+    top: 0%;
     /* Adjust this value to move the datepicker vertically */
     left: 90%;
     /* Adjust this value to move the datepicker horizontally */
@@ -306,30 +308,23 @@ h2 {
 }
 
 .datepicker {
-    position: fixed;
+    position: absolute;
+    top: 0%;
+    left: 70%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
-    margin-left: 10px;
-    position: absolute;
     width: 200px;
     height: 37px;
     /* You can also try relative, fixed, or sticky */
-    top: 15.8%;
-    /* Adjust this value to move the datepicker vertically */
-    right: 12%;
-    /* Adjust this value to move the datepicker horizontally */
 }
 
 .labour-list {
-    display: flex;
-    flex-direction: column;
-    /* Stack the cards vertically */
-    gap: 10px;
-    /* Add space between the cards */
-    margin-top: 10px;
-    margin-left: 14%;
-    margin-right: 3%;
+    position: relative;
+    margin: 6%;
+    max-width: 90%;
+    margin-top: 6%;
+    margin-left: 10%;
 }
 
 .labour-card {
@@ -345,22 +340,21 @@ h2 {
     padding: 10px;
     padding-left: 20px;
     /* Add padding to make space for the floating circle */
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 
 
 .labour-info {
-    font-size: small;
+    font-size: 90%;
     flex: 1;
 }
 
 .location {
-    font-size: small;
-    padding-top: 2px;
-    padding-right: 20px;
-    flex: 1;
-    text-align: right;
+    position: absolute;
+    top: 8%;
+    font-size: 90%;
+    right: 2%;
 }
 
 .request-btn {
@@ -393,15 +387,6 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.circle-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    /* Add space between each circle-star group */
-    padding: 20px;
 }
 
 .circle-stars-group {
@@ -463,56 +448,68 @@ h2 {
     }
 
     .datepicker {
-        position: absolute;
+        position: fixed;
         font-size: 13px;
         /* Reduce text size */
         padding: 4px;
         /* Adjust padding */
-        top: 100px;
+        margin-top: 20%;
         /* Adjust vertical position */
-        left: 55%;
+        left: 50%;
         /* Adjust horizontal position */
-        width: 120px;
+        width: 25%;
         border-radius: 10px;
     }
 
     .dropbtn {
+        position: fixed;
         font-size: 14px;
         /* Reduce text size */
         padding: 8px;
         /* Adjust padding */
-        top: 100px;
+        margin-top: 20%;
         /* Adjust vertical position */
-        left: 83%;
+        left: 78%;
         /* Adjust horizontal position */
     }
 
-    h1 {
-        font-size: 18px;
-        top: 100px;
-        margin-left: 50px;
+    h2 {
+        position: fixed;
+        font-size: 16px;
+        margin-top: 22%;
+        left: 12%;
         color: #333;
+    }
+
+    .container {
+        position: relative;
+        background-color: #000000;
+        margin: 6%;
+        max-width: 90%;
+        margin-top: 8%;
     }
 
     /* Adjusting the labour card for mobile */
     .labour-card {
-        position: relative;
-        left: 8%;
-        /* Remove any left positioning to keep the card centered */
-        margin: 0 auto;
+        position: absolute;
+        margin-top: 35%;
+        left: 28%;
         /* Center the card */
-        height: auto;
-        width: 70%;
+        height: 100px;
+        width: 80%;
+    }
+
+    .labour-info {
+        position: fixed;
+
     }
 
 
     .location,
     .request-btn {
-        display: flex;
-        justify-content: flex-end;
-        /* Align content to the right */
-        font-size: 12px;
-        margin-top: 10px;
+        position: absolute;
+        top: 10%;
+        right: 5%;
     }
 
     /* Adjusting the request button */
@@ -531,7 +528,7 @@ h2 {
         position: relative;
         left: -48%;
         /* Moves the profile circle closer to the card */
-        top: 48px;
+        top: 65%;
     }
 
     .circle {
