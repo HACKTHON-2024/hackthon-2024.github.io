@@ -9,7 +9,7 @@ const labourRouter = require("./routes/labour");
 // Middleware for parsing request bodies
 app.use(bodyParser.json());
 app.use("/landowner", landownerRouter)
-// app.use("/labour", labourRouter)
+ app.use("/labour", labourRouter)
 const PORT = 3000;
 
 
