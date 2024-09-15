@@ -212,20 +212,8 @@ router.get("/view_profile", labourMiddleware,async function(req, res) {
 
         // Step 3: Update landowner details in the database
         const updatedProfile = await Landowner.findByIdAndUpdate(user_id, {
-            username,
-            gender,
-            DOB,
-            aadhaar_ID,
-            mobile_number,
-            alternate_mobile_number,
-            email,
-            address,
-            land_location,
-            land_size,
-            land_type,
-            state,
-            city,
-            taluk
+            username, gender, DOB, aadhaar_ID, mobile_number, alternate_mobile_number,
+            email, address, state, city, taluk
         }, { new: true, runValidators: true });
 
         if (!updatedProfile) {

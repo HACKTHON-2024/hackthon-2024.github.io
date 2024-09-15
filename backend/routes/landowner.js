@@ -119,20 +119,21 @@ router.post('/createjob', landownerMiddleware,async (req, res) => {
 
 router.get("/available_jobs", landownerMiddleware, async function(req, res) {
   try {
-    const {  city, taluk } = req.user;  
+    const { city, taluk, _id: landowner_id } = req.user;  // Get city, taluk, and landowner ID from req.user
    
-    // Build a query with multiple conditions using $or to prioritize taluk > city > state
+    // Build the query with conditions for location (taluk, city)
     const query = {
       $or: [
-        {  city, taluk },  // Most specific: state, city, taluk
-        {  city },         // Less specific: state, city
-      ]
+        { city, taluk },  // Most specific: city and taluk
+        { city }          // Less specific: city only
+      ],
+      created_by: { $ne: landowner_id }  // Exclude jobs created by the current landowner
     };
 
-    // Fetch jobs from the database using a single query
+    // Fetch jobs from the database using the query
     const jobs = await Job.find(query);
-    
-    // Log the length of the fetched jobs for debugging
+
+    // Log the number of fetched jobs for debugging
     console.log(jobs.length, "jobs fetched");
 
     // Return the fetched jobs to the client
@@ -147,7 +148,8 @@ router.get("/available_jobs", landownerMiddleware, async function(req, res) {
       error: error.message
     });
   }
-});  
+});
+
 
 router.get("/available_labours", landownerMiddleware, async function(req, res) {
     try {
