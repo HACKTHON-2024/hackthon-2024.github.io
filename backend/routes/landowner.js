@@ -9,17 +9,23 @@ const {landownerMiddleware}=require("../middleware/landowner")
 
 
 router.post('/signup', async (req, res) => {
+  try {
+
+  console.log("signup")
     // Create the payload from the request body
     const createpayload = req.body;
     if (typeof createpayload.DOB === 'string') {
         createpayload.DOB = new Date(createpayload.DOB);
     }
+
     // Validate input using Zod's safeParse
-    const parsedPayload = registerlandowner.safeParse(createpayload);    
+    const parsedPayload = registerlandowner.safeParse(createpayload);   
+  
     // Check if the validation passed
     if (!parsedPayload.success) {
         // Extract error details and send back to the user
         const errorDetails = parsedPayload.error.errors.map(err => {
+          console.log(err.message)
             return {
                 field: err.path[0], // The field that caused the error
                 message: err.message // The error message
@@ -30,7 +36,7 @@ router.post('/signup', async (req, res) => {
             errors: errorDetails // Send detailed validation errors to the user
         });
     }
-
+    
     // Proceed with user creation if validation passes
     const {
         username, password, gender, DOB, aadhaar_ID, mobile_number,
@@ -38,10 +44,19 @@ router.post('/signup', async (req, res) => {
         land_size, land_type, state, city, taluk
     } = parsedPayload.data;
 
+    // Check if the username already exists in the database
+    const existingUser = await Landowner.findOne({ where: { username } }); // Adjust this query based on your database/ORM
+    if (existingUser) {
+        // If username is taken, return a validation error
+        return res.status(400).json({
+            message: "Validation failed",
+            errors: [{ field: 'username', message: 'Username already taken' }]
+        });
+    }
+
     // Convert DOB to JavaScript Date object if necessary
     const dobDate = new Date(DOB);
 
-    try {
         // Create the Landowner entry in the database
         await Landowner.create({
             username, password, gender, DOB: dobDate, aadhaar_ID, mobile_number,
@@ -49,10 +64,20 @@ router.post('/signup', async (req, res) => {
             land_size, land_type, state, city, taluk
         });
         res.status(200).json({ message: 'User created successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error creating user', error: error.message });
-    }
+    }catch (error) {
+      // Handle MongoDB duplicate key error
+      if (error.code === 11000) {
+          const field = Object.keys(error.keyValue)[0];
+          return res.status(400).json({
+              message: "Duplicate field error",
+              errors: [{ field: field, message: `${field} already exists` }]
+          });
+      }
+      // Handle general server errors
+      res.status(500).json({ message: 'Error creating user', error: error.message });
+  }
 });
+
 
 
 router.post('/signin', async (req, res) => {
@@ -362,12 +387,6 @@ router.get("/view_requests", landownerMiddleware, async function(req, res) {
   });
   
   
-
-router.get("/dx",landownerMiddleware,function(req,res){
-    console.log(req.username)
-    console.log(req._id)
-res.json({"mess":"hiii"})
-})
 
 
 router.use(landownerMiddleware)

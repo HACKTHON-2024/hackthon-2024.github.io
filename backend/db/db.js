@@ -4,18 +4,18 @@
   mongoose.connect("mongodb+srv://melvin:melvin0011@cluster0.do87x1x.mongodb.net/labour_field");
   // Mongoose schema for landowner
   const landownerSchema = new mongoose.Schema({
-      username: String,
-      gender: String,
-      DOB: Date,
+      username: { type: String, required: true, unique: true },
+      gender: { type: String, required: true },
+      DOB: { type: Date, required: true },
       aadhaar_ID: { type: String, required: true, unique: true },
       mobile_number: { type: String, required: true },
       alternate_mobile_number: { type: String, required: false },
       email: { type: String, required: true, unique: true },
-      address: String,
+      address:  { type: String, required: true },
       land_location: String,
       land_size: String,
       land_type: String,
-      password: String, 
+      password: { type: String, required: true }, 
       state: String,
       city: String,
       taluk: String,
@@ -27,11 +27,11 @@
     
   // Mongoose schema for labours
   const labourSchema = new mongoose.Schema({
-    username:{ type: String, required: true },
+    username:{ type: String, required: true ,unique: true},
     gender:{ type: String, required: true },
     DOB:{ type: Date , required: true },
     aadhaar_ID: { type: String, required: true, unique: true },
-    mobile_number: { type: String, required: true },
+    mobile_number: { type: String, required: true,unique: true },
     alternate_mobile_number: { type: String, required: false },
     email: { type: String, required: false, unique: true },
     address: { type: String, required: true },
