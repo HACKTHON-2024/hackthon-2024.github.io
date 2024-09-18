@@ -13,6 +13,7 @@ async function landownerMiddleware(req, res, next) {
 
         // Extract token from the Authorization header
         const token = authorization.split(" ")[1]; // Format: "Bearer <token>"
+        
         // Verify token and extract user data
         const decoded = jwt.verify(token, jwt_screat);
         const username = decoded.username;
