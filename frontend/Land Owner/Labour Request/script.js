@@ -65,3 +65,104 @@ function displayLabours(labours) {
         labourList.appendChild(labourCard);
     });
 }
+
+// Handle request button click (opens modal)
+document.querySelectorAll('.request-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        // Show the previous jobs modal with animation
+        const jobModal = document.getElementById('job-list-modal');
+        jobModal.classList.remove('hidden');
+        jobModal.style.opacity = 0;
+        setTimeout(() => jobModal.style.opacity = 1, 50);
+
+        // Add click event to job summary (only once)
+        document.querySelectorAll('.job-summary').forEach(jobSummary => {
+            // Remove existing listeners to avoid double clicks
+            const newJobSummary = jobSummary.cloneNode(true);
+            jobSummary.parentNode.replaceChild(newJobSummary, jobSummary);
+
+            newJobSummary.addEventListener('click', function () {
+                // Toggle job details visibility
+                const jobDetails = this.nextElementSibling;
+                const arrow = this.querySelector('.arrow');
+
+                if (jobDetails.style.display === 'block') {
+                    jobDetails.style.display = 'none';
+                    arrow.textContent = '▼'; // Down arrow when hidden
+                } else {
+                    jobDetails.style.display = 'block';
+                    arrow.textContent = '▲'; // Up arrow when shown
+                }
+            });
+        });
+
+        // Handle confirm button click inside each job created post
+        document.querySelectorAll('.confirm-job-btn').forEach(confirmBtn => {
+            // Remove any existing event listeners to avoid duplicates
+            const newConfirmBtn = confirmBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
+            newConfirmBtn.addEventListener('click', function () {
+                // Show the confirmation popup when confirm button is clicked
+                const confirmationPopup = document.getElementById('confirmation-popup');
+                confirmationPopup.classList.add('show');
+
+                // Optional overlay for background
+                const popupOverlay = document.querySelector('.popup-overlay');
+                if (popupOverlay) popupOverlay.classList.add('show');
+
+                const handleConfirm = function () {
+                    alert('Job request confirmed!');
+                    confirmationPopup.classList.remove('show');
+                    if (popupOverlay) popupOverlay.classList.remove('show');
+                };
+
+                const handleCancel = function () {
+                    confirmationPopup.classList.remove('show');
+                    if (popupOverlay) popupOverlay.classList.remove('show');
+                };
+
+                // Remove previous listeners from confirm and cancel buttons before adding new ones
+                const confirmPopupBtn = document.getElementById('confirm-btn');
+                const cancelPopupBtn = document.getElementById('cancel-btn');
+
+                // Remove existing listeners
+                confirmPopupBtn.removeEventListener('click', handleConfirm);
+                cancelPopupBtn.removeEventListener('click', handleCancel);
+
+                // Add event listeners with once:true to avoid duplicates
+                confirmPopupBtn.addEventListener('click', handleConfirm, { once: true });
+                cancelPopupBtn.addEventListener('click', handleCancel, { once: true });
+            });
+        });
+    });
+});
+
+// Close button for the modal
+const closeJobModalBtn = document.getElementById('close-job-modal');
+closeJobModalBtn.addEventListener('click', function () {
+    const jobModal = document.getElementById('job-list-modal');
+    jobModal.classList.add('hidden');
+});
+
+
+
+
+
+function toggleJobDetails(element) {
+    document.querySelectorAll('.job-summary').forEach(jobSummary => {
+        jobSummary.addEventListener('click', function () {
+            // Toggle job details visibility
+            const jobDetails = this.nextElementSibling;
+            const arrow = this.querySelector('.arrow');
+
+            if (jobDetails.style.display === 'block') {
+                jobDetails.style.display = 'none';
+                arrow.textContent = '▼'; // Down arrow when hidden
+            } else {
+                jobDetails.style.display = 'block';
+                arrow.textContent = '▲'; // Up arrow when shown
+            }
+        });
+    });
+}
