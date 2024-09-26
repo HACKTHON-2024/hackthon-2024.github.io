@@ -36,9 +36,19 @@
 //     const labourList = document.getElementById('labour-list');
 //     labourList.innerHTML = '';  // Clear any existing labour cards
 
+//     if (labours.length === 0) {
+//         labourList.innerHTML = '<p>No labourers available</p>';
+//         return;
+//     }
+
 //     labours.forEach(labour => {
 //         const labourCard = document.createElement('div');
 //         labourCard.classList.add('labour-card');
+
+//         // Ensure the skills field is a string; if not, set default text
+//         const skills = typeof labour.skills === 'string' && labour.skills.trim() !== '' 
+//                        ? labour.skills 
+//                        : 'No skills listed';
 
 //         labourCard.innerHTML = `
 //             <div class="circle-stars-group">
@@ -52,9 +62,9 @@
 //                 </div>
 //             </div>
 //             <div class="labour-info">
-//                 <p><strong>NAME:</strong> ${labour.name}</p>
+//                 <p><strong>NAME:</strong> ${labour.username}</p>
 //                 <p><strong>GENDER:</strong> ${labour.gender}</p>
-//                 <p><strong>SKILL:</strong> ${labour.skills.join(', ')}</p>
+//                 <p><strong>SKILL:</strong> ${skills}</p>
 //             </div>
 //             <div class="location">
 //                 <p><strong>Location:</strong> ${labour.city}, ${labour.taluk}</p>
@@ -64,7 +74,144 @@
 
 //         labourList.appendChild(labourCard);
 //     });
+
+//     // Add event listeners for the newly created "REQUEST" buttons
+//     document.querySelectorAll('.request-btn').forEach(button => {
+//         button.addEventListener('click', function () {
+//             // Show active jobs modal when the request button is clicked
+//             showJobModal();
+//         });
+//     });
 // }
+
+// // Function to show the job list modal
+// function showJobModal() {
+//     const jobModal = document.getElementById('job-list-modal');
+//     jobModal.classList.remove('hidden');
+//     jobModal.style.opacity = 0;
+//     setTimeout(() => jobModal.style.opacity = 1, 50);   
+
+//     // Fetch and display jobs dynamically inside the modal
+//     fetchActiveJobs();
+// }
+
+// // Function to fetch active jobs and display them in the modal
+// function fetchActiveJobs() {
+//     fetch('http://localhost:3000/landowner/active_jobs')
+//         .then(response => response.json())
+//         .then(data => {
+//             if (Array.isArray(data) && data.length > 0) {
+//                 console.log(data)
+//                 displayActiveJobs(data);
+//             } else {
+//                 displayNoJobsMessage(); // Handle case where there are no active jobs
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error fetching active jobs:', error);
+//         });
+// }
+// function displayActiveJobs(jobs) {
+//     const jobContainer = document.getElementById('job-container');
+//     jobContainer.innerHTML = ''; // Clear existing content
+
+//     if (jobs.length === 0) {
+//         jobContainer.innerHTML = '<p>No active jobs available</p>';
+//         return;
+//     }
+
+//     jobs.forEach(job => {
+//         const jobCard = document.createElement('div');
+//         jobCard.classList.add('job-container');
+
+        // jobCard.innerHTML = `
+        //     <div class="job-summary" onclick="toggleJobDetails(this)">
+        //         <div class="job-header">
+        //             <p><strong>Job Title:</strong> ${job.title}</p>
+        //             <p><strong>Start Date:</strong> ${job.startDate}</p>
+        //             <p><strong>End Date:</strong> ${job.endDate}</p>
+        //             <span class="arrow">▼</span>
+        //         </div>
+        //     </div>
+
+        //     <div class="job-details" style="display: none;">
+        //         <p><strong>Job Description:</strong></p>
+        //         <div class="editable-box">
+        //             <span>${job.description}</span>
+        //         </div>
+
+        //         <p><strong>Job Category:</strong></p>
+        //         <div class="editable-box">
+        //             <span>${job.category}</span>
+        //         </div>
+
+        //         <p><strong>Job Location:</strong></p>
+        //         <div class="editable-box">
+        //             <span>${job.location}</span>
+        //         </div>
+        //         <p><strong>Amount:</strong></p>
+        //         <div class="editable-box">
+        //             <span>${job.amount} rs</span>
+        //         </div>
+
+        //         <p><strong>Status:</strong></p>
+        //         <div class="editable-box">
+        //             <span>${job.status}</span>
+        //         </div>
+
+        //         <p><strong>No. of Workers:</strong></p>
+        //         <div class="editable-box">
+        //             <span>${job.workers}</span>
+        //         </div>
+        //         <button class="confirm-job-btn"> Confirm </button>
+        //     </div>
+        // `;
+
+//         jobContainer.appendChild(jobCard);
+//     });
+//     // Attach event listeners for "Confirm" buttons in the dynamically created job cards
+//     document.querySelectorAll('.confirm-job-btn').forEach(button => {
+//         button.addEventListener('click', function () {
+//             showConfirmationPopup();
+//         });
+//     });
+    
+// }
+
+  
+
+// // Display message when no active jobs are found
+// function displayNoJobsMessage() {
+//     const jobList = document.getElementById('job-list');
+//     jobList.innerHTML = '<p>No active jobs available at the moment.</p>';
+// }
+
+// // Close button for the modal
+// const closeJobModalBtn = document.getElementById('close-job-modal');
+// closeJobModalBtn.addEventListener('click', function () {
+//     const jobModal = document.getElementById('job-list-modal');
+//     jobModal.classList.add('hidden');
+// });
+
+
+// function toggleJobDetails(element) {
+//     document.querySelectorAll('.job-summary').forEach(jobSummary => {
+//         jobSummary.addEventListener('click', function () {
+//             // Toggle job details visibility
+//             const jobDetails = this.nextElementSibling;
+//             const arrow = this.querySelector('.arrow');
+
+//             if (jobDetails.style.display === 'block') {
+//                 jobDetails.style.display = 'none';
+//                 arrow.textContent = '▼'; // Down arrow when hidden
+//             } else {
+//                 jobDetails.style.display = 'block';
+//                 arrow.textContent = '▲'; // Up arrow when shown
+//             }
+//         });
+//     });
+// }
+
 
 
 
@@ -144,95 +291,149 @@ function displayLabours(labours) {
 
         labourList.appendChild(labourCard);
     });
-}
 
-// Handle request button click (opens modal)
-document.querySelectorAll('.request-btn').forEach(button => {
-    button.addEventListener('click', function () {
-        // Show the previous jobs modal with animation
-        const jobModal = document.getElementById('job-list-modal');
-        jobModal.classList.remove('hidden');
-        jobModal.style.opacity = 0;
-        setTimeout(() => jobModal.style.opacity = 1, 50);
-
-        // Add click event to job summary (only once)
-        document.querySelectorAll('.job-summary').forEach(jobSummary => {
-            // Remove existing listeners to avoid double clicks
-            const newJobSummary = jobSummary.cloneNode(true);
-            jobSummary.parentNode.replaceChild(newJobSummary, jobSummary);
-
-            newJobSummary.addEventListener('click', function () {
-                // Toggle job details visibility
-                const jobDetails = this.nextElementSibling;
-                const arrow = this.querySelector('.arrow');
-
-                if (jobDetails.style.display === 'block') {
-                    jobDetails.style.display = 'none';
-                    arrow.textContent = '▼'; // Down arrow when hidden
-                } else {
-                    jobDetails.style.display = 'block';
-                    arrow.textContent = '▲'; // Up arrow when shown
-                }
-            });
-        });
-
-        // Handle confirm button click inside each job created post
-        document.querySelectorAll('.confirm-job-btn').forEach(confirmBtn => {
-            // Remove any existing event listeners to avoid duplicates
-            const newConfirmBtn = confirmBtn.cloneNode(true);
-            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-
-            newConfirmBtn.addEventListener('click', function () {
-                // Show the confirmation popup when confirm button is clicked
-                const confirmationPopup = document.getElementById('confirmation-popup');
-                confirmationPopup.classList.add('show');
-
-                // Optional overlay for background
-                const popupOverlay = document.querySelector('.popup-overlay');
-                if (popupOverlay) popupOverlay.classList.add('show');
-
-                const handleConfirm = function () {
-                    alert('Job request confirmed!');
-                    confirmationPopup.classList.remove('show');
-                    if (popupOverlay) popupOverlay.classList.remove('show');
-                };
-
-                const handleCancel = function () {
-                    confirmationPopup.classList.remove('show');
-                    if (popupOverlay) popupOverlay.classList.remove('show');
-                };
-
-                // Remove previous listeners from confirm and cancel buttons before adding new ones
-                const confirmPopupBtn = document.getElementById('confirm-btn');
-                const cancelPopupBtn = document.getElementById('cancel-btn');
-
-                // Remove existing listeners
-                confirmPopupBtn.removeEventListener('click', handleConfirm);
-                cancelPopupBtn.removeEventListener('click', handleCancel);
-
-                // Add event listeners with once:true to avoid duplicates
-                confirmPopupBtn.addEventListener('click', handleConfirm, { once: true });
-                cancelPopupBtn.addEventListener('click', handleCancel, { once: true });
-            });
+    // Add event listeners for the newly created "REQUEST" buttons
+    document.querySelectorAll('.request-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            // Show active jobs modal when the request button is clicked
+            showJobModal();
         });
     });
-});
+}
 
-// Close button for the modal
-const closeJobModalBtn = document.getElementById('close-job-modal');
-closeJobModalBtn.addEventListener('click', function () {
+// Function to show the job list modal
+function showJobModal() {
     const jobModal = document.getElementById('job-list-modal');
-    jobModal.classList.add('hidden');
-});
+    jobModal.classList.remove('hidden');
+    jobModal.style.opacity = 0;
+    setTimeout(() => jobModal.style.opacity = 1, 50);   
 
+    // Fetch and display jobs dynamically inside the modal
+    fetchActiveJobs();
+}
 
+// Function to fetch active jobs and display them in the modal
+function fetchActiveJobs() {
+    fetch('http://localhost:3000/landowner/active_jobs')
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data) && data.length > 0) {
+                displayActiveJobs(data);
+            } else {
+                displayNoJobsMessage(); // Handle case where there are no active jobs
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching active jobs:', error);
+        });
+}
 
+function displayActiveJobs(jobs) {
+    const jobContainer = document.getElementById('job-container');
+    jobContainer.innerHTML = ''; // Clear existing content
 
+    if (jobs.length === 0) {
+        jobContainer.innerHTML = '<p>No active jobs available</p>';
+        return;
+    }
 
+    jobs.forEach(job => {
+        const jobCard = document.createElement('div');
+        jobCard.classList.add('job-container');
+
+        jobCard.innerHTML = `
+        <div class="job-summary" onclick="toggleJobDetails(this)">
+            <div class="job-header">
+                <p><strong>Job Title:</strong> ${job.title}</p>
+                <p><strong>Start Date:</strong> ${job.startDate}</p>
+                <p><strong>End Date:</strong> ${job.endDate}</p>
+                <span class="arrow">▼</span>
+            </div>
+        </div>
+
+        <div class="job-details" style="display: none;">
+            <p><strong>Job Description:</strong></p>
+            <div class="editable-box">
+                <span>${job.description}</span>
+            </div>
+
+            <p><strong>Job Category:</strong></p>
+            <div class="editable-box">
+                <span>${job.category}</span>
+            </div>
+
+            <p><strong>Job Location:</strong></p>
+            <div class="editable-box">
+                <span>${job.location}</span>
+            </div>
+            <p><strong>Amount:</strong></p>
+            <div class="editable-box">
+                <span>${job.amount} rs</span>
+            </div>
+
+            <p><strong>Status:</strong></p>
+            <div class="editable-box">
+                <span>${job.status}</span>
+            </div>
+
+            <p><strong>No. of Workers:</strong></p>
+            <div class="editable-box">
+                <span>${job.workers}</span>
+            </div>
+            <button class="confirm-job-btn"> Confirm </button>
+        </div>
+    `;
+
+        jobContainer.appendChild(jobCard);
+    });
+
+    // Attach event listeners for "Confirm" buttons in the dynamically created job cards
+    document.querySelectorAll('.confirm-job-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            showConfirmationPopup();
+        });
+    });
+}
+
+// Function to display the confirmation popup
+function showConfirmationPopup() {
+    const confirmationPopup = document.getElementById('confirmation-popup');
+    const popupOverlay = document.querySelector('.popup-overlay');
+
+    // Show the popup
+    confirmationPopup.classList.add('show');
+    popupOverlay.classList.add('show');
+
+    // Remove any previous event listeners to avoid duplication
+    const confirmPopupBtn = document.getElementById('confirm-btn');
+    const cancelPopupBtn = document.getElementById('cancel-btn');
+
+    // Confirmation handler
+    const handleConfirm = function () {
+        alert('Job request confirmed!');
+        confirmationPopup.classList.remove('show');
+        popupOverlay.classList.remove('show');
+    };
+
+    // Cancel handler
+    const handleCancel = function () {
+        confirmationPopup.classList.remove('show');
+        popupOverlay.classList.remove('show');
+    };
+
+    // Remove previous event listeners
+    confirmPopupBtn.removeEventListener('click', handleConfirm);
+    cancelPopupBtn.removeEventListener('click', handleCancel);
+
+    // Add event listeners with { once: true } to avoid duplicates
+    confirmPopupBtn.addEventListener('click', handleConfirm, { once: true });
+    cancelPopupBtn.addEventListener('click', handleCancel, { once: true });
+}
+
+// Function to toggle job details visibility
 function toggleJobDetails(element) {
     document.querySelectorAll('.job-summary').forEach(jobSummary => {
         jobSummary.addEventListener('click', function () {
-            // Toggle job details visibility
             const jobDetails = this.nextElementSibling;
             const arrow = this.querySelector('.arrow');
 
@@ -245,4 +446,17 @@ function toggleJobDetails(element) {
             }
         });
     });
+}
+
+// Close button for the modal
+const closeJobModalBtn = document.getElementById('close-job-modal');
+closeJobModalBtn.addEventListener('click', function () {
+    const jobModal = document.getElementById('job-list-modal');
+    jobModal.classList.add('hidden');
+});
+
+// Function to display message when no active jobs are found
+function displayNoJobsMessage() {
+    const jobList = document.getElementById('job-list');
+    jobList.innerHTML = '<p>No active jobs available at the moment.</p>';
 }
