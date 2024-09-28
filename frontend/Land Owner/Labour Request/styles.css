@@ -515,6 +515,10 @@ h2 {
     transition: opacity 0.3s ease-in-out;
 }
 
+.confirm-job-button{
+    background-color: #4CAF50;
+}
+
 .confirmation-popup.show {
     display: block;
     /* Show popup */

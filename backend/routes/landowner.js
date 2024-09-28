@@ -401,8 +401,66 @@ router.get("/view_requests", landownerMiddleware, async function(req, res) {
           res.status(500).json({ message: "An error occurred while updating the profile", error: error.message });
       }
   });
+
+
+
+//it called when confirm box is clicked in send the request to labours 
+router.post("/request_confirm", landownerMiddleware,async (req, res) => {
+  const { job_id,  labour_id } = req.body;
+  const user_id=req.user._id;
+  console.log("api called");
+  console.log("job:",job_id,"labour:",labour_id)
   
-  
+  try {
+    // Step 1: Validate if job_id and labour_id exist
+    const job = await Job.findById(job_id);
+    const labour = await Labour.findById(labour_id);
+    const landowner = await Landowner.findById(user_id);
+    
+    if (!job || !labour || !landowner) {
+      return res.status(404).json({ error: "Job, Landowner, or Labour not found." });
+    }
+
+    // Step 2: Check for existing request
+    const existingRequest = await Requests.findOne({
+      labour_id: labour._id,
+      job_id: job._id
+    });
+
+    if (existingRequest) {
+      return res.status(400).json({ error: "A request for this labour and job already exists." });
+    }
+
+
+    // Step 3: Create a new request in the Requests collection
+    const newRequest = new Requests({
+      labour_id: labour._id,
+      job_id: job._id,
+      status: false, // Assuming 'false' means pending
+      date: new Date()
+    });
+
+    await newRequest.save();
+
+    // Step 4: Update the landowner's and labour's requests arrays
+    landowner.requests.push(newRequest._id);
+    await landowner.save();
+
+    labour.requests.push(newRequest._id);
+    await labour.save();  
+
+    // Optional Step 4: Update the job details if necessary
+    // For example, adding labour_id to worker_id if the request is confirmed
+    // job.worker_id.push(labour._id);
+    // await job.save();
+
+    res.status(200).json({ message: "Request confirmed and updated successfully.", request: newRequest });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+});
+
 
 
 router.use(landownerMiddleware)
