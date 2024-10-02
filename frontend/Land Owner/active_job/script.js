@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             </div>
             <div class="location">
                 <p><strong>Location:</strong> ${job.taluk}, ${job.city}</p>
-                <button class="request-btn" data-job-id="${job._id}">REQUEST</button>
             </div>
         `;
 
