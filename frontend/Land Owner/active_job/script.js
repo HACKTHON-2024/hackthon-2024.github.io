@@ -1,43 +1,35 @@
-document.addEventListener("DOMContentLoaded", function() {
-   
-    
+document.addEventListener('DOMContentLoaded', async function () {
+    const labourList = document.querySelector('.labour-list');
 
-    // Fetch active jobs when the page loads
-    fetchActiveJobs();
-});
+    // Fetch active jobs from the server
+    async function fetchActiveJobs() {
+        try {
+            const response = await fetch('http://localhost:3000/landowner/active_jobs');
 
- // Function to fetch active jobs from the server
-// Fetch labour data from API
-function fetchLabours() {
-    fetch('http://localhost:3000/landowner//active_jobs')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                displayLabours(data.data); // Display the labours dynamically
-            } else {
-                console.error('Error fetching labours:', data.message);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        })
-        .catch(error => {
-            console.error('Error during labour fetch:', error);
-        });
-}
 
-// Dynamically display labours
-function displayLabours(active_jobs) {
-    const active_job_List = document.getElementById('active-job-list');
-    active_jobs_List.innerHTML = ''; // Clear existing labour cards
+            const activeJobs = await response.json();
 
-    if (active_jobs.length === 0) {
-        active_jobs_List.innerHTML = '<p>No active jobs avaliable</p>';
-        return;
+            // Check if activeJobs is an array and display them
+            if (Array.isArray(activeJobs) && activeJobs.length > 0) {
+                activeJobs.forEach(createJobCard);
+            } else {
+                labourList.innerHTML = '<p>No active jobs available</p>';
+            }
+        } catch (error) {
+            console.error('Error fetching active jobs:', error);
+            labourList.innerHTML = `<p>Error fetching active jobs: ${error.message}</p>`;
+        }
     }
 
-    labours.forEach(labour => {
-        const active_jobs_Card = document.createElement('div');
-        active_jobs_Card.classList.add('active-job-card');
+    // Function to create and display job cards dynamically
+    function createJobCard(job) {
+        const jobCard = document.createElement('div');
+        jobCard.classList.add('labour-card');
 
-        active_jobs_Card.innerHTML = `
+        jobCard.innerHTML = `
             <div class="circle-stars-group">
                 <div class="circle"></div>
                 <div class="stars">
@@ -49,15 +41,21 @@ function displayLabours(active_jobs) {
                 </div>
             </div>
             <div class="labour-info">
-                <p><strong>NAME:</strong> ${labour.title}</p>
-                <p><strong>GENDER:</strong> ${labour.gender}</p>
-                <p><strong>SKILL:</strong> ${skills}</p>
+                <p><strong>Title:</strong> ${job.title}</p>
+                <p><strong>Description:</strong> ${job.description}</p>
+                <p><strong>Amount:</strong> ₹${job.amount}</p>
+                <p><strong>Start Date:</strong> ${new Date(job.start_date).toLocaleDateString()}</p>
+                <p><strong>End Date:</strong> ${new Date(job.end_date).toLocaleDateString()}</p>
             </div>
             <div class="location">
-                <p><strong>Location:</strong> ${labour.location}, ${labour.taluk}</p>
-                <button class="request-btn" data-labour-id="${labour._id}">REQUEST</button>
+                <p><strong>Location:</strong> ${job.taluk}, ${job.city}</p>
+                <button class="request-btn" data-job-id="${job._id}">REQUEST</button>
             </div>
         `;
 
-        active_jobs_List.appendChild(active_jobs_Card);
-    });
+        labourList.appendChild(jobCard);
+    }
+
+    // Fetch and display active jobs when the page loads
+    fetchActiveJobs();
+});
