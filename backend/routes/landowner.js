@@ -157,7 +157,7 @@ router.get("/available_jobs", landownerMiddleware, async function(req, res) {
 
     // Fetch jobs from the database using the query
     const jobs = await Job.find(query);
-
+  
     // Log the number of fetched jobs for debugging
     console.log(jobs.length, "jobs fetched");
 
@@ -461,7 +461,54 @@ router.post("/request_confirm", landownerMiddleware,async (req, res) => {
   }
 });
 
+router.post("/request_by_owner", landownerMiddleware, async function(req, res) {
+  const { jobId, mobileNumber } = req.body;
 
+  try {
+      // Step 1: Find the Labour by Mobile Number
+      const labour = await Labour.findOne({ mobile_number: mobileNumber });
+
+      if (!labour) {
+          return res.status(404).json({ success: false, message: "Labour not found" });
+      }
+
+      // Step 2: Find the Job by Job ID
+      const job = await Job.findById(jobId);
+
+      if (!job) {
+          return res.status(404).json({ success: false, message: "Job not found" });
+      }
+
+      // Step 3: Check if labour is already added to job
+      if (job.worker_id.includes(labour._id)) {
+          return res.status(400).json({ success: false, message: "Labour already assigned to this job" });
+      }
+
+      // Step 4: Add Job ID to Labour's job history
+      labour.job_history.push(job._id);
+      await labour.save(); // Save updated labour
+
+      // Step 5: Add Labour ID to Job's worker_id
+      job.worker_id.push(labour._id);
+      await job.save(); // Save updated job
+
+      // Step 6: Create a new Request Record
+      const newRequest = new Requests({
+          labour_id: labour._id,
+          status: true, // You can set status based on your logic
+          job_id: job._id,
+          date: new Date()
+      });
+
+      await newRequest.save(); // Save the request
+
+      // Step 7: Send Success Response
+      res.status(200).json({ success: true, message: "Job request sent successfully" });
+  } catch (error) {
+      console.error("Error processing job request:", error);
+      res.status(500).json({ success: false, message: "Server error" });
+  }
+});
 
 router.use(landownerMiddleware)
 module.exports = router;

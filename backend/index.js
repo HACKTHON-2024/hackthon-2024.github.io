@@ -5,12 +5,13 @@ const cors = require('cors'); // Correct module
 const app = express();
 const landownerRouter = require("./routes/landowner");
 const labourRouter = require("./routes/labour");
+const otprouter=require("./otp/otp")
 
 app.use(cors()); // Use the correct module
 app.use(bodyParser.json());
 app.use("/landowner", landownerRouter);
 app.use("/labour", labourRouter);
-
+app.use("/otp",otprouter)
 const PORT = 3000;
 
 app.listen(PORT, () => {
