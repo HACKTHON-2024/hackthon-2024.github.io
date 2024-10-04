@@ -211,6 +211,7 @@ router.get("/available_labours", landownerMiddleware, async function(req, res) {
 
   router.get("/active_jobs", landownerMiddleware, async function(req, res) {
     try {
+     
         // landownerMiddleware sets req.user to the logged-in landowner
         const landownerId = req.user._id;
         // Fetch the landowner's job history
@@ -218,6 +219,7 @@ router.get("/available_labours", landownerMiddleware, async function(req, res) {
         // Filter the jobs where the status is true
         const activeJobs = landowner.job_history.filter(job => job.status);
         // Send the active jobs in the response
+       
         res.json(activeJobs);
     } catch (error) {
         console.error(error);
