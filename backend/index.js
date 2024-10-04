@@ -6,12 +6,15 @@ const app = express();
 const landownerRouter = require("./routes/landowner");
 const labourRouter = require("./routes/labour");
 const otprouter=require("./otp/otp")
+const mail_otp_router=require(".//otp/mail_otp")
 
 app.use(cors()); // Use the correct module
 app.use(bodyParser.json());
 app.use("/landowner", landownerRouter);
 app.use("/labour", labourRouter);
 app.use("/otp",otprouter)
+app.use("/mail_otp",mail_otp_router)
+
 const PORT = 3000;
 
 app.listen(PORT, () => {
