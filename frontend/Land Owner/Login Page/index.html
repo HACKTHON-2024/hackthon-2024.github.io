@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LabourField Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kavoon&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="path-to-your-logo.png" alt="Logo" style="height: 50px;">
+                <h1>LabourField</h1>
+            </div>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#">About Us</a>
+                <a href="#">Services</a>
+                <a href="#">Help & Support</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- First Login Screen -->
+    <div class="login-container active" id="login-container">
+        <h1>Log In</h1>
+        <div class="login-input">
+            <input type="text" placeholder="Email or Mobile phone number" id="email-input">
+        </div>
+        <button class="login-button" id="continue-button">Continue</button>
+        <p>Don't have an account? <a href="#" class="signup-link">Sign up</a></p>
+    </div>
+
+    <!-- Second Password & OTP Screen -->
+    <div class="password-container hidden" id="password-container">
+        <h2>Password</h2>
+        <div class="password-input">
+            <input type="password" placeholder="Password" id="password-input">
+        </div>
+        <button class="password-button" id="password-continue">Continue</button>
+        <p>OR</p>
+        <button class="otp-button" id="otp-button" style="color: white;">Get an OTP</button>
+        <a href="#" class="back-link" id="go-back-link">Go Back</a>
+        <p>Don't have an account? <a href="#" class="signup-link">Sign up</a></p>
+    </div>
+
+    <!-- OTP Verification Screen -->
+    <div class="otp-container hidden" id="otp-container">
+        <h2>Verify and log in</h2>
+        <p>Enter the OTP sent to your mobile 90031XXXXX</p>
+        <div class="otp-input">
+            <input type="text" placeholder="Enter 4 digit PIN" id="otp-input">
+        </div>
+        <button class="otp-button" id="otp-login" style="color: white;">Login</button>
+        <div class="resend" id="resend1">Resend OTP</div>
+        <a href="#" class="back-link" id="go-back-password">Go Back</a>
+    </div>
+
+</body>
+</html>

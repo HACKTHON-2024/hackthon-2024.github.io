@@ -1,0 +1,232 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    background-image: url(./Images/nature.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size:cover;
+    background-position: center;
+}
+
+
+header {
+    position: fixed;
+    top: 0;
+    /* Align to the top of the page */
+    left: 0;
+    /* Align to the left of the page */
+    width: 100%;
+    /* Full width */
+    background-color: rgb(224, 224, 224);
+    border-bottom: 0px solid #000000;
+    padding: 12px 0px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* LabourField Heading Styles */
+header h1 {
+    font-family: 'Kavoon', cursive;
+    /* Apply the Kavoon font */
+    font-size: 2.5em;
+    /* Adjust size as needed */
+    margin: 0;
+    background: linear-gradient(90deg, #91FF56, #666666);
+    /* Gradient from #91FF56 to #666666 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    /* Adjust the size as needed */
+    width: 40px;
+    /* Ensure the width and height are equal for a circle */
+    border-radius: 50%;
+    /* Makes the image circular */
+    margin-right: 10px;
+    object-fit: cover;
+    /* Ensures the image scales correctly within the circle */
+    background-color: #ccc;
+}
+
+.logo h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    margin: 0 15px;
+    font-size: 1em;
+}
+
+nav a:hover {
+    color: #4CAF50;
+    /* Or any color you prefer for hover effect */
+}
+.login-container, .password-container, .otp-container {
+    position: absolute;
+    right: 10%; /* Adjust based on your requirement */
+    top: 55%; /* Centers vertically */
+    transform: translateY(-50%); /* Centers container correctly */
+    height: 50%; /* Set height to auto to fit content */
+    width: 30%; /* Adjust width as needed */
+    padding: 30px; /* Increase padding for better spacing */
+    background: rgba(255, 255, 255, 0.85); /* Slightly opaque background */
+    border-radius: 15px; /* Smooth borders */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Elevate box with shadow */
+    text-align: center;
+}
+
+.password-container, .otp-container {
+    top: 57%; /* Slightly lower position for these screens */
+    height: auto; /* Adjust height to fit content */
+}
+
+.hidden {
+    display: none;
+}
+
+.login-input input, .password-input input, .otp-input input {
+    width: 85%; /* Keep input width consistent */
+    padding: 12px; /* Comfortable padding for all inputs */
+    margin: 15px 0; /* Add vertical spacing */
+    border-radius: 8px; /* Rounded input corners */
+    border: 1px solid #aaa; /* Slightly darker border for better contrast */
+}
+
+.login-button, .password-button, .otp-button {
+    width: 85%; /* Consistent width for buttons */
+    padding: 12px; /* Comfortable padding */
+    margin: 15px 0; /* Spacing for uniformity */
+    background-color: #4CAF50; /* Consistent button color */
+    color: white;
+    border: none;
+    border-radius: 8px; /* Match button radius to inputs */
+    cursor: pointer;
+    font-size: 16px; /* Slightly larger font size */
+}
+
+.login-button:hover, .password-button:hover, .otp-button:hover {
+    background-color: #45A049; /* Slightly darker on hover */
+}
+
+.otp-button {
+    background-color: #4CAF50; /* Lighter background for secondary actions */
+    color: #333;
+    border: 1px solid #ccc; /* Match border with inputs */
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 15px 0;
+}
+
+.otp-button:hover {
+    background-color: #45A049; /* Slight hover effect */
+}
+
+.back-link, .signup-link {
+    text-decoration: none;
+    color: #4CAF50;
+    margin: 15px 0;
+    display: block;
+    font-size: 14px; /* Slightly larger font */
+}
+
+.signup-link:hover, .back-link:hover {
+    text-decoration: underline;
+}
+
+.resend {
+    color: #007bff;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.resend:hover {
+    text-decoration: underline;
+}
+
+/*otp verification css*/
+
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .header-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo h1 {
+        justify-content: flex-start;
+        font-size: 1.5em;
+    }
+
+    nav {
+        margin: 0px;
+        /* Adjust spacing for smaller screens */
+    }
+
+    nav a {
+        justify-content: center;
+        margin: 10px;
+    }
+
+    .navbar {
+        position: fixed;
+    }
+
+
+}
+
+@media (max-width: 480px) {
+    .profile img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile h2 {
+        font-size: 1.2em;
+    }
+
+}
+
+
+
+/* Responsive Text Sizing */
+@media (max-width: 1200px) {
+    body {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 10px;
+    }
+}
