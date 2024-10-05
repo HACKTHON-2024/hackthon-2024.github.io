@@ -20,10 +20,10 @@ function generateOTP() {
 
 // POST route to send OTP email
 router.post('/send-otp', async (req, res) => {
-    const { email } = req.body;
-
+    const { identifier } = req.body;
+    console.log(identifier)
     // Ensure email is provided
-    if (!email) {
+    if (!identifier) {
         return res.status(400).json({ error: 'Email is required' });
     }
 
@@ -31,14 +31,14 @@ router.post('/send-otp', async (req, res) => {
     const otp = generateOTP();
 
     // Store the OTP in memory with expiration (e.g., 10 minutes)
-    otpStore[email] = { otp, expiresAt: Date.now() + 10 * 60 * 1000 };
+    otpStore[identifier] = { otp, expiresAt: Date.now() + 10 * 60 * 1000 };
 
-    // Create the email payload
-    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-    sendSmtpEmail.to = [{ email }];
-    sendSmtpEmail.sender = { name: "Labour Field", email: "melvinjones502@gmail.com" };
-    sendSmtpEmail.subject = "Your OTP Code";
-    sendSmtpEmail.htmlContent = `<p>Your OTP code is <strong>${otp}</strong>. It is valid for 10 minutes.</p>`;
+   // Create the email payload
+const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+sendSmtpEmail.to = [{ email: identifier }];  // Updated this line
+sendSmtpEmail.sender = { name: "Labour Field", email: "melvinjones502@gmail.com" };
+sendSmtpEmail.subject = "Your OTP Code";
+sendSmtpEmail.htmlContent = `<p>Your OTP code is <strong>${otp}</strong>. It is valid for 10 minutes.</p>`;
 
     // Send OTP email
     try {
@@ -52,28 +52,28 @@ router.post('/send-otp', async (req, res) => {
 
 // POST route to verify OTP
 router.post('/verify-otp', (req, res) => {
-    const { email, otp } = req.body;
+    const { identifier, otp } = req.body;
 
     // Ensure email and OTP are provided
-    if (!email || !otp) {
+    if (!identifier || !otp) {
         return res.status(400).json({ error: 'Email and OTP are required' });
     }
 
     // Check if the OTP exists for the email
-    const otpData = otpStore[email];
+    const otpData = otpStore[identifier];
     if (!otpData) {
         return res.status(400).json({ error: 'OTP was wrong or expired' });
     }
 
     // Check if the OTP is still valid
     if (Date.now() > otpData.expiresAt) {
-        delete otpStore[email]; // Remove expired OTP
+        delete otpStore[identifier]; // Remove expired OTP
         return res.status(400).json({ error: 'OTP expired' });
     }
 
     // Compare the provided OTP with the stored one
     if (otp === otpData.otp) {
-        delete otpStore[email]; // Remove OTP after successful verification
+        delete otpStore[identifier]; // Remove OTP after successful verification
         return res.status(200).json({ message: 'OTP verified successfully' });
     } else {
         return res.status(400).json({ error: 'Invalid OTP' });

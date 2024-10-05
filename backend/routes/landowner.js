@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Landowner,Labour,Job,Requests}= require('../db/db')
-const { jwt_screat } = require('../config');
+const { jwt_scret } = require('../config');
 const jwt=require("jsonwebtoken");
 const {registerlandowner,signin,createjobs,updateLandownerProfile }=require("../type")
 const {landownerMiddleware}=require("../middleware/landowner")
@@ -77,7 +77,33 @@ router.post('/signup', async (req, res) => {
       res.status(500).json({ message: 'Error creating user', error: error.message });
   }
 });
+// this sigin is used when users verifyed their mobil no. by otp
+router.post('/signin_by_otp', async (req, res) => {
+  const identifier = req.body.identifier; // Email or mobile number
+  try {
+      // Find landowner by either email or mobile number
+      const landowner = await Landowner.findOne({
+          $or: [
+              { email: identifier },
+              { mobile_number: identifier }
+          ]
+      });
 
+      if (landowner) {
+          // Generate JWT token since OTP is already verified
+          const token = jwt.sign({ username: landowner.username }, jwt_scret); // Token valid for 1 hour
+          
+          // Send token as response
+          return res.status(200).json({ token });
+      }
+
+      // If no landowner found
+      return res.status(404).json({ message: 'User not found' });
+  } catch (error) {
+      console.error("Error in signing in:", error);
+      return res.status(500).json({ message: 'Server error' });
+  }
+});
 
 
 router.post('/signin', async (req, res) => {
@@ -93,7 +119,8 @@ router.post('/signin', async (req, res) => {
     ]
 });
     if (landowner) {
-        const token = jwt.sign({ username: landowner.username }, jwt_screat); // Assuming landowner has a username field
+        const token = jwt.sign({ username: landowner.username }, jwt_scret); // Assuming landowner has a username field
+        
         return res.status(200).json({ token });
     }
     

@@ -17,24 +17,24 @@ const otpStore = {};
 
 // Generate OTP and send SMS using Twilio
 router.post('/send-otp', (req, res) => {
-    const { mobileNumber } = req.body;
-    console.log(mobileNumber)
+    const { identifier } = req.body;
+    console.log(identifier)
 
     // Generate a 4-digit OTP
     const otp = Math.floor(1000 + Math.random() * 9000);
 
     // Store OTP with mobile number
-    otpStore[mobileNumber] = otp;
+    otpStore[identifier] = otp;
 
     // Send OTP via Twilio
     client.messages
         .create({
             body: `Your OTP is ${otp}`,
             from: process.env.TWILIO_PHONE_NUMBER, // Use the number from the .env file
-            to: `+91${mobileNumber}`, // Indian mobile number format
+            to: `+91${identifier}`, // Indian mobile number format
         })
         .then((message) => {
-            console.log(`OTP sent to ${mobileNumber}: ${message.sid}`);
+            console.log(`OTP sent to ${identifier}: ${message.sid}`);
             res.json({ success: true, message: 'OTP sent successfully' });
         })
         .catch((error) => {
@@ -45,11 +45,11 @@ router.post('/send-otp', (req, res) => {
 
 // Verify OTP
 router.post('/verify-otp', (req, res) => {
-    const { mobileNumber, otp } = req.body;
+    const { identifier, otp } = req.body;
 
     // Check if OTP is correct
-    if (otpStore[mobileNumber] && otpStore[mobileNumber] == otp) {
-        delete otpStore[mobileNumber]; // Remove OTP after successful verification
+    if (otpStore[identifier] && otpStore[identifier] == otp) {
+        delete otpStore[identifier]; // Remove OTP after successful verification
         res.json({ success: true, message: 'OTP verified successfully' });
     } else {
         res.status(400).json({ success: false, message: 'Invalid OTP' });
