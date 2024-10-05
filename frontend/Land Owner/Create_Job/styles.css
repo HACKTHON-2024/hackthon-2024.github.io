@@ -245,27 +245,34 @@ nav a:hover {
 
 /*CSS starting for create job*/
 
+/* Existing styles */
+.job{
+    display: flex;
+    justify-content:center;
+}
+
 .create-job-container {
     width: 80%;
     padding: 20px;
     background-color: rgba(146, 146, 146, 0.5);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     border: 1px solid #ccc;
     border-radius: 10px;
     width: 89%;
     margin-left: 7%;
     margin-top: 7%;
     margin-bottom: 2%;
-    /* Adjust this value to your desired width */
 }
+
 .create-job-container h2 {
     margin-bottom: 20px;
 }
+
 .create-job-container label {
     display: block;
     margin-bottom: 5px;
     text-align: left;
 }
+
 .create-job-container input, .create-job-container textarea, .create-job-container button {
     width: calc(100% - 40px);
     padding: 10px;
@@ -275,15 +282,16 @@ nav a:hover {
     font-size: 16px;
     outline: none;
 }
+
 .date-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 20px; /* Adds space between the elements */
+    gap: 20px;
 }
 
 .date-buttons .date-section, 
 .date-buttons .hands-need-section {
-    flex: 1; /* Ensures that all the sections align properly */
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -302,8 +310,8 @@ nav a:hover {
 
 .payment-section input {
     width: 60%;
-    
 }
+
 .create-job-btn {
     background-color: #4CAF50;
     color: white;
@@ -313,8 +321,23 @@ nav a:hover {
     cursor: pointer;
     font-size: 18px;
 }
+
 .create-job-btn:hover {
     background-color: #45a049;
+}
+
+#job-title,#start-date,#end-date,#hands-need,#job-description,#job-location,#payment,#button{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#job-description {
+    width: cacl(100%-40px); /* Set a fixed width */
+    resize: vertical; /* Allow only vertical resizing */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
 }
 
 
