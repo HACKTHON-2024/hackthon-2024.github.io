@@ -248,12 +248,14 @@ nav a:hover {
 .create-job-container {
     width: 80%;
     padding: 20px;
-    background-color: rgba(172, 172, 172, 0.5);
+    background-color: rgba(146, 146, 146, 0.5);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     border: 1px solid #ccc;
     border-radius: 10px;
     width: 89%;
-    margin: auto;
+    margin-left: 7%;
+    margin-top: 7%;
+    margin-bottom: 2%;
     /* Adjust this value to your desired width */
 }
 .create-job-container h2 {
@@ -275,12 +277,21 @@ nav a:hover {
 }
 .date-buttons {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 15px;
+    justify-content: flex-end;
+    gap: 20px; /* Adds space between the elements */
 }
+
+.date-buttons .date-section, 
+.date-buttons .hands-need-section {
+    flex: 1; /* Ensures that all the sections align properly */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
 .date-buttons button {
     flex: 1;
-    margin: 0 5px;
+    margin: 0 0px;
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -288,17 +299,10 @@ nav a:hover {
     border-radius: 5px;
     cursor: pointer;
 }
-.date-buttons button:hover {
-    background-color: #45a049;
-}
-.payment-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+
 .payment-section input {
     width: 60%;
-    text-align: right;
+    
 }
 .create-job-btn {
     background-color: #4CAF50;
