@@ -1,0 +1,149 @@
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LabourField Profile</title>
+        <link href="https://fonts.googleapis.com/css2?family=Kavoon&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="styles.css">
+        <script src="script.js"></script>
+
+    </head>
+
+    <body>
+
+        <header>
+            <div class="header-container">
+                <div class="logo">
+                    <img src="path-to-your-logo.png" alt="Logo">
+                    <h1>LabourField</h1>
+                </div>
+                <nav>
+                    <a href="#">Home</a>
+                    <a href="#">About Us</a>
+                    <a href="#">Services</a>
+                    <a href="#">Help & Support</a>
+                </nav>
+            </div>
+        </header>
+
+        <div class="form-container">
+            <img src="https://via.placeholder.com/100" alt="Profile Picture" class="img">
+
+            <h1 class="signup">Signup</h1>
+            <div class="form">
+
+                <div class="form-group">
+                    <div class="half-width">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Enter your name">
+                    </div>
+                    <div class="half-width">
+                        <label for="gender">Gender</label>
+                        <input type="text" id="gender" placeholder="Male/Female">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="half-width">
+                        <label for="dob">DOB</label>
+                        <input type="date" id="dob">
+                    </div>
+                    <div class="half-width">
+                        <label for="aadhaar">Aadhaar ID</label>
+                        <input type="tel" id="aadhaar" placeholder="Enter Aadhaar ID">
+                    </div>
+                </div>
+
+                <h2>Contact Information</h2>
+
+                <div class="form-group">
+                    <div class="half-width">
+                        <label for="mobile">Mobile Number</label>
+                        <div class="otp-group">
+                            <input type="tel" id="mobile" placeholder="Mobile Number">
+                            <button>Get OTP</button>
+                        </div>
+                    </div>
+                    <div class="half-width">
+                        <label for="otp">Verify OTP</label>
+                        <div class="otp-group">
+                            <input type="number" id="otp" placeholder="Verify OTP">
+                            <button>Verify OTP</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="half-width">
+                        <label for="alternate-phone">Alternate Phone no.</label>
+                        <input type="tel" id="alternate-phone" placeholder="Enter alternate phone number">
+                    </div>
+                    <div class="half-width">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email">
+                    </div>    
+                    <div class="form-group half-width" style="margin-top: 1%;">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" placeholder="Enter your address">
+                    </div>    
+                    <div class="half-width" style="margin-top: 1%;">
+                        <label for="land-taluk">State</label>
+                        <select id="land-state" name="state">
+                            <option value="select">-- Select State --</option>
+                            <option value="ny">New York</option>
+                            <option value="ca">California</option>
+                            <option value="tx">Texas</option>
+                            <option value="fl">Florida</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+                    <div class="half-width">
+                        <label for="land-taluk">City</label>
+                        <select id="land-city" name="city">
+                            <option value="select">-- Select City --</option>
+                            <option value="ny">New York</option>
+                            <option value="ca">California</option>
+                            <option value="tx">Texas</option>
+                            <option value="fl">Florida</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+                    <div class="half-width">
+                        <label for="land-taluk">Taluk</label>
+                        <select id="land-taluk" name="taluk">
+                            <option value="select">-- Select Taluk --</option>
+                            <option value="ny">New York</option>
+                            <option value="ca">California</option>
+                            <option value="tx">Texas</option>
+                            <option value="fl">Florida</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+                </div>           
+
+                <h2>Security Information</h2>
+
+                <div class="form-group">
+                    <div class="half-width">
+                        <label for="password">Password</label>
+                        <input type="text" id="password" placeholder="Enter Passowrd">
+                    </div>
+                    <div class="half-width">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="text" id="confirm-password" placeholder="Enter Confirm Password">
+                    </div>
+                </div>  
+                <div id="error-message" style="color: red;"></div>
+
+                <button class="submit-btn" onclick="onclickconfirm()">Confirm</button>
+            </div>
+
+        </div>
+
+    </body>
+
+    </html>
