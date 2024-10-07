@@ -130,7 +130,7 @@ router.post('/signin', async (req, res) => {
 
 router.post('/createjob', landownerMiddleware,async (req, res) => {
     const createpayload = req.body;
-   
+    const user=req.user;
     
     //converting the date formate string to date
     if(typeof createpayload.start_date === 'string') {
@@ -139,6 +139,23 @@ router.post('/createjob', landownerMiddleware,async (req, res) => {
     if(typeof createpayload.end_date === 'string') {
         createpayload.end_date = new Date(createpayload.end_date);
     }
+
+    createpayload.state=user.state
+    createpayload.city=user.city
+    createpayload.taluk=user.taluk
+    createpayload.amount=Number(req.body.amount)
+    createpayload.number_of_workers=Number(req.body.number_of_workers)
+
+    // Set the current date
+    const currentDate = new Date();
+
+    // Set the status based on the current date and the start/end dates
+    if (createpayload.start_date <= currentDate && currentDate <= createpayload.end_date) {
+        createpayload.status = true;
+    } else {
+        createpayload.status = false;
+    }
+    
     //zod input validation
     const parsedPayload = createjobs.safeParse(createpayload);
 
