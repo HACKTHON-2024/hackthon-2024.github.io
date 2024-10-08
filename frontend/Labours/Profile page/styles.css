@@ -217,15 +217,17 @@ body {
 
 .form {
     flex: 2;
-    background-color: rgba(172, 172, 172, 0.5);
-    /* Adjust the opacity here */
+    background-color: rgba(172, 172, 172, 0.5); /* Adjust the opacity here */
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     margin-left: 20px;
     border: 1px solid #ccc;
-    position: relative;
+    position: relative; /* Change from fixed to relative */
+    z-index: 1000; /* Ensure it stays above other content */
 }
+
+
 
 
 .form label {
@@ -312,6 +314,7 @@ header {
     border-bottom: 0px solid #000000;
     padding: 12px 0px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 2000;
 }
 
 /* LabourField Heading Styles */
