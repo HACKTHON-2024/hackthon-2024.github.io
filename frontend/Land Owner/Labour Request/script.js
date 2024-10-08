@@ -1,6 +1,5 @@
-// Initialize the datepicker
 document.addEventListener('DOMContentLoaded', function () {
-    const datepicker = document.getElementById('datepicker');
+   const datepicker = document.getElementById('datepicker');
     datepicker.addEventListener('focus', function () {
         datepicker.type = 'date';
     });
@@ -11,34 +10,44 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Fetch labor data from the API when the page loads
-    fetchLabours();
+    fetchLabours(); // Fetch labour data when the page loads
 });
 
-// Function to fetch labour data from the API and display it
+// To store selected labour and job IDs
+let selectedLabourId = null;
+let selectedJobId = null;
+
+// Fetch labour data from API
 function fetchLabours() {
     fetch('http://localhost:3000/landowner/available_labours')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                displayLabours(data.data);
+                displayLabours(data.data); // Display the labours dynamically
             } else {
                 console.error('Error fetching labours:', data.message);
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error during labour fetch:', error);
         });
 }
 
-// Function to display the fetched labours dynamically
+// Dynamically display labours
 function displayLabours(labours) {
     const labourList = document.getElementById('labour-list');
-    labourList.innerHTML = '';  // Clear any existing labour cards
+    labourList.innerHTML = ''; // Clear existing labour cards
+
+    if (labours.length === 0) {
+        labourList.innerHTML = '<p>No labourers available</p>';
+        return;
+    }
 
     labours.forEach(labour => {
         const labourCard = document.createElement('div');
         labourCard.classList.add('labour-card');
+
+        const skills = labour.skills?.trim() || 'No skills listed';
 
         labourCard.innerHTML = `
             <div class="circle-stars-group">
@@ -52,107 +61,122 @@ function displayLabours(labours) {
                 </div>
             </div>
             <div class="labour-info">
-                <p><strong>NAME:</strong> ${labour.name}</p>
+                <p><strong>NAME:</strong> ${labour.username}</p>
                 <p><strong>GENDER:</strong> ${labour.gender}</p>
-                <p><strong>SKILL:</strong> ${labour.skills.join(', ')}</p>
+                <p><strong>SKILL:</strong> ${skills}</p>
             </div>
             <div class="location">
                 <p><strong>Location:</strong> ${labour.city}, ${labour.taluk}</p>
-                <button class="request-btn">REQUEST</button>
+                <button class="request-btn" data-labour-id="${labour._id}">REQUEST</button>
             </div>
         `;
 
         labourList.appendChild(labourCard);
     });
-}
 
-// Handle request button click (opens modal)
-document.querySelectorAll('.request-btn').forEach(button => {
-    button.addEventListener('click', function () {
-        // Show the previous jobs modal with animation
-        const jobModal = document.getElementById('job-list-modal');
-        jobModal.classList.remove('hidden');
-        jobModal.style.opacity = 0;
-        setTimeout(() => jobModal.style.opacity = 1, 50);
-
-        // Add click event to job summary (only once)
-        document.querySelectorAll('.job-summary').forEach(jobSummary => {
-            // Remove existing listeners to avoid double clicks
-            const newJobSummary = jobSummary.cloneNode(true);
-            jobSummary.parentNode.replaceChild(newJobSummary, jobSummary);
-
-            newJobSummary.addEventListener('click', function () {
-                // Toggle job details visibility
-                const jobDetails = this.nextElementSibling;
-                const arrow = this.querySelector('.arrow');
-
-                if (jobDetails.style.display === 'block') {
-                    jobDetails.style.display = 'none';
-                    arrow.textContent = '▼'; // Down arrow when hidden
-                } else {
-                    jobDetails.style.display = 'block';
-                    arrow.textContent = '▲'; // Up arrow when shown
-                }
-            });
-        });
-
-        // Handle confirm button click inside each job created post
-        document.querySelectorAll('.confirm-job-btn').forEach(confirmBtn => {
-            // Remove any existing event listeners to avoid duplicates
-            const newConfirmBtn = confirmBtn.cloneNode(true);
-            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-
-            newConfirmBtn.addEventListener('click', function () {
-                // Show the confirmation popup when confirm button is clicked
-                const confirmationPopup = document.getElementById('confirmation-popup');
-                confirmationPopup.classList.add('show');
-
-                // Optional overlay for background
-                const popupOverlay = document.querySelector('.popup-overlay');
-                if (popupOverlay) popupOverlay.classList.add('show');
-
-                const handleConfirm = function () {
-                    alert('Job request confirmed!');
-                    confirmationPopup.classList.remove('show');
-                    if (popupOverlay) popupOverlay.classList.remove('show');
-                };
-
-                const handleCancel = function () {
-                    confirmationPopup.classList.remove('show');
-                    if (popupOverlay) popupOverlay.classList.remove('show');
-                };
-
-                // Remove previous listeners from confirm and cancel buttons before adding new ones
-                const confirmPopupBtn = document.getElementById('confirm-btn');
-                const cancelPopupBtn = document.getElementById('cancel-btn');
-
-                // Remove existing listeners
-                confirmPopupBtn.removeEventListener('click', handleConfirm);
-                cancelPopupBtn.removeEventListener('click', handleCancel);
-
-                // Add event listeners with once:true to avoid duplicates
-                confirmPopupBtn.addEventListener('click', handleConfirm, { once: true });
-                cancelPopupBtn.addEventListener('click', handleCancel, { once: true });
-            });
+    // Add event listeners for "REQUEST" buttons
+    document.querySelectorAll('.request-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            selectedLabourId = this.getAttribute('data-labour-id');
+            showJobModal(selectedLabourId);
         });
     });
-});
+}
 
-// Close button for the modal
-const closeJobModalBtn = document.getElementById('close-job-modal');
-closeJobModalBtn.addEventListener('click', function () {
+// Show job list modal and fetch active jobs
+function showJobModal(labourId) {
     const jobModal = document.getElementById('job-list-modal');
-    jobModal.classList.add('hidden');
-});
+    jobModal.classList.remove('hidden');
+    jobModal.style.opacity = 0;
+    setTimeout(() => jobModal.style.opacity = 1, 50);
 
+    fetchActiveJobs(labourId);
+}
 
+// Fetch active jobs from API
+function fetchActiveJobs(labourId) {
+    fetch('http://localhost:3000/landowner/active_jobs')
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data) && data.length > 0) {
+                displayActiveJobs(data, labourId);
+            } else {
+                displayNoJobsMessage();
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching active jobs:', error);
+        });
+}
 
+// Display active jobs dynamically
+function displayActiveJobs(jobs, labourId) {
+    const jobContainer = document.getElementById('job-container');
+    jobContainer.innerHTML = ''; // Clear existing content
 
+    jobs.forEach(job => {
+        const jobCard = document.createElement('div');
+        jobCard.classList.add('job-container');
 
-function toggleJobDetails(element) {
+        jobCard.innerHTML = `
+            <div class="job-summary" onclick="toggleJobDetails(this)">
+            <div class="job-header">
+                <p><strong>Job Title:</strong> ${job.title}</p>
+                <p><strong>Start Date:</strong> ${job.startDate}</p>
+                <p><strong>End Date:</strong> ${job.endDate}</p>
+                <span class="arrow">▼</span>
+            </div>
+        </div>
+
+        <div class="job-details" style="display: none;">
+            <p><strong>Job Description:</strong></p>
+            <div class="editable-box">
+                <span>${job.description}</span>
+            </div>
+
+            <p><strong>Job Location:</strong></p>
+            <div class="editable-box">
+                <span>${job.location}</span>
+            </div>
+            <p><strong>Amount:</strong></p>
+            <div class="editable-box">
+                <span>${job.amount} rs</span>
+            </div>
+
+            <p><strong>Status:</strong></p>
+            <div class="editable-box">
+                <span>${job.status}</span>
+            </div>
+
+            <p><strong>No. of Workers:</strong></p>
+            <div class="editable-box">
+                <span>${job.workers}</span>
+            </div>
+            <div>
+                <button class="confirm-job-btn" data-job-id="${job._id}">Confirm</button>
+            </div>
+        `;
+
+        jobContainer.appendChild(jobCard);
+    });
+
+    // Add toggle for job details visibility
+    toggleJobDetails();
+
+    // Add event listeners for "Confirm" buttons
+    document.querySelectorAll('.confirm-job-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            selectedJobId = this.getAttribute('data-job-id');
+            // Only show the popup, no API call yet
+            showConfirmationPopup(selectedLabourId, selectedJobId);
+        });
+    });
+}
+
+// Function to toggle job details visibility
+function toggleJobDetails() {
     document.querySelectorAll('.job-summary').forEach(jobSummary => {
         jobSummary.addEventListener('click', function () {
-            // Toggle job details visibility
             const jobDetails = this.nextElementSibling;
             const arrow = this.querySelector('.arrow');
 
@@ -164,5 +188,73 @@ function toggleJobDetails(element) {
                 arrow.textContent = '▲'; // Up arrow when shown
             }
         });
+    });
+}
+
+// Display no jobs message when no jobs are available
+function displayNoJobsMessage() {
+    const jobContainer = document.getElementById('job-container');
+    jobContainer.innerHTML = '<p>No active jobs available at the moment.</p>';
+}
+
+// Close button for the job list modal
+const closeJobModalBtn = document.getElementById('close-job-modal');
+closeJobModalBtn.addEventListener('click', function () {
+    const jobModal = document.getElementById('job-list-modal');
+    jobModal.classList.add('hidden');
+});
+
+// Display confirmation popup
+function showConfirmationPopup(labourId, jobId) {
+    const confirmationPopup = document.getElementById('confirmation-popup');
+    const popupOverlay = document.querySelector('.popup-overlay');
+
+    confirmationPopup.classList.add('show');
+    popupOverlay.classList.add('show');
+
+    // Remove previous event listeners (to avoid duplication)
+    const confirmPopupBtn = document.getElementById('confirm-btn');
+    confirmPopupBtn.replaceWith(confirmPopupBtn.cloneNode(true));
+    const cancelPopupBtn = document.getElementById('cancel-btn');
+    cancelPopupBtn.replaceWith(cancelPopupBtn.cloneNode(true));
+
+    // Add new event listeners
+    document.getElementById('confirm-btn').addEventListener('click', function () {
+        handleConfirm(labourId, jobId);
+    });
+    document.getElementById('cancel-btn').addEventListener('click', function () {
+        confirmationPopup.classList.remove('show');
+        popupOverlay.classList.remove('show');
+    });
+}
+
+// Send job confirmation request to the backend
+function handleConfirm(labour_id, job_id) {
+    fetch('http://localhost:3000/landowner/request_confirm', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            job_id: job_id,
+            labour_id: labour_id
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert('Job request confirmed!');
+        } else {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error during confirmation:', error);
+    })
+    .finally(() => {
+        const confirmationPopup = document.getElementById('confirmation-popup');
+        const popupOverlay = document.querySelector('.popup-overlay');
+        confirmationPopup.classList.remove('show');
+        popupOverlay.classList.remove('show');
     });
 }

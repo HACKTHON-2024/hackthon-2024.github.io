@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Landowner,Labour,Job,Requests}= require('../db/db')
-const { jwt_screat } = require('../config');
+const { jwt_scret } = require('../config');
 const jwt=require("jsonwebtoken");
 const {registerlandowner,signin,createjobs,updateLandownerProfile }=require("../type")
 const {landownerMiddleware}=require("../middleware/landowner")
@@ -77,7 +77,33 @@ router.post('/signup', async (req, res) => {
       res.status(500).json({ message: 'Error creating user', error: error.message });
   }
 });
+// this sigin is used when users verifyed their mobil no. by otp
+router.post('/signin_by_otp', async (req, res) => {
+  const identifier = req.body.identifier; // Email or mobile number
+  try {
+      // Find landowner by either email or mobile number
+      const landowner = await Landowner.findOne({
+          $or: [
+              { email: identifier },
+              { mobile_number: identifier }
+          ]
+      });
 
+      if (landowner) {
+          // Generate JWT token since OTP is already verified
+          const token = jwt.sign({ username: landowner.username }, jwt_scret); // Token valid for 1 hour
+          
+          // Send token as response
+          return res.status(200).json({ token });
+      }
+
+      // If no landowner found
+      return res.status(404).json({ message: 'User not found' });
+  } catch (error) {
+      console.error("Error in signing in:", error);
+      return res.status(500).json({ message: 'Server error' });
+  }
+});
 
 
 router.post('/signin', async (req, res) => {
@@ -93,7 +119,8 @@ router.post('/signin', async (req, res) => {
     ]
 });
     if (landowner) {
-        const token = jwt.sign({ username: landowner.username }, jwt_screat); // Assuming landowner has a username field
+        const token = jwt.sign({ username: landowner.username }, jwt_scret); // Assuming landowner has a username field
+        
         return res.status(200).json({ token });
     }
     
@@ -103,7 +130,7 @@ router.post('/signin', async (req, res) => {
 
 router.post('/createjob', landownerMiddleware,async (req, res) => {
     const createpayload = req.body;
-   
+    const user=req.user;
     
     //converting the date formate string to date
     if(typeof createpayload.start_date === 'string') {
@@ -112,6 +139,23 @@ router.post('/createjob', landownerMiddleware,async (req, res) => {
     if(typeof createpayload.end_date === 'string') {
         createpayload.end_date = new Date(createpayload.end_date);
     }
+
+    createpayload.state=user.state
+    createpayload.city=user.city
+    createpayload.taluk=user.taluk
+    createpayload.amount=Number(req.body.amount)
+    createpayload.number_of_workers=Number(req.body.number_of_workers)
+
+    // Set the current date
+    const currentDate = new Date();
+
+    // Set the status based on the current date and the start/end dates
+    if (createpayload.start_date <= currentDate && currentDate <= createpayload.end_date) {
+        createpayload.status = true;
+    } else {
+        createpayload.status = false;
+    }
+    
     //zod input validation
     const parsedPayload = createjobs.safeParse(createpayload);
 
@@ -157,7 +201,7 @@ router.get("/available_jobs", landownerMiddleware, async function(req, res) {
 
     // Fetch jobs from the database using the query
     const jobs = await Job.find(query);
-
+  
     // Log the number of fetched jobs for debugging
     console.log(jobs.length, "jobs fetched");
 
@@ -211,6 +255,7 @@ router.get("/available_labours", landownerMiddleware, async function(req, res) {
 
   router.get("/active_jobs", landownerMiddleware, async function(req, res) {
     try {
+     
         // landownerMiddleware sets req.user to the logged-in landowner
         const landownerId = req.user._id;
         // Fetch the landowner's job history
@@ -218,6 +263,7 @@ router.get("/available_labours", landownerMiddleware, async function(req, res) {
         // Filter the jobs where the status is true
         const activeJobs = landowner.job_history.filter(job => job.status);
         // Send the active jobs in the response
+       
         res.json(activeJobs);
     } catch (error) {
         console.error(error);
@@ -311,6 +357,7 @@ router.get("/view_requests", landownerMiddleware, async function(req, res) {
     try {
       // Fetch profile details and exclude the password field
       const profile_details = await Landowner.findById(user_id, { password: 0 });
+      console.log(profile_details)
   
       if (!profile_details) {
         return res.status(404).json({ message: "Profile not found" });
@@ -322,7 +369,23 @@ router.get("/view_requests", landownerMiddleware, async function(req, res) {
       res.status(500).json({ message: "An error occurred while fetching the profile" });
     }
   });
+  router.get("/get_job_history", landownerMiddleware, async (req, res) => {
+    try {
+        const user_id = req.user._id; // Assuming req.user contains authenticated landowner's ID
 
+        // Fetch the landowner's job history and populate the job details
+        const landowner = await Landowner.findById(user_id).populate('job_history').exec();
+
+        if (!landowner || landowner.job_history.length === 0) {
+            return res.status(404).json({ message: "No jobs found in the landowner's job history" });
+        }
+
+        res.status(200).json(landowner.job_history);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while fetching jobs", error: error.message });
+    }
+});
 
 
   
@@ -337,7 +400,6 @@ router.get("/view_requests", landownerMiddleware, async function(req, res) {
           // Step 1: Validate input data using Zod
          
           const validationResult = updateLandownerProfile.safeParse(createpayload);
-
           if (!validationResult.success) {
               return res.status(400).json({
                   message: "Validation error",
@@ -385,9 +447,114 @@ router.get("/view_requests", landownerMiddleware, async function(req, res) {
           res.status(500).json({ message: "An error occurred while updating the profile", error: error.message });
       }
   });
-  
-  
 
+
+
+//it called when confirm box is clicked in send the request to labours 
+router.post("/request_confirm", landownerMiddleware,async (req, res) => {
+  const { job_id,  labour_id } = req.body;
+  const user_id=req.user._id;
+  console.log("api called");
+  console.log("job:",job_id,"labour:",labour_id)
+  
+  try {
+    // Step 1: Validate if job_id and labour_id exist
+    const job = await Job.findById(job_id);
+    const labour = await Labour.findById(labour_id);
+    const landowner = await Landowner.findById(user_id);
+    
+    if (!job || !labour || !landowner) {
+      return res.status(404).json({ error: "Job, Landowner, or Labour not found." });
+    }
+
+    // Step 2: Check for existing request
+    const existingRequest = await Requests.findOne({
+      labour_id: labour._id,
+      job_id: job._id
+    });
+
+    if (existingRequest) {
+      return res.status(400).json({ error: "A request for this labour and job already exists." });
+    }
+
+
+    // Step 3: Create a new request in the Requests collection
+    const newRequest = new Requests({
+      labour_id: labour._id,
+      job_id: job._id,
+      status: false, // Assuming 'false' means pending
+      date: new Date()
+    });
+
+    await newRequest.save();
+
+    // Step 4: Update the landowner's and labour's requests arrays
+    landowner.requests.push(newRequest._id);
+    await landowner.save();
+
+    labour.requests.push(newRequest._id);
+    await labour.save();  
+
+    // Optional Step 4: Update the job details if necessary
+    // For example, adding labour_id to worker_id if the request is confirmed
+    // job.worker_id.push(labour._id);
+    // await job.save();
+
+    res.status(200).json({ message: "Request confirmed and updated successfully.", request: newRequest });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+});
+
+router.post("/request_by_owner", landownerMiddleware, async function(req, res) {
+  const { jobId, mobileNumber } = req.body;
+
+  try {
+      // Step 1: Find the Labour by Mobile Number
+      const labour = await Labour.findOne({ mobile_number: mobileNumber });
+
+      if (!labour) {
+          return res.status(404).json({ success: false, message: "Labour not found" });
+      }
+
+      // Step 2: Find the Job by Job ID
+      const job = await Job.findById(jobId);
+
+      if (!job) {
+          return res.status(404).json({ success: false, message: "Job not found" });
+      }
+
+      // Step 3: Check if labour is already added to job
+      if (job.worker_id.includes(labour._id)) {
+          return res.status(400).json({ success: false, message: "Labour already assigned to this job" });
+      }
+
+      // Step 4: Add Job ID to Labour's job history
+      labour.job_history.push(job._id);
+      await labour.save(); // Save updated labour
+
+      // Step 5: Add Labour ID to Job's worker_id
+      job.worker_id.push(labour._id);
+      await job.save(); // Save updated job
+
+      // Step 6: Create a new Request Record
+      const newRequest = new Requests({
+          labour_id: labour._id,
+          status: true, // You can set status based on your logic
+          job_id: job._id,
+          date: new Date()
+      });
+
+      await newRequest.save(); // Save the request
+
+      // Step 7: Send Success Response
+      res.status(200).json({ success: true, message: "Job request sent successfully" });
+  } catch (error) {
+      console.error("Error processing job request:", error);
+      res.status(500).json({ success: false, message: "Server error" });
+  }
+});
 
 router.use(landownerMiddleware)
 module.exports = router;

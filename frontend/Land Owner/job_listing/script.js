@@ -1,66 +1,203 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Get all the request buttons
-    const requestButtons = document.querySelectorAll('.request-btn');
+document.addEventListener('DOMContentLoaded', async function () {
+    const labourList = document.querySelector('.labour-list');
+    const backBtn = document.querySelector('.back-btn'); // Select the back button
+    const jobListModal = document.getElementById('job-list-modal'); // Select the modal
 
-    // Get the job list modal and the close button
-    const jobListModal = document.getElementById('job-list-modal');
-    const closeModalButton = document.getElementById('close-job-modal');
+    // Function to create and display job cards dynamically
+    function createJobCard(job) {
+        const jobCard = document.createElement('div');
+        jobCard.classList.add('labour-card');
 
-    // Function to open the modal
-    function openModal() {
-        jobListModal.classList.remove('hidden'); // Remove the 'hidden' class to display the modal
+        jobCard.innerHTML = `
+            <div class="circle-stars-group">
+                <div class="circle"></div>
+                <div class="stars">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                </div>
+            </div>
+            <div class="labour-info">
+                <p><strong>Title:</strong> ${job.title}</p>
+                <p><strong>Description:</strong> ${job.description}</p>
+                <p><strong>Amount:</strong> ₹${job.amount}</p>
+                <p><strong>Start Date:</strong> ${new Date(job.start_date).toLocaleDateString()}</p>
+                <p><strong>End Date:</strong> ${new Date(job.end_date).toLocaleDateString()}</p>
+            </div>
+            <div class="location">
+                <p><strong>Location:</strong> ${job.taluk}, ${job.city}</p>
+                <button class="request-btn" data-job-id="${job._id}">REQUEST</button>
+            </div>
+        `;
+
+        labourList.appendChild(jobCard);
     }
 
-    // Function to close the modal
+    // Fetch jobs from the server
+    async function fetchJobs() {
+        try {
+            const response = await fetch('http://localhost:3000/landowner/available_jobs');
+            const result = await response.json();
+
+            labourList.innerHTML = ''; // Clear previous jobs
+
+            if (result.success && result.data.length > 0) {
+                result.data.forEach(job => {
+                    createJobCard(job);
+                });
+                addRequestButtonEventListeners();
+            } else {
+                labourList.innerHTML = '<p>No jobs available</p>';
+            }
+        } catch (error) {
+            console.error('Error fetching jobs:', error);
+            labourList.innerHTML = '<p>Error fetching jobs</p>';
+        }
+    }
+
+    // Add event listeners to request buttons
+    function addRequestButtonEventListeners() {
+        const requestButtons = document.querySelectorAll('.request-btn');
+
+        requestButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const jobId = button.getAttribute('data-job-id');
+                openModal(jobId);
+            });
+        });
+    }
+
+    // Open modal for phone number input
+    function openModal(jobId) {
+        const jobListModal = document.getElementById('job-list-modal');
+        jobListModal.classList.remove('hidden'); // Show the modal
+
+        // Set job ID as data attribute to the modal
+        jobListModal.setAttribute('data-job-id', jobId);
+    }
+
+    // Close modal function
     function closeModal() {
-        jobListModal.classList.add('hidden'); // Add the 'hidden' class to hide the modal
+        jobListModal.classList.add('hidden'); // Hide the modal
     }
 
-    // Add click event listeners to all request buttons
-    requestButtons.forEach(button => {
-        button.addEventListener('click', openModal);
+    // Back button event listener to close the modal
+    backBtn.addEventListener('click', function () {
+        closeModal(); // Close the modal when the back button is clicked
     });
 
-    // Add click event listener to the close button to hide the modal
-    closeModalButton.addEventListener('click', closeModal);
+    // Event listener for "Next" button to send OTP
+    document.querySelector('.next-btn').addEventListener('click', function () {
+        const mobileNumber = document.querySelector('.phone-number-input').value; // Get the phone number input
+        const jobId = document.getElementById('job-list-modal').getAttribute('data-job-id'); // Retrieve the job ID from the modal
 
-    // Optional: Close the modal when clicking outside the modal container
-    window.addEventListener('click', function (event) {
-        if (event.target === jobListModal) {
-            closeModal();
+        if (validateMobileNumber(mobileNumber)) {
+            sendOtp(mobileNumber, jobId);
+        } else {
+            alert('Please enter a valid mobile number');
         }
     });
-});
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Get the Next and Back buttons and the sections
-    const nextButton = document.querySelector('.next-btn');
-    const backButton = document.querySelector('.back-btn');
-    const otpSection = document.querySelector('.otp-section');
-    const loginInputs = document.querySelector('.login-inputs');
-    const verifyButton=document.querySelector('.verify-btn')
+    // Send OTP using server API
+    function sendOtp(mobileNumber, jobId) {
+        fetch('http://localhost:3000/otp/send-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ mobileNumber }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show OTP section and set jobId and mobileNumber
+                const otpSection = document.querySelector('.otp-section');
+                otpSection.classList.remove('hidden');
+                otpSection.setAttribute('data-job-id', jobId);
+                otpSection.setAttribute('data-mobile-number', mobileNumber);
 
-    // Function to show the OTP section and hide the phone number input
-    function showOtpSection() {
-        loginInputs.classList.add('hidden'); // Hide the phone number input section
-        otpSection.classList.remove('hidden'); // Show the OTP section
+                // Enable and focus on the OTP input field
+                const otpInput = document.querySelector('.otp-input');
+                otpInput.removeAttribute('disabled'); // Enable the OTP input field
+                otpInput.focus(); // Focus on the OTP input field
+            } else {
+                alert('Error sending OTP');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }
 
-    // Function to go back to the phone number input section
-    function showPhoneNumberSection() {
-        otpSection.classList.add('hidden'); // Hide the OTP section
-        loginInputs.classList.remove('hidden'); // Show the phone number input section
-    }
+    // Event listener for Verify button to confirm OTP
+    document.querySelector('.verify-btn').addEventListener('click', function () {
+        const otp = document.querySelector('.otp-input').value;
+        const jobId = document.querySelector('.otp-section').getAttribute('data-job-id'); // Retrieve job ID from OTP section
+        const mobileNumber = document.querySelector('.otp-section').getAttribute('data-mobile-number'); // Retrieve mobile number from OTP section
 
-    // Add click event listener to the Next button to show OTP section
-    nextButton.addEventListener('click', showOtpSection);
-
-    // Add click event listener to display the alert message
-    verifyButton.addEventListener('click', function() {
-        alert("Registration is successful");
+        if (otp.length === 4) {  // Assuming OTP is 4 digits
+            confirmOtp(otp, jobId, mobileNumber);
+        } else {
+            alert('Please enter a valid 4-digit OTP');
+        }
     });
 
-    // Add click event listener to the Back button to go back to phone number input
-    backButton.addEventListener('click', showPhoneNumberSection);
-});
+    // Verify OTP via server
+    function confirmOtp(otp, jobId, mobileNumber) {
+        fetch('http://localhost:3000/otp/verify-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ otp, mobileNumber }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // OTP verified, send job request
+                sendJobRequest(jobId, mobileNumber);
+            } else {
+                alert('Invalid OTP, please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error verifying OTP:', error);
+        });
+    }
 
+    // Send job request to the server after OTP verification
+    async function sendJobRequest(jobId, mobileNumber) {
+        try {
+            const response = await fetch('http://localhost:3000/landowner/request_by_owner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ jobId, mobileNumber })
+            });
+
+            const result = await response.json(); // Assuming response is in JSON format
+
+            if (response.ok && result.success) { // Ensure both HTTP and result success
+                alert('Job request sent successfully');
+                closeModal(); // Close the modal on success
+            } else {
+                throw new Error(result.message || 'Failed to send job request');
+            }
+        } catch (error) {
+            console.error('Error sending job request:', error);
+            alert('Error sending job request: ' + error.message);
+        }
+    }
+
+    // Validate mobile number (Indian format)
+    function validateMobileNumber(mobileNumber) {
+        const mobilePattern = /^[6-9]\d{9}$/; // Indian mobile number pattern
+        return mobilePattern.test(mobileNumber);
+    }
+
+    // Fetch jobs on page load
+    fetchJobs();
+});

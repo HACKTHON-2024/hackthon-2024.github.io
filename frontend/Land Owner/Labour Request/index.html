@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="styles.css">
-
 </head>
 
 <script>
@@ -34,125 +33,26 @@
             </div>
         </div>
 
-        <div class="labour-list"
+        <div class="labour-list" id="labour-list"
             style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-            <div class="labour-card">
-                <div class="circle-stars-group">
-                    <div class="circle"></div>
-                    <div class="stars">
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                    </div>
-                </div>
-                <div class="labour-info">
-                    <p><strong>NAME:</strong> Beak</p>
-                    <p><strong>GENDER:</strong> Female</p>
-                    <p><strong>SKILL:</strong> Irrigation, Plowing</p>
-                </div>
-                <div class="location">
-                    <p><strong>Location:</strong> Area, City</p>
-                    <button class="request-btn">REQUEST</button>
-                </div>
-            </div>
-
-            <div class="labour-card">
-                <div class="circle-stars-group">
-                    <div class="circle"></div>
-                    <div class="stars">
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                    </div>
-                </div>
-                <div class="labour-info">
-                    <p><strong>NAME:</strong> Beak</p>
-                    <p><strong>GENDER:</strong> Female</p>
-                    <p><strong>SKILL:</strong> Irrigation, Plowing</p>
-                </div>
-                <div class="location">
-                    <p><strong>Location:</strong> Area, City</p>
-                    <button class="request-btn">REQUEST</button>
-                </div>
-            </div>
-
-            <div class="labour-card">
-                <div class="circle-stars-group">
-                    <div class="circle"></div>
-                    <div class="stars">
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                    </div>
-                </div>
-                <div class="labour-info">
-                    <p><strong>NAME:</strong> Beak</p>
-                    <p><strong>GENDER:</strong> Female</p>
-                    <p><strong>SKILL:</strong> Irrigation, Plowing</p>
-                </div>
-                <div class="location">
-                    <p><strong>Location:</strong> Area, City</p>
-                    <button class="request-btn">REQUEST</button>
-                </div>
-            </div>
-
-            <div class="labour-card">
-                <div class="circle-stars-group">
-                    <div class="circle"></div>
-                    <div class="stars">
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                    </div>
-                </div>
-                <div class="labour-info">
-                    <p><strong>NAME:</strong> Beak</p>
-                    <p><strong>GENDER:</strong> Female</p>
-                    <p><strong>SKILL:</strong> Irrigation, Plowing</p>
-                </div>
-                <div class="location">
-                    <p><strong>Location:</strong> Area, City</p>
-                    <button class="request-btn">REQUEST</button>
-                </div>
-            </div>
-
-            <!-- Repeat for other labour cards -->
+            <!-- Labour cards will be dynamically inserted here -->
         </div>
-
-
-
-
 
         <nav class="navbar">
             <ul class="navbar__menu">
                 <li class="navbar__item"></li>
-                <a href="#" class="navbar__link" style="font-size: 15px;"><i
-                        data-feather="user"></i><span>Profile</span></a>
+                <a href="#" class="navbar__link" style="font-size: 15px;"><i data-feather="user"></i><span>Profile</span></a>
+                <li class="navbar__item">
+                    <a href="#" class="navbar__link" style="font-size: 15px;"><i data-feather="home"></i><span>Active Jobs</span></a>
                 </li>
                 <li class="navbar__item">
-                    <a href="#" class="navbar__link" style="font-size: 15px;"><i data-feather="home"></i><span>Active
-                            Jobs</span></a>
+                    <a href="#" class="navbar__link" style="font-size: 15px;"><i data-feather="briefcase"></i><span>Landowner Jobs</span></a>
                 </li>
                 <li class="navbar__item">
-                    <a href="#" class="navbar__link" style="font-size: 15px;"><i
-                            data-feather="briefcase"></i><span>Landowner Jobs</span></a>
+                    <a href="#" class="navbar__link" style="font-size: 15px;"><i data-feather="edit"></i><span>Register</span></a>
                 </li>
                 <li class="navbar__item">
-                    <a href="#" class="navbar__link" style="font-size: 15px;"><i
-                            data-feather="edit"></i><span>Register</span></a>
-                </li>
-                <li class="navbar__item">
-                    <a href="#" class="navbar__link" style="font-size: 15px;"><i
-                            data-feather="user-check"></i><span>Availaible
-                            labour</span></a>
+                    <a href="#" class="navbar__link" style="font-size: 15px;"><i data-feather="user-check"></i><span>Available labour</span></a>
                 </li>
             </ul>
         </nav>
@@ -173,104 +73,30 @@
         </header>
 
         <!-- Confirmation popup -->
-        <div id="confirmation-popup" class="confirmation-popup hidden">
-            <div class="confirmation-content">
-                <p>Do you want to confirm this request?</p>
-                <button id="confirm-btn">Confirm</button>
-                <button id="cancel-btn">Cancel</button>
-            </div>
+<div id="confirmation-popup" class="confirmation-popup hidden">
+    <div class="confirmation-content">
+        <p>Do you want to confirm this job request?</p>
+        <div class="popup-buttons">
+            <button id="confirm-btn">Confirm</button>
+            <button id="cancel-btn">Cancel</button>
         </div>
+    </div>
+</div>
+
+<!-- Popup Overlay (Optional for visual effect) -->
+<div class="popup-overlay hidden"></div>
+
+
+
 
         <!-- Job list modal -->
-        <div id="job-list-modal" class="job-modal hidden">
-            <button id="close-job-modal" class="close-btn">X</button>
-            <div class="job-container">
-                <div class="job-summary" onclick="toggleJobDetails(this)">
-                    <div class="job-header">
-                        <p><strong>Job Title:</strong> Seeding Work</p>
-                        <p><strong>Start Date:</strong> 20.08.2014</p>
-                        <p><strong>End Date:</strong> 20.08.2014</p>
-                        <span class="arrow">▼</span>
-                    </div>
-                </div>
+<div id="job-list-modal" class="job-modal hidden">
+    <button id="close-job-modal" class="close-btn">X</button>
+    <div class="job-container" id="job-container">
+        <!-- Job cards will be dynamically inserted here -->
+    </div>
+</div>
 
-                <div class="job-details">
-                    <p><strong>Job Description:</strong></p>
-                    <div class="editable-box">
-                        <span>Description of Seeding Work</span>
-                    </div>
-
-                    <p><strong>Job Category:</strong></p>
-                    <div class="editable-box">
-                        <span>Agriculture</span>
-                    </div>
-
-                    <p><strong>Job Location:</strong></p>
-                    <div class="editable-box">
-                        <span>Location A</span>
-                    </div>
-                    <p><strong>Amount:</strong></p>
-                    <div class="editable-box">
-                        <span>100rs</span>
-                    </div>
-
-                    <p><strong>Status:</strong></p>
-                    <div class="editable-box">
-                        <span>Open</span>
-                    </div>
-
-                    <p><strong>No. of Workers:</strong></p>
-                    <div class="editable-box">
-                        <span>10</span>
-                    </div>
-                    <button class="confirm-job-btn">Confirm</button>
-                </div>
-
-            </div>
-
-            <div class="job-container">
-                <div class="job-summary" onclick="toggleJobDetails(this)">
-                    <div class="job-header">
-                        <p><strong>Job Title:</strong> Seeding Work</p>
-                        <p><strong>Start Date:</strong> 20.08.2014</p>
-                        <p><strong>End Date:</strong> 20.08.2014</p>
-                        <span class="arrow">▼</span>
-                    </div>
-                </div>
-
-                <div class="job-details">
-                    <p><strong>Job Description:</strong></p>
-                    <div class="editable-box">
-                        <span>Description of Seeding Work</span>
-                    </div>
-
-                    <p><strong>Job Category:</strong></p>
-                    <div class="editable-box">
-                        <span>Agriculture</span>
-                    </div>
-
-                    <p><strong>Job Location:</strong></p>
-                    <div class="editable-box">
-                        <span>Location A</span>
-                    </div>
-                    <p><strong>Amount:</strong></p>
-                    <div class="editable-box">
-                        <span>100rs</span>
-                    </div>
-
-                    <p><strong>Status:</strong></p>
-                    <div class="editable-box">
-                        <span>Open</span>
-                    </div>
-
-                    <p><strong>No. of Workers:</strong></p>
-                    <div class="editable-box">
-                        <span>10</span>
-                    </div>
-                    <button class="confirm-job-btn">Confirm</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="script.js"></script>

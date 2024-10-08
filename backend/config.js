@@ -1,2 +1,2 @@
-const jwt_screat ='labour-field';
-module.exports = { jwt_screat };  // Export it
+const jwt_scret ='labour-field';
+module.exports = { jwt_scret };  // Export it

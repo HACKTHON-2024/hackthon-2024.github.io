@@ -453,8 +453,8 @@ h2 {
 
 .job-container {
     margin-bottom: 15px;
-    background-color: #d8d8d8;
-    border: 1px solid #ccc;
+    background-color: #c1bfbf;
+    border: 1px solid #ffffff;
     border-radius: 10px;
     padding: 5px;
     width: 100%;
@@ -513,6 +513,10 @@ h2 {
     opacity: 0;
     /* For smooth appearance */
     transition: opacity 0.3s ease-in-out;
+}
+
+.confirm-job-button{
+    background-color: #4CAF50;
 }
 
 .confirmation-popup.show {
