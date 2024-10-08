@@ -344,9 +344,10 @@ h2 {
 }
 
 .location {
-    position: absolute;
-    top: 8%;
     font-size: 90%;
+    width: 30%;
+    position: absolute;
+    top: 10%;
     right: 2%;
 }
 
@@ -361,6 +362,7 @@ h2 {
     /* Adjusts width based on content */
     height: auto;
     /* Adjusts height based on content */
+
 }
 
 .request-btn:hover {

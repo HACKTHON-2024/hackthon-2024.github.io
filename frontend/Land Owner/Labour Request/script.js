@@ -66,7 +66,7 @@ function displayLabours(labours) {
                 <p><strong>SKILL:</strong> ${skills}</p>
             </div>
             <div class="location">
-                <p><strong>Location:</strong> ${labour.city}, ${labour.taluk}</p>
+                <p><strong>Location:</strong> ${labour.address} ${labour.city}, ${labour.taluk}</p>
                 <button class="request-btn" data-labour-id="${labour._id}">REQUEST</button>
             </div>
         `;
