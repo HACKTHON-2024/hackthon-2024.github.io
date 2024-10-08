@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Landowner,Labour,Job,Requests}= require('../db/db')
-const { jwt_screat } = require('../config');
+const { jwt_scret } = require('../config');
 const jwt=require("jsonwebtoken");
 const {registerlabours,signin,createjobs,updateLabourProfile }=require("../type")
 const {labourMiddleware}=require("../middleware/labour")
@@ -51,25 +51,56 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-
-router.post('/signin', async (req, res) => {
-    const identifier = req.body.identifier; // This will be email or phone number
-    const password = req.body.password;
-   
-    // Find a labour by either email or phone number
-  const labour = await Labour.findOne({
-    $or: [
-        { email: identifier },
-        {  mobile_number: identifier }
-    ]
-});
-    if (labour) {
-        const token = jwt.sign({ username: labour.username }, jwt_screat); // Assuming landowner has a username field
-        return res.status(200).json({ token });
+// this sigin is used when users verifyed their mobil no. by otp
+router.post('/signin_by_otp', async (req, res) => {
+    const identifier = req.body.identifier; // Email or mobile number
+    try {
+        // Find Labour by either email or mobile number
+        const labour = await Labour.findOne({
+            $or: [
+                { email: identifier },
+                { mobile_number: identifier }
+            ]
+        });
+  
+        if (labour) {
+            // Generate JWT token since OTP is already verified
+            const token = jwt.sign({ username: labour.username }, jwt_scret); // Token valid for 1 hour
+            
+            // Send token as response
+            return res.status(200).json({ token });
+        }
+  
+        // If no labour found
+        return res.status(404).json({ message: 'User not found' });
+    } catch (error) {
+        console.error("Error in signing in:", error);
+        return res.status(500).json({ message: 'Server error' });
     }
-    
-    return res.status(401).json({ message: 'Invalid credentials' });
-});
+  });
+  
+  
+  router.post('/signin', async (req, res) => {
+      const identifier = req.body.identifier; // This will be email or phone number
+      const password = req.body.password;
+     
+      // Find a labour by either email or phone number
+    // Find a labour by either email or phone number
+    const labour = await Labour.findOne({
+      $or: [
+          { email: identifier },
+          {  mobile_number: identifier }
+      ]
+  });
+      if (labour) {
+          const token = jwt.sign({ username: labour.username }, jwt_scret); // Assuming labour has a username field
+          
+          return res.status(200).json({ token });
+      }
+      
+      return res.status(401).json({ message: 'Invalid credentials' });
+  });
+  
 
 
 

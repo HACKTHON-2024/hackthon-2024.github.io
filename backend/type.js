@@ -24,7 +24,7 @@ const registerlabours=z.object({
     DOB:z.date(),
     aadhaar_ID: z.string().length(12, "Aadhaar ID must be exactly 12 digits"),
     mobile_number: z.string().length(10, "Mobile number must be exactly 10 digits"),
-    alternate_mobile_number:z.string().length(10, "Mobile number must be exactly 10 digits"),
+    alternate_mobile_number:z.string().length(10, "Mobile number must be exactly 10 digits").optional(),
     email:z.string().email(),
     address:z.string(),
     password:z.string().min(6),
