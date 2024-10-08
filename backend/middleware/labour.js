@@ -18,7 +18,7 @@ async function labourMiddleware(req, res, next) {
         console.log(token)
             // Verify token and extract user data
         const decoded = jwt.verify(token, jwt_scret);
-        console.log(decoded)
+       
         const username = decoded.username;
 
         if (!username) {

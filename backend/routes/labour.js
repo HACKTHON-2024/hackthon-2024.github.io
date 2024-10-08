@@ -162,7 +162,7 @@ router.get("/active_job", labourMiddleware, async function(req, res) {
 });
 
 router.post("/endroll", labourMiddleware, async function(req, res) {
-    const job_id = req.body.job_id;   // Get job ID from the request body
+    const job_id = req.body.jobId;   // Get job ID from the request body
     const labour_id = req.user._id;   // Get labour ID from the authenticated user
 
     try {
@@ -261,6 +261,91 @@ router.get("/view_profile", labourMiddleware,async function(req, res) {
         res.status(500).json({ message: "An error occurred while updating the profile", error: error.message });
     }
 });
+
+router.post("/job_endroll_for_others", labourMiddleware, async function (req, res) {
+    try {
+        const { mobile_number, job_id } = req.body;
+        const labourID=req.user._id;
+        console.log(mobile_number, job_id)
+        // 1. Find the Labour by mobile number
+        const labour = await Labour.findOne({ mobile_number });
+        if (!labour) {
+            return res.status(404).json({ success: false, message: 'Labour not found' });
+        }
+
+        // 2. Find the Job by job_id
+        const job = await Job.findById(job_id);
+        if (!job) {
+            return res.status(404).json({ success: false, message: 'Job not found' });
+        }
+
+        // 3. Update Labour's job_history
+        if (!labour.job_history.includes(job._id)) {
+            labour.job_history.push(job._id);
+            await labour.save();
+        }
+
+        // 4. Update Job's worker_id (add Labour's ID to worker list)
+        if (!job.worker_id.includes(labour._id)) {
+            job.worker_id.push(labour._id);
+            await job.save();
+        }
+
+        // 5. put the labour id in refferl array for reffer
+        const user = await Labour.findById(labourID);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'user not found' });
+        }
+
+        // 6. Update user's refferal (add Labour's ID to referral list)
+        if (!user.refferal.includes(labour._id)) {
+            user.refferal.push(labour._id);
+            await user.save();
+        }
+
+        // Send success response
+        res.status(200).json({ success: true, message: 'Labour enrolled successfully' });
+
+    } catch (error) {
+        console.error('Error enrolling labour for job:', error);
+        res.status(500).json({ success: false, message: 'An error occurred', error });
+    }
+});
+
+
+
+router.get("/available_jobs", labourMiddleware, async function(req, res) {
+    try {
+      const { city, taluk, _id: landowner_id } = req.user;  // Get city, taluk, and landowner ID from req.user
+     
+      // Build the query with conditions for location (taluk, city)
+      const query = {
+        $or: [
+          { city, taluk },  // Most specific: city and taluk
+          { city }          // Less specific: city only
+        ],
+        created_by: { $ne: landowner_id }  // Exclude jobs created by the current landowner
+      };
+  
+      // Fetch jobs from the database using the query
+      const jobs = await Job.find(query);
+    
+      // Log the number of fetched jobs for debugging
+      console.log(jobs.length, "jobs fetched");
+  
+      // Return the fetched jobs to the client
+      res.status(200).json({
+        success: true,
+        data: jobs
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Error fetching jobs",
+        error: error.message
+      });
+    }
+  });
 
 router.use(labourMiddleware)
 module.exports = router;

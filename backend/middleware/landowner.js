@@ -17,7 +17,6 @@ async function landownerMiddleware(req, res, next) {
         // Verify token and extract user data
         const decoded = jwt.verify(token, jwt_scret);
         const username = decoded.username;
-        console.log("ghii",username)
         if (!username) {    
             return res.status(403).json({
                 message: 'Token is invalid'
