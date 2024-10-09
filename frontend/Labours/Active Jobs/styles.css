@@ -350,6 +350,23 @@ h2 {
     right: 2%;
 }
 
+.request-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+    /* Adjusts width based on content */
+    height: auto;
+    /* Adjusts height based on content */
+}
+
+.request-btn:hover {
+    background-color: #0e8f0e;
+}
+
 /*Profile for the labours section*/
 
 .circle-stars-group {
@@ -694,10 +711,22 @@ h2 {
     }
 
 
-    .location {
+    .location,
+    .request-btn {
         position: absolute;
         top: 10%;
         right: 5%;
+    }
+
+    /* Adjusting the request button */
+    .request-btn {
+        position: relative;
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        padding: 8px;
+        margin-top: 10px;
     }
 
     /* Adjust circle and stars for mobile */

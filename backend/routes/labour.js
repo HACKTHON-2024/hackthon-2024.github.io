@@ -139,28 +139,24 @@ router.get("/available_jobs", labourMiddleware, async function(req, res) {
   });  
 
 //joint current active jobs 
-// Route to fetch active jobs for a specific labour based on their job history
-router.get("/active_job", labourMiddleware, async function(req, res) {
+router.get("/active_jobs", labourMiddleware, async function(req, res) {
     try {
-        // Assuming req.user contains the authenticated labour's information
-        const labourId = req.user._id; // This should come from the authenticated user session, middleware, or token
-
-        // Find the labour by ID and populate the job_history with actual Job details
-        const labour = await Labour.findById(labourId).populate({
-            path: 'job_history', // Populate job history array with actual job details
-            match: { status: true } // Only fetch jobs where status is active (status: true)
-        }).exec();
-
-        // Extract the active jobs from job_history (populated with active jobs)
-        const activeJobs = labour.job_history;
-
-        return res.status(200).json({ activeJobs });
+     
+        // labourMiddleware sets req.user to the logged-in landowner
+        const labourId = req.user._id;
+        // Fetch the labour's job history
+        const labour = await Labour.findById(labourId).populate('job_history');
+        // Filter the jobs where the status is true
+        const activeJobs = labour.job_history.filter(job => job.status);
+        // Send the active jobs in the response
+       
+        res.json(activeJobs);
     } catch (error) {
-        console.error("Error fetching active jobs: ", error);
-        return res.status(500).json({ message: "Internal server error" });
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while fetching active jobs" });
     }
-});
-
+  });
+  
 router.post("/endroll", labourMiddleware, async function(req, res) {
     const job_id = req.body.jobId;   // Get job ID from the request body
     const labour_id = req.user._id;   // Get labour ID from the authenticated user
