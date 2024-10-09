@@ -26,11 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
+            const token = getToken();  // Get JWT token
             // Send data to the server
             const response = await fetch('http://localhost:3000/landowner/createjob', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+
                 },
                 body: JSON.stringify(payload)
             });
@@ -50,3 +53,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+
+function getToken() {
+    return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
+}

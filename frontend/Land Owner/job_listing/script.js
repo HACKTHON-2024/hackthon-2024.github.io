@@ -38,7 +38,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Fetch jobs from the server
     async function fetchJobs() {
         try {
-            const response = await fetch('http://localhost:3000/landowner/available_jobs');
+            const token = getToken();  // Get JWT token
+
+            const response = await fetch('http://localhost:3000/landowner/available_jobs', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+                    'Content-Type': 'application/json'
+                }});
             const result = await response.json();
 
             labourList.innerHTML = ''; // Clear previous jobs
@@ -169,11 +176,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Send job request to the server after OTP verification
     async function sendJobRequest(jobId, mobileNumber) {
+
         try {
+            const token = getToken();  // Get JWT token
             const response = await fetch('http://localhost:3000/landowner/request_by_owner', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+
                 },
                 body: JSON.stringify({ jobId, mobileNumber })
             });
@@ -201,3 +212,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Fetch jobs on page load
     fetchJobs();
 });
+
+function getToken() {
+    return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
+}

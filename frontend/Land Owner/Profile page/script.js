@@ -13,9 +13,22 @@
         return `${day}/${month}/${year}`;
     }
 
+    function getToken() {
+        return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
+    }
+    
+
     async function fetchProfileData() {
         try {
-            const response = await fetch('http://localhost:3000/landowner/view_profile');
+            const token = getToken(); 
+            console.log(token)
+            const response = await fetch('http://localhost:3000/landowner/view_profile', {
+                method: 'GET',
+                headers: {
+                    'authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+                    'Content-Type': 'application/json'
+                }
+            });
             const data = await response.json();
             console.log(data)
             // Check if job_history exists and calculate its length
@@ -46,7 +59,14 @@
     // Fetch job data and display dynamically
     async function fetchJobData() {
         try {
-            const response = await fetch('http://localhost:3000/landowner/get_job_history');
+            const token = getToken();
+            const response = await fetch('http://localhost:3000/landowner/get_job_history', {
+                method: 'GET',
+                headers: {
+                    'authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+                    'Content-Type': 'application/json'
+                }
+            });
             const jobs = await response.json();
             console.log(jobs)
             const jobContainer = document.querySelector('.job-created-section');
@@ -143,11 +163,14 @@
         };
         console.log(profileData)
         try {
+            const token = getToken();
             // Send the updated data to the server
             const response = await fetch('http://localhost:3000/landowner/update_profile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+
                 },
                 body: JSON.stringify(profileData),
             });

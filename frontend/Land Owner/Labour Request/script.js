@@ -13,13 +13,24 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchLabours(); // Fetch labour data when the page loads
 });
 
+function getToken() {
+    return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
+}
+
 // To store selected labour and job IDs
 let selectedLabourId = null;
 let selectedJobId = null;
 
 // Fetch labour data from API
 function fetchLabours() {
-    fetch('http://localhost:3000/landowner/available_labours')
+    const token = getToken();  // Get JWT token
+
+    fetch('http://localhost:3000/landowner/available_labours', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+            'Content-Type': 'application/json'
+        }})
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -95,7 +106,14 @@ function showJobModal(labourId) {
 
 // Fetch active jobs from API
 function fetchActiveJobs(labourId) {
-    fetch('http://localhost:3000/landowner/active_jobs')
+
+    const token = getToken();  // Get JWT token
+    fetch('http://localhost:3000/landowner/active_jobs', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+            'Content-Type': 'application/json'
+        }})
         .then(response => response.json())
         .then(data => {
             if (Array.isArray(data) && data.length > 0) {
@@ -231,10 +249,13 @@ function showConfirmationPopup(labourId, jobId) {
 
 // Send job confirmation request to the backend
 function handleConfirm(labour_id, job_id) {
+    const token = getToken();  // Get JWT token
     fetch('http://localhost:3000/landowner/request_confirm', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+
         },
         body: JSON.stringify({
             job_id: job_id,
