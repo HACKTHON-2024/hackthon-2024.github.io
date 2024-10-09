@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LabourField Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kavoon&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="download.jpg" alt="Logo">
+                <h1>LabourField</h1>
+            </div>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#">About Us</a>
+                <a href="#">Services</a>
+                <a href="#">Help & Support</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <ul class="navbar__menu">
+            <li class="navbar__item"><a href="#" class="navbar__link" style="font-size: 15px;"><i data-feather="user"></i><span>Profile</span></a></li>
+            <li class="navbar__item"><a href="#" class="navbar__link" style="font-size: 15px;"><i data-feather="home"></i><span>Active Jobs</span></a></li>
+            <li class="navbar__item"><a href="#" class="navbar__link" style="font-size: 15px;"><i data-feather="briefcase"></i><span>Landowner Jobs</span></a></li>
+            <li class="navbar__item"><a href="#" class="navbar__link" style="font-size: 15px;"><i data-feather="edit"></i><span>Register</span></a></li>
+            <li class="navbar__item"><a href="#" class="navbar__link" style="font-size: 15px;"><i data-feather="user-check"></i><span>Available Labour</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- Profile Section -->
+    <div class="container">
+        <div class="profile">
+            <img src="./Images/image2973-5y8c.svg" alt="Profile Picture">
+            <h2 id="nameDisplay1">  </h2>
+            <div class="stats">
+                <div ><strong><span id="no-of-posts"></span></strong><br>Posts</div>
+                <div ><strong>2</strong><br>Notifications</div>
+                <div><strong>10</strong><br>Views</div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form">
+            <form id="profileForm">
+                <div class="form-row-box">
+                    <div class="box">
+                        <div class="form-row">
+                            <label>Name:</label>
+                            <span id="nameDisplay2"></span>
+                            <input type="text" id="nameInput2"   style="display:none;">
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="form-row">
+                            <label>Gender:</label>
+                            <span id="genderDisplay"></span>
+                            <input type="text" id="genderInput"  style="display:none;">
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="form-row">
+                            <label>DOB:</label>
+                            <span id="DOBDisplay"></span>
+                            <input type="date" id="DOBInput"  style="display:none;">
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="form-row">
+                            <label>Phone Number:</label>
+                            <span id="phoneDisplay"></span>
+                            <input type="text" id="phoneInput" style="display:none;">
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="form-row">
+                            <label>Alternate Phone Number:</label>
+                            <span id="alt-phoneDisplay"></span>
+                            <input type="text" id="alt-phoneInput"  style="display:none;">
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="form-row">
+                            <label>Aadhaar ID:</label>
+                            <span id="aadhaarDisplay"></span>
+                            <input type="text" id="aadhaarInput"  style="display:none;">
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="form-row">
+                            <label>Email Address:</label>
+                            <span id="emailDisplay"></span>
+                            <input type="email" id="emailInput"  style="display:none;">
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="form-row">
+                            <label>Address:</label>
+                            <span id="addressDisplay"></span>
+                            <input type="text" id="addressInput"  style="display:none;">
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="form-row">
+                            <label>State:</label>
+                            <span id="stateDisplay"></span>
+                            <input type="text" id="stateInput" style="display:none;">
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="form-row">
+                            <label>City:</label>
+                            <span id="cityDisplay"></span>
+                            <input type="text" id="cityInput"  style="display:none;">
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="form-row">
+                            <label>Taluk:</label>
+                            <span id="talukDisplay"> </span>
+                            <input type="text" id="talukInput"  style="display:none;">
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <button type="button" id="editButton" onclick="toggleEdit()">Edit</button>
+                <button type="button" id="saveButton" onclick="saveChanges()" style="display:none;">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Job Created Section -->
+    <section class="job-created-section">
+        <h2>Jobs History:</h2>
+        <!-- Jobs will be dynamically inserted here -->
+    </section>
+
+    
+</body>
+</html>

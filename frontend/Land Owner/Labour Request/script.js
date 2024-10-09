@@ -66,7 +66,7 @@ function displayLabours(labours) {
                 <p><strong>SKILL:</strong> ${skills}</p>
             </div>
             <div class="location">
-                <p><strong>Location:</strong> ${labour.city}, ${labour.taluk}</p>
+                <p><strong>Location:</strong> ${labour.address} ${labour.city}, ${labour.taluk}</p>
                 <button class="request-btn" data-labour-id="${labour._id}">REQUEST</button>
             </div>
         `;
@@ -120,12 +120,13 @@ function displayActiveJobs(jobs, labourId) {
 
         jobCard.innerHTML = `
             <div class="job-summary" onclick="toggleJobDetails(this)">
-            <div class="job-header">
-                <p><strong>Job Title:</strong> ${job.title}</p>
-                <p><strong>Start Date:</strong> ${job.startDate}</p>
-                <p><strong>End Date:</strong> ${job.endDate}</p>
-                <span class="arrow">▼</span>
-            </div>
+        <div class="job-header">
+            <p><strong>Job Title:</strong> ${job.title}</p>
+            <p><strong>Start Date:</strong> ${new Date(job.start_date).toISOString().split('T')[0]}</p>
+            <p><strong>End Date:</strong> ${new Date(job.end_date).toISOString().split('T')[0]}</p>
+            <span class="arrow">▼</span>
+        </div>
+    </div>
         </div>
 
         <div class="job-details" style="display: none;">
@@ -150,7 +151,7 @@ function displayActiveJobs(jobs, labourId) {
 
             <p><strong>No. of Workers:</strong></p>
             <div class="editable-box">
-                <span>${job.workers}</span>
+                <span>${job.number_of_workers}</span>
             </div>
             <div>
                 <button class="confirm-job-btn" data-job-id="${job._id}">Confirm</button>
