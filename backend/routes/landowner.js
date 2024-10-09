@@ -223,7 +223,7 @@ router.get("/available_jobs", landownerMiddleware, async function(req, res) {
 router.get("/available_labours", landownerMiddleware, async function(req, res) {
     try {
       const {  city, taluk } = req.user;  
-     
+     console.log("/available_labours")
       // Build a query with multiple conditions using $or to prioritize taluk > city > state
       const query = {
         $or: [

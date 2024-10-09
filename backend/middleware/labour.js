@@ -15,7 +15,6 @@ async function labourMiddleware(req, res, next) {
 
         // Extract token from the Authorization header
         const token = authorization.split(" ")[1]; // Format: "Bearer <token>"
-        console.log(token)
             // Verify token and extract user data
         const decoded = jwt.verify(token, jwt_scret);
        

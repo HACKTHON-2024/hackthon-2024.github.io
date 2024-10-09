@@ -308,40 +308,28 @@ router.post("/job_endroll_for_others", labourMiddleware, async function (req, re
     }
 });
 
-
-
-router.get("/available_jobs", labourMiddleware, async function(req, res) {
+//jobs that labours joined till now
+router.get("/get_job_history", labourMiddleware, async (req, res) => {
     try {
-      const { city, taluk, _id: landowner_id } = req.user;  // Get city, taluk, and landowner ID from req.user
-     
-      // Build the query with conditions for location (taluk, city)
-      const query = {
-        $or: [
-          { city, taluk },  // Most specific: city and taluk
-          { city }          // Less specific: city only
-        ],
-        created_by: { $ne: landowner_id }  // Exclude jobs created by the current landowner
-      };
-  
-      // Fetch jobs from the database using the query
-      const jobs = await Job.find(query);
-    
-      // Log the number of fetched jobs for debugging
-      console.log(jobs.length, "jobs fetched");
-  
-      // Return the fetched jobs to the client
-      res.status(200).json({
-        success: true,
-        data: jobs
-      });
+        const user_id = req.user._id;
+        console.log(`Fetching job history for user: ${user_id}`);
+
+        const labour = await Labour.findById(user_id).populate('job_history').exec();
+        console.log(`Labour found: ${labour}`);
+
+        if (!labour || labour.job_history.length === 0) {
+            console.log("No jobs found in the labour's job history");
+            return res.status(404).json({ message: "No jobs found in the labour's job history" });
+        }
+
+        res.status(200).json(labour.job_history);
     } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: "Error fetching jobs",
-        error: error.message
-      });
+        console.error('Error occurred while fetching jobs:', error);
+        res.status(500).json({ message: "An error occurred while fetching jobs", error: error.message });
     }
-  });
+});
+
+
 
 router.use(labourMiddleware)
 module.exports = router;

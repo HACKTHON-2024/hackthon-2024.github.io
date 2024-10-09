@@ -4,20 +4,19 @@
 document.addEventListener('DOMContentLoaded', async function () {
     // Fetch available jobs when the page loads
     try {
-        const response = await fetch('http://localhost:3000/landowner/available_jobs', {
+        const response = await fetch('http://localhost:3000/labour/available_jobs', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}` // Replace with actual token if needed
             }
         });
-
+        
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
 
         const data = await response.json();
-
         if (data.success) {
             displayJobs(data.data); // Call function to display jobs
         } else {
