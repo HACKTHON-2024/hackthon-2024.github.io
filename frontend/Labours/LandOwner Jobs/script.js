@@ -4,11 +4,12 @@
 document.addEventListener('DOMContentLoaded', async function () {
     // Fetch available jobs when the page loads
     try {
+        const token = getToken();  // Get JWT token
         const response = await fetch('http://localhost:3000/labour/available_jobs', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}` // Replace with actual token if needed
+                'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
             }
         });
         
@@ -138,11 +139,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Add click event listener for the Self Registration button
     selfRegistrationButton.addEventListener('click', async function () {
         try {
+            const token = getToken();  // Get JWT token
             const response = await fetch('http://localhost:3000/labour/endroll', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Replace with actual token if needed
+                    'Authorization': `Bearer ${token}` // Add JWT to Authorization header
                 },
                 body: JSON.stringify({ jobId: selectedJobId })
             });
@@ -164,7 +166,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const phoneNumber = document.querySelector('.phone-number-input').value; // Get the phone number
         const otpInputs = document.querySelectorAll('.otp-input');
         const otp = Array.from(otpInputs).map(input => input.value).join(''); // Combine OTP inputs
-
+        
         try {
             // Verify the OTP
             const verifyResponse = await fetch('http://localhost:3000/otp/verify-otp', {
@@ -178,12 +180,13 @@ document.addEventListener('DOMContentLoaded', async function () {
             const verifyData = await verifyResponse.json();
 
             if (verifyData.success) {
+                const token = getToken();  // Get JWT token
                 // If OTP is verified, send job and phone number to the job_endroll_for_others route
                 const enrollResponse = await fetch('http://localhost:3000/labour/job_endroll_for_others', {
-                    method: 'POST',
+                    method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}` // Replace with actual token if needed
+                        'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ mobile_number: phoneNumber, job_id: selectedJobId })
                 });
@@ -217,3 +220,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 });
+function getToken() {
+    return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
+}

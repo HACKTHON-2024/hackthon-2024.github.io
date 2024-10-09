@@ -4,7 +4,10 @@
             await fetchProfileData();
             await fetchJobData();
         });
-
+        function getToken() {
+            return localStorage.getItem('jwt');  // Fetch the JWT from localStorage
+        }
+        
         function formatDate(dateString) {
             const date = new Date(dateString);
             const day = String(date.getDate()).padStart(2, '0');
@@ -15,7 +18,15 @@
 
         async function fetchProfileData() {
             try {
-                const response = await fetch('http://localhost:3000/labour/view_profile');
+                const token = getToken();  // Get JWT from localStorage
+
+                const response = await fetch('http://localhost:3000/labour/view_profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+                        'Content-Type': 'application/json'
+                    }
+                });
                 const data = await response.json();
                 console.log(data)
                 const dob = new Date(data.DOB);
@@ -47,7 +58,14 @@
         // Fetch job data and display dynamically
         async function fetchJobData() {
             try {
-                const response = await fetch('http://localhost:3000/labour/get_job_history');
+                const token = getToken();  // Get JWT token
+                const response = await fetch('http://localhost:3000/labour/get_job_history', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+                        'Content-Type': 'application/json'
+                    }
+                });
                 const jobs = await response.json();
                 console.log(jobs)
                 const jobContainer = document.querySelector('.job-created-section');
@@ -135,11 +153,14 @@
             };
             console.log(profileData)
             try {
+                const token = getToken();  // Get JWT token
                 // Send the updated data to the server
                 const response = await fetch('http://localhost:3000/labour/update_profile', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+
                     },
                     body: JSON.stringify(profileData),
                 });

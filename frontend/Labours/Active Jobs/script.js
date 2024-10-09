@@ -4,7 +4,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Fetch active jobs from the server
     async function fetchActiveJobs() {
         try {
-            const response = await fetch('http://localhost:3000/labour/active_jobs');
+            const token = getToken();  // Get JWT token
+
+            const response = await fetch('http://localhost:3000/labour/active_jobs', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+                    'Content-Type': 'application/json'
+                }
+            });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -58,3 +66,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Fetch and display active jobs when the page loads
     fetchActiveJobs();
 });
+function getToken() {
+    return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
+}
