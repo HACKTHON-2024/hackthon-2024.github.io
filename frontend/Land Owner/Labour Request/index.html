@@ -76,33 +76,34 @@
                     <a href="#">Services</a>
                     <a href="#">Help & Support</a>
                 </nav>
+                <!-- Placeholder for Login/Logout button -->
+                <div id="auth-btn-container" class="auth-btn-container">
+                    <!-- Button will be dynamically added here by JavaScript -->
+                </div>
             </div>
         </header>
 
         <!-- Confirmation popup -->
-<div id="confirmation-popup" class="confirmation-popup hidden">
-    <div class="confirmation-content">
-        <p>Do you want to confirm this job request?</p>
-        <div class="popup-buttons">
-            <button id="confirm-btn">Confirm</button>
-            <button id="cancel-btn">Cancel</button>
+        <div id="confirmation-popup" class="confirmation-popup hidden">
+            <div class="confirmation-content">
+                <p>Do you want to confirm this job request?</p>
+                <div class="popup-buttons">
+                    <button id="confirm-btn">Confirm</button>
+                    <button id="cancel-btn">Cancel</button>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-<!-- Popup Overlay (Optional for visual effect) -->
-<div class="popup-overlay hidden"></div>
+        <!-- Popup Overlay (Optional for visual effect) -->
+        <div class="popup-overlay hidden"></div>
 
-
-
-
-        <!-- Job list modal -->
-<div id="job-list-modal" class="job-modal hidden">
-    <button id="close-job-modal" class="close-btn">X</button>
-    <div class="job-container" id="job-container">
-        <!-- Job cards will be dynamically inserted here -->
-    </div>
-</div>
+                <!-- Job list modal -->
+        <div id="job-list-modal" class="job-modal hidden">
+            <button id="close-job-modal" class="close-btn">X</button>
+            <div class="job-container" id="job-container">
+                <!-- Job cards will be dynamically inserted here -->
+            </div>
+        </div>
 
     </div>
 

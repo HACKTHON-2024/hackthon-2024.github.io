@@ -231,6 +231,11 @@ header h1 {
     margin: 0;
 }
 
+nav {
+    display: flex;
+    margin-left: auto;
+}
+
 nav a {
     text-decoration: none;
     color: #333;
@@ -240,7 +245,6 @@ nav a {
 
 nav a:hover {
     color: #4CAF50;
-    /* Or any color you prefer for hover effect */
 }
 
 .container {
@@ -573,6 +577,51 @@ h2 {
     background-color: darkred;
 }
 
+/*Login Log out button css*/
+/* Container for the authentication buttons */
+#auth-btn-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+/* General styling for the authentication buttons */
+.auth-btn {
+    background-color: #4CAF50; /* Green background */
+    border: none;              /* No border */
+    color: white;              /* White text */
+    padding: 10px 20px;        /* Padding */
+    text-align: center;        /* Centered text */
+    text-decoration: none;     /* No underline */
+    display: inline-block;     /* Inline block for layout control */
+    font-size: 16px;           /* Text size */
+    margin: 4px 2px;           /* Some margin between buttons */
+    cursor: pointer;           /* Pointer cursor on hover */
+    border-radius: 8px;        /* Rounded corners */
+    transition: background-color 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Hover effect for the buttons */
+.auth-btn:hover {
+    background-color: #45a049; /* Darker green when hovered */
+}
+
+/* Active state for button (when clicked) */
+.auth-btn:active {
+    background-color: #3e8e41; /* Even darker green when pressed */
+    box-shadow: 0 5px #666;    /* Shadow when clicked */
+    transform: translateY(4px); /* Slight movement downwards */
+}
+
+/* Styling for Profile button specifically (optional if you want distinct colors) */
+.auth-btn.profile {
+    background-color: #008CBA; /* Blue background for Profile */
+}
+
+.auth-btn.profile:hover {
+    background-color: #007bb5; /* Darker blue on hover */
+}
 
 
 /* Responsive */
