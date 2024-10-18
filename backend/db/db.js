@@ -71,6 +71,16 @@
 
   const Requests=mongoose.model('Requests',requestschema)
   const Landowner = mongoose.model('Landowner', landownerSchema);
+
+
+  // Middleware to set job status based on dates during save
+jobSchema.pre('save', function (next) {
+  const currentDate = new Date();
+  this.status = (currentDate >= this.start_date && currentDate <= this.end_date);
+  next();
+});
+
+
   const Job = mongoose.model('Job', jobSchema);
   const Labour = mongoose.model('Labour', labourSchema);
 
