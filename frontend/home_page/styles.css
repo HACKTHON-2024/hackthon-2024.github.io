@@ -1,0 +1,390 @@
+body {
+    background-color: #000; /* Sets the background color to black */
+    margin: 0; /* Removes default margin */
+    padding: 0; /* Removes default padding */
+    color: rgb(0, 0, 0); /* Optional: Set text color to white for contrast */
+}
+
+html {
+    height: 100%;
+    /* Ensures that the background color covers the entire page height */
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgb(224, 224, 224);
+    border-bottom: 0px solid #000000;
+    padding: 12px 0px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100; /* Ensure the header stays above the hero section */
+}
+
+/* LabourField Heading Styles */
+header h1 {
+    font-family:Arial, Helvetica, sans-serif;
+    /* Apply the Kavoon font */
+    font-size: 2.5em;
+    /* Adjust size as needed */
+    margin: 0;
+    background: linear-gradient(90deg, #91FF56, #666666);
+    /* Gradient from #91FF56 to #666666 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    /* Adjust the size as needed */
+    width: 40px;
+    /* Ensure the width and height are equal for a circle */
+    border-radius: 50%;
+    /* Makes the image circular */
+    margin-right: 10px;
+    object-fit: cover;
+    /* Ensures the image scales correctly within the circle */
+    background-color: #ccc;
+}
+
+.logo h1 {
+    font-size: 2em;
+    margin: 0;
+}
+.nav-links a {
+    margin: 0 15px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+nav a {
+    text-decoration: none;
+    color: #333;
+    margin: 0 15px;
+    font-size: 1em;
+}
+
+nav a:hover {
+    color: #4CAF50;
+    /* Or any color you prefer for hover effect */
+}
+
+
+.hero {
+    position: relative;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 0 20px;
+    margin-top: 80px; /* To prevent overlap with the fixed header */
+    z-index: 1; /* Ensures the content appears on top */
+}
+
+/* Background image with transparency */
+.hero::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    background-image: url('./Images/background.jpg'); /* Replace with your image */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    z-index: -1; /* Ensures the image stays behind all content */
+}
+
+.hero h1 {
+    color: #ffffff;
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.cta-buttons a {
+    padding: 15px 30px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.cta-buttons a:hover {
+    background-color: #45a049;
+}
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 50px 20px;
+    background-color: #f9f9f9;
+    position: relative; /* Ensures it can layer above the background */
+    z-index: 2; /* Ensures it stays above the background image */
+    margin-bottom: -10%;
+    margin-top: -0.5%;
+}
+.feature-box {
+    text-align: center;
+    max-width: 300px;
+}
+.feature-box img {
+    width: 80px;
+    margin-bottom: 20px;
+}
+.footer {
+    padding: 20px;
+    text-align: center;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    margin-top: 50px;
+}
+.footer a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+/*Services css starts here*/
+
+h2 {
+    text-align: center;
+    margin-top: 10%;
+    color: #fff;
+}
+
+.services-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.service-box {
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.service-box:hover {
+    transform: scale(1.05);
+    background-color: #25912a;
+}
+
+.services-section {
+    padding: 50px 0;
+    background-color: #333;
+    margin-bottom: -4%;
+}
+
+/*Team Members container css starts here*/
+
+/* Common things in all sections */
+#team_section {
+	font-family: 'Open Sans', sans-serif;
+	color: #2E3D49;
+	position: relative;
+}
+.diffSection {
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+}
+.diffSection .content {
+	margin: 10px;
+	text-align: center;
+	padding: 10px 100px;
+	font-size: 1.1em;
+}
+
+/* TEAM SECTION */
+.totalcard {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch; /* Ensures cards stretch to the same height */
+	justify-content: center;
+	margin-bottom: 50px;
+}
+.totalcard .card {
+	margin: 50px;
+	width: 300px;
+	border-radius: 10px;
+	background: #fff;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between; /* Distribute card content evenly */
+	box-shadow: inset 0 0 10px rgba(0,0,0,0.4), 0 0 10px rgba(0,0,0,0.3);
+}
+
+/* Card border styles */
+.card:nth-child(1) {
+	border-top: 5px solid green;
+}
+.card:nth-child(2) {
+	border-top: 5px solid blue;
+}
+
+/* Hover effects */
+.card:nth-child(1):hover {
+	box-shadow: inset 0px 0px 10px rgba(0,255,0,0.5), 1px 1px 30px rgba(0,255,0,0.5);
+}
+.card:nth-child(2):hover {
+	box-shadow: inset 0px 0px 10px rgba(0,0,255,0.5), 1px 1px 30px rgba(0,0,255,0.5);
+}
+
+/* Uniform card image styling */
+.totalcard .card img {
+	width: 100px;
+	height: 100px;
+	margin-top: 5px;
+	cursor: pointer;
+	border-radius: 50px;
+	transition-duration: 0.8s;
+}
+.totalcard .card img:hover {
+	transform: scale(3.5);
+	border-radius: 0;
+	box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* Card content */
+#detail {
+	padding: 20px;
+	flex-grow: 1; /* Ensures this section grows to fill available space */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+#detail p {
+	font-size: 15px;
+	line-height: 25px;
+	font-variant: small-caps;
+	text-align: center;
+	margin: 25px 0;
+}
+
+/* Button styling */
+#detail button {
+	outline: none;
+	border-radius: 10px;
+	border-style: none;
+	border: 1px solid black;
+	padding: 9px 25px;
+	cursor: pointer;
+	transition-duration: 0.4s;
+	margin-top: 10px;
+}
+#detail a {
+	text-decoration: none;
+}
+
+/* Card title */
+.card-title {
+	font-size: 17px;
+	color: #343A40;
+	padding: 20px;
+	font-weight: 700;
+	text-align: center;
+}
+
+/* Help & Support Section */
+.help-support-section {
+    background-color: #000000;
+    padding: 2px 0px;
+    text-align: center;
+}
+
+.help-support-section h2 {
+    font-size: 2em;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.help-support-section p {
+    margin-bottom: 30px;
+    font-size: 1.2em;
+    color: #d3d3d3;
+}
+
+/* Support Form Styling */
+.support-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.support-form .form-group {
+    margin-bottom: 20px;
+}
+
+.support-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.support-form input[type="text"],
+.support-form input[type="email"],
+.support-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.support-form textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.submit-btn:hover {
+    background-color: #45a049;
+}
