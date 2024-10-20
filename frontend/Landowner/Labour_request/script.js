@@ -323,7 +323,7 @@ function updateAuthButton() {
         signupButton.classList.add('auth-btn');
         signupButton.textContent = 'Signup';
         signupButton.addEventListener('click', function () {
-            window.location.href = '../SIgnUp Page/index.html'; // Redirect to signup page
+            window.location.href = '../SIgnUp_Page/index.html'; // Redirect to signup page
         });
 
         // Append both buttons to the container

@@ -6,6 +6,8 @@ body {
 }
 
 html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 60px; /* Adjust based on the height of your fixed navbar */
     height: 100%;
     /* Ensures that the background color covers the entire page height */
 }
@@ -66,6 +68,9 @@ header h1 {
 .logo h1 {
     font-size: 2em;
     margin: 0;
+}
+.nav-links {
+    z-index: 1000;
 }
 .nav-links a {
     margin: 0 15px;
@@ -172,7 +177,7 @@ nav a:hover {
 
 /*Services css starts here*/
 
-h2 {
+#service {
     text-align: center;
     margin-top: 10%;
     color: #fff;
@@ -256,6 +261,9 @@ h2 {
 .card:nth-child(2) {
 	border-top: 5px solid blue;
 }
+.card:nth-child(3) {
+	border-top: 5px solid red;
+}
 
 /* Hover effects */
 .card:nth-child(1):hover {
@@ -263,6 +271,9 @@ h2 {
 }
 .card:nth-child(2):hover {
 	box-shadow: inset 0px 0px 10px rgba(0,0,255,0.5), 1px 1px 30px rgba(0,0,255,0.5);
+}
+.card:nth-child(3):hover {
+	box-shadow: inset 0px 0px 10px rgb(255,0,0,0.5), 1px 1px 30px rgb(255,0,0,0.5);
 }
 
 /* Uniform card image styling */
@@ -342,7 +353,7 @@ h2 {
 
 /* Support Form Styling */
 .support-form {
-    max-width: 600px;
+    max-width: 80%;
     margin: 0 auto;
     background-color: white;
     padding: 20px;
@@ -364,7 +375,7 @@ h2 {
 .support-form input[type="text"],
 .support-form input[type="email"],
 .support-form textarea {
-    width: 100%;
+    width: 98%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -386,5 +397,130 @@ h2 {
 }
 
 .submit-btn:hover {
+    background-color: #45a049;
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.4); /* Black background with transparency */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+}
+
+.modal-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.modal-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.modal-btn:hover {
+    background-color: #45a049;
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.container {
+    background-color: white;
+    padding: 40px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.option {
+    position: relative;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+label.btn {
+    background-color: #e6e6e6;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 120px;
+    display: block;
+    text-align: center;
+}
+
+input[type="radio"]:checked + label.btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+button#continue-btn {
+    padding: 12px 25px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button#continue-btn:hover {
     background-color: #45a049;
 }
