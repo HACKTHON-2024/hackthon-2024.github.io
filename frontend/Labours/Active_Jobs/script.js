@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
 
             if (!response.ok) {
+                // Check if the error is a 404, and redirect to the 404 page
+                if (response.status === 404) {
+                    window.location.href = '../404/index.html';  // Adjust path to your 404 page
+                }
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
@@ -66,6 +70,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Fetch and display active jobs when the page loads
     fetchActiveJobs();
 });
+
+// Function to get the JWT token from localStorage
 function getToken() {
     return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
 }

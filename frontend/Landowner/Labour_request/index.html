@@ -38,6 +38,7 @@
             <!-- Labour cards will be dynamically inserted here -->
         </div>
 
+<<<<<<< HEAD
         <nav class="navbar">
             <ul class="navbar__menu">
                 <li class="navbar__item"></li>
@@ -63,6 +64,32 @@
                 </li>
             </ul>
         </nav>
+=======
+        <ul class="navbar__menu">
+            <li class="navbar__item"></li>
+            <a href="../Profile_page/index.html" class="navbar__link" style="font-size: 15px;"><i
+                    data-feather="user"></i><span>Profile</span></a>
+            </li>
+            <li class="navbar__item">
+                <a href="../active_job/index.html" class="navbar__link" style="font-size: 15px;"><i data-feather="home"></i><span>Active
+                        Jobs</span></a>
+            </li>
+            <li class="navbar__item">
+                <a href="../job_listing/index.html" class="navbar__link" style="font-size: 15px;"><i
+                        data-feather="briefcase"></i><span>Landowner Jobs</span></a>
+            </li>
+            <li class="navbar__item">
+                <a href="../SIgnUp_Page/index.html" class="navbar__link" style="font-size: 15px;"><i
+                        data-feather="edit"></i><span>Register</span></a>
+            </li>
+            <li class="navbar__item">
+                <a href="../Labour_request/index.html" class="navbar__link" style="font-size: 15px;"><i
+                        data-feather="user-check"></i><span>Availaible
+                        labour</span></a>
+            </li>
+        </ul>
+    </nav>
+>>>>>>> manick
 
         <header>
             <div class="header-container">
@@ -76,37 +103,42 @@
                     <a href="#">Services</a>
                     <a href="#">Help & Support</a>
                 </nav>
+<<<<<<< HEAD
+=======
+                <!-- Placeholder for Login/Logout button -->
+                <div id="auth-btn-container" class="auth-btn-container">
+                    <!-- Button will be dynamically added here by JavaScript -->
+                </div>
+>>>>>>> manick
             </div>
         </header>
 
         <!-- Confirmation popup -->
-<div id="confirmation-popup" class="confirmation-popup hidden">
-    <div class="confirmation-content">
-        <p>Do you want to confirm this job request?</p>
-        <div class="popup-buttons">
-            <button id="confirm-btn">Confirm</button>
-            <button id="cancel-btn">Cancel</button>
+        <div id="confirmation-popup" class="confirmation-popup hidden">
+            <div class="confirmation-content">
+                <p>Do you want to confirm this job request?</p>
+                <div class="popup-buttons">
+                    <button id="confirm-btn">Confirm</button>
+                    <button id="cancel-btn">Cancel</button>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-<!-- Popup Overlay (Optional for visual effect) -->
-<div class="popup-overlay hidden"></div>
+        <!-- Popup Overlay (Optional for visual effect) -->
+        <div class="popup-overlay hidden"></div>
 
-
-
-
-        <!-- Job list modal -->
-<div id="job-list-modal" class="job-modal hidden">
-    <button id="close-job-modal" class="close-btn">X</button>
-    <div class="job-container" id="job-container">
-        <!-- Job cards will be dynamically inserted here -->
-    </div>
-</div>
+                <!-- Job list modal -->
+        <div id="job-list-modal" class="job-modal hidden">
+            <button id="close-job-modal" class="close-btn">X</button>
+            <div class="job-container" id="job-container">
+                <!-- Job cards will be dynamically inserted here -->
+            </div>
+        </div>
 
     </div>
 
     <script src="script.js"></script>
+    
 
 </body>
 

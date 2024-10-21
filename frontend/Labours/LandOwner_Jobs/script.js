@@ -14,7 +14,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
         
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            // Check if the error is a 404, and redirect to the 404 page
+            if (response.status === 404) {
+                window.location.href = '../404/index.html';  // Adjust path to your 404 page
+            }
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();

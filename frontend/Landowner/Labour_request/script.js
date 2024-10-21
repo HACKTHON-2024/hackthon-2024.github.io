@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     fetchLabours(); // Fetch labour data when the page loads
+    updateAuthButton(); // Call the function to update the button based on login status
 });
 
 function getToken() {
@@ -21,9 +22,11 @@ function getToken() {
 let selectedLabourId = null;
 let selectedJobId = null;
 
-// Fetch labour data from API
+// Fetch labour data from API with loading and error handling
 function fetchLabours() {
     const token = getToken();  // Get JWT token
+    const labourList = document.getElementById('labour-list');
+    labourList.innerHTML = '<p>Loading...</p>'; // Show loading indicator
 
     fetch('http://localhost:3000/landowner/available_labours', {
         method: 'GET',
@@ -36,10 +39,11 @@ function fetchLabours() {
             if (data.success) {
                 displayLabours(data.data); // Display the labours dynamically
             } else {
-                console.error('Error fetching labours:', data.message);
+                labourList.innerHTML = `<p>Error: ${data.message}</p>`; // Error handling
             }
         })
         .catch(error => {
+            labourList.innerHTML = '<p>Failed to load labour data.</p>'; // Show error message
             console.error('Error during labour fetch:', error);
         });
 }
@@ -104,10 +108,12 @@ function showJobModal(labourId) {
     fetchActiveJobs(labourId);
 }
 
-// Fetch active jobs from API
+// Same for fetching jobs
 function fetchActiveJobs(labourId) {
-
     const token = getToken();  // Get JWT token
+    const jobContainer = document.getElementById('job-container');
+    jobContainer.innerHTML = '<p>Loading jobs...</p>'; // Show loading indicator
+
     fetch('http://localhost:3000/landowner/active_jobs', {
         method: 'GET',
         headers: {
@@ -119,10 +125,11 @@ function fetchActiveJobs(labourId) {
             if (Array.isArray(data) && data.length > 0) {
                 displayActiveJobs(data, labourId);
             } else {
-                displayNoJobsMessage();
+                jobContainer.innerHTML = '<p>No active jobs available.</p>'; // Handle no jobs
             }
         })
         .catch(error => {
+            jobContainer.innerHTML = '<p>Error fetching jobs.</p>'; // Show error message
             console.error('Error fetching active jobs:', error);
         });
 }
@@ -279,4 +286,56 @@ function handleConfirm(labour_id, job_id) {
         confirmationPopup.classList.remove('show');
         popupOverlay.classList.remove('show');
     });
+}
+
+// Function to check the login status and update the button
+function updateAuthButton() {
+    const authBtnContainer = document.getElementById('auth-btn-container');
+    authBtnContainer.innerHTML = ''; // Clear any previous button
+
+    const token = getToken(); // Check if token is available (user is logged in)
+    
+    if (token) {
+        // User is logged in        
+        // Create 'Logout' button
+        const logoutButton = document.createElement('button');
+        logoutButton.classList.add('auth-btn');
+        logoutButton.textContent = 'Logout';
+        logoutButton.addEventListener('click', function () {
+            handleLogout(); // Handle logout process
+        });
+        
+        // Append both buttons to the container
+        authBtnContainer.appendChild(logoutButton);
+        
+    } else {
+        // User is not logged in
+        // Create 'Login' button
+        const loginButton = document.createElement('button');
+        loginButton.classList.add('auth-btn');
+        loginButton.textContent = 'Login';
+        loginButton.addEventListener('click', function () {
+            window.location.href = '../signin/index.html'; // Redirect to login page
+        });
+
+        // Create 'Signup' button
+        const signupButton = document.createElement('button');
+        signupButton.classList.add('auth-btn');
+        signupButton.textContent = 'Signup';
+        signupButton.addEventListener('click', function () {
+            window.location.href = '../SIgnUp_Page/index.html'; // Redirect to signup page
+        });
+
+        // Append both buttons to the container
+        authBtnContainer.appendChild(loginButton);
+        authBtnContainer.appendChild(signupButton);
+    }
+}
+
+// Function to handle logout
+function handleLogout() {
+    localStorage.removeItem('jwt'); // Remove JWT token from localStorage
+    alert('You have been logged out.');
+    updateAuthButton(); // Update the button to reflect the login state
+    window.location.href = '../signin/index.html'; // Redirect to login page after logout
 }

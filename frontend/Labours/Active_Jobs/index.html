@@ -1,86 +1,86 @@
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LandOwner Jobs</title>
-<link href="https://fonts.googleapis.com/css2?family=Kavoon&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/feather-icons"></script>
-<link rel="stylesheet" href="styles.css">
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LandOwner Jobs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kavoon&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    feather.replace();
-});
-</script>
 
 <body>
 
-<div class="container">
-    <h2>LandOwner Jobs</h2>
-    <input type="text" id="datepicker" class="datepicker" placeholder="Date">
-    <div class="options">
-        <div class="dropdown">
-            <button class="dropbtn">Language</button>
-            <div class="dropdown-content">
-                <a href="#">English</a>
-                <a href="#">Tamil</a>
-                <a href="#">Hindi</a>
-            </div>
+    <div id="loginSignupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Please Login or Sign Up</h2>
+            <a href="../Login_Page/index.html" class="button">Login</a>
+            <a href="../SignUp_Page/index.html" class="button">Sign Up</a>
         </div>
     </div>
 
-    <div class="labour-list"
-        style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-        
-           
-        <!-- Repeat for other labour cards -->
+    <div class="container">
+        <h2>LandOwner Jobs</h2>
+        <input type="text" id="datepicker" class="datepicker" placeholder="Date">
+        <div class="options">
+            <div class="dropdown">
+                <button class="dropbtn">Language</button>
+                <div class="dropdown-content">
+                    <a href="#">English</a>
+                    <a href="#">Tamil</a>
+                    <a href="#">Hindi</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="labour-list" id="labour-list" style="font-family:'Lucida Sans', Geneva, sans-serif;">
+            <!-- Labour cards go here -->
+        </div>
+
+        <nav class="navbar">
+            <ul class="navbar__menu">
+                <li class="navbar__item"></li>
+                <a href="../Profilepage/index.html" class="navbar__link" style="font-size: 15px;">
+                    <i data-feather="user"></i><span>Profile</span>
+                </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../Active_Jobs/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="home"></i><span>Active Jobs</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../LandOwner_Jobs/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="briefcase"></i><span>Landowner Jobs</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../SignUp_Page/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="edit"></i><span>Register</span></a>
+                </li>
+            </ul>
+        </nav>
+
+        <header>
+            <div class="header-container">
+                <div class="logo">
+                    <img src="path-to-your-logo.png" alt="Logo">
+                    <h1>LabourField</h1>
+                </div>
+                <nav>
+                    <a href="#">Home</a>
+                    <a href="#">About Us</a>
+                    <a href="#">Services</a>
+                    <a href="#">Help & Support</a>
+                </nav>
+            </div>
+        </header>
+
     </div>
 
 
-
-
-
-    <nav class="navbar">
-        <ul class="navbar__menu">
-            <li class="navbar__item"></li>
-            <a href="../Profile page/index.html" class="navbar__link" style="font-size: 15px;"><i
-                    data-feather="user"></i><span>Profile</span></a>
-            </li>
-            <li class="navbar__item">
-                <a href="../Active Jobs/index.html" class="navbar__link" style="font-size: 15px;"><i data-feather="home"></i><span>Active
-                        Jobs</span></a>
-            </li>
-            <li class="navbar__item">
-                <a href="../LandOwner Jobs/index.html" class="navbar__link" style="font-size: 15px;"><i
-                        data-feather="briefcase"></i><span>Landowner Jobs</span></a>
-            </li>
-            <li class="navbar__item">
-                <a href="../SIgnUp Page/index.html" class="navbar__link" style="font-size: 15px;"><i
-                        data-feather="edit"></i><span>Register</span></a>
-            </li>
-        </ul>
-    </nav>
-
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <img src="path-to-your-logo.png" alt="Logo">
-                <h1>LabourField</h1>
-            </div>
-            <nav>
-                <a href="#">Home</a>
-                <a href="#">About Us</a>
-                <a href="#">Services</a>
-                <a href="#">Help & Support</a>
-            </nav>
-        </div>
-    </header>
-
-
-
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
 

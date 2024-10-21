@@ -1,0 +1,49 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    text-align: center;
+    padding: 50px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-family: 'Kavoon', cursive;
+    font-size: 3rem;
+    color: #3dbb39; /* Your theme's primary color */
+}
+
+p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+a.button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-decoration: none;
+    background-color: #006d31; /* Button color */
+    color: white;
+    border-radius: 5px;
+}
+
+a.button:hover {
+    background-color: #00b351;
+}
+
+.info {
+    margin-top: 40px;
+    font-size: 1rem;
+    color: #777;
+}
+
+.info a {
+    color: #4eff37;
+    text-decoration: underline;
+}
