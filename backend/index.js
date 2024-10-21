@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors'); // Correct module
+const path = require('path');
 
 const app = express();
 const landownerRouter = require("./routes/landowner");
@@ -15,6 +16,13 @@ app.use("/labour", labourRouter);
 app.use("/otp",otprouter)
 app.use("/mail_otp",mail_otp_router)
 
+// Serve static files from the 'frontend/static' folder
+app.use('/frontend/static', express.static(path.join(__dirname, '../frontend/static')));
+
+// Define routes
+app.get('/', (req, res) => {
+    res.send('Home Page');
+  });
 const PORT = 3000;
 
 app.listen(PORT, () => {
