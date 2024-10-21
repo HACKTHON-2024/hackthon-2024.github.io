@@ -55,6 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Store JWT in local storage
                 localStorage.setItem('jwt', result.token);
                 alert("Logged in successfully");
+                
+                // Redirect to the desired page after successful login
+                window.location.href = "../LandOwner_Jobs/index.html"; // Replace "/dashboard" with your desired URL
             } else {
                 alert(result.message || "Login failed");
             }
@@ -130,6 +133,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Store JWT token
                     localStorage.setItem('jwt', loginResult.token);
                     alert("Logged in successfully");
+
+                    // Redirect to the desired page after successful login
+                    window.location.href = "../LandOwner_Jobs/index.html"; // Replace "/dashboard" with your desired URL
                 } else {
                     alert(loginResult.message || "Login failed");
                 }

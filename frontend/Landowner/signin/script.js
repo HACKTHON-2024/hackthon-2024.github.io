@@ -55,6 +55,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Store JWT in local storage
                 localStorage.setItem('jwt', result.token);
                 alert("Logged in successfully");
+
+                window.location.href = "../job_listing/index.html";
             } else {
                 alert(result.message || "Login failed");
             }
@@ -130,6 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Store JWT token
                     localStorage.setItem('jwt', loginResult.token);
                     alert("Logged in successfully");
+
+                    window.location.href = "../job_listing/index.html";
                 } else {
                     alert(loginResult.message || "Login failed");
                 }
