@@ -4,10 +4,7 @@
             await fetchProfileData();
             await fetchJobData();
         });
-        function getToken() {
-            return localStorage.getItem('jwt');  // Fetch the JWT from localStorage
-        }
-        
+       
         function formatDate(dateString) {
             const date = new Date(dateString);
             const day = String(date.getDate()).padStart(2, '0');
@@ -18,8 +15,12 @@
 
         async function fetchProfileData() {
             try {
-                const token = getToken();  // Get JWT from localStorage
-
+                const token = getToken();  // Get JWT token
+            
+                if (!token) {
+                    showAuthPopup(); // Show login/signup popup if not logged in
+                    return;
+                }
                 const response = await fetch('http://localhost:3000/labour/view_profile', {
                     method: 'GET',
                     headers: {
@@ -59,7 +60,12 @@
         async function fetchJobData() {
             try {
                 const token = getToken();  // Get JWT token
-                const response = await fetch('http://localhost:3000/labour/get_job_history', {
+            
+                if (!token) {
+                    showAuthPopup(); // Show login/signup popup if not logged in
+                    return;
+                }
+                                   const response = await fetch('http://localhost:3000/labour/get_job_history', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
@@ -191,3 +197,61 @@
                 arrow.textContent = '▼';
             }
         }
+
+// Function to check the login status and update the button
+function updateAuthButton() {
+    const authBtnContainer = document.getElementById('auth-btn-container');
+    authBtnContainer.innerHTML = ''; // Clear any previous button
+    const token = getToken(); // Check if token is available (user is logged in)
+    if (token) {
+        // User is logged in        
+        // Create 'Logout' button
+        const logoutButton = document.createElement('button');
+        logoutButton.classList.add('auth-btn');
+        logoutButton.textContent = 'Logout';
+        logoutButton.addEventListener('click', function () {
+            handleLogout(); // Handle logout process
+        });
+        
+        // Append both buttons to the container
+        authBtnContainer.appendChild(logoutButton);
+        
+    } 
+}
+
+// Function to handle logout
+function handleLogout() {
+    localStorage.removeItem('jwt'); // Remove JWT token from localStorage
+    alert('You have been logged out.');
+    updateAuthButton(); // Update the button to reflect the login state
+    window.location.href = 'http://localhost:3000/frontend/static/home_page/index.html'; // Redirect to login page after logout
+}
+// Function to show login/signup popup
+function showAuthPopup() {
+    const authPopup = document.getElementById('auth-popup');
+    const popupOverlay = document.querySelector('.popup-overlay');
+
+    authPopup.classList.remove('hidden');
+    popupOverlay.classList.remove('hidden');
+
+    // Add event listeners for login and signup buttons
+    document.getElementById('login-btn').addEventListener('click', function () {
+        window.location.href = '../signin/index.html'; // Redirect to login page
+    });
+
+    document.getElementById('signup-btn').addEventListener('click', function () {
+        window.location.href = '../signup/index.html'; // Redirect to signup page
+    });
+}
+
+// Close popup function (optional)
+function closeAuthPopup() {
+    const authPopup = document.getElementById('auth-popup');
+    const popupOverlay = document.querySelector('.popup-overlay');
+
+    authPopup.classList.add('hidden');
+    popupOverlay.classList.add('hidden');
+}
+function getToken() {
+    return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
+}
