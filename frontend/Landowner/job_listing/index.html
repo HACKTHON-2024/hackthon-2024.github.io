@@ -41,34 +41,31 @@
             <!-- Repeat for other labour cards -->
         </div>
 
-
-
-
-
-        <ul class="navbar__menu">
-            <li class="navbar__item"></li>
-            <a href="../Profile_page/index.html" class="navbar__link" style="font-size: 15px;"><i
-                    data-feather="user"></i><span>Profile</span></a>
-            </li>
-            <li class="navbar__item">
-                <a href="../active_job/index.html" class="navbar__link" style="font-size: 15px;"><i data-feather="home"></i><span>Active
-                        Jobs</span></a>
-            </li>
-            <li class="navbar__item">
-                <a href="../job_listing/index.html" class="navbar__link" style="font-size: 15px;"><i
-                        data-feather="briefcase"></i><span>Landowner Jobs</span></a>
-            </li>
-            <li class="navbar__item">
-                <a href="../SIgnUp_Page/index.html" class="navbar__link" style="font-size: 15px;"><i
-                        data-feather="edit"></i><span>Register</span></a>
-            </li>
-            <li class="navbar__item">
-                <a href="../Labour_request/index.html" class="navbar__link" style="font-size: 15px;"><i
-                        data-feather="user-check"></i><span>Availaible
-                        labour</span></a>
-            </li>
-        </ul>
-    </nav>
+        <nav class="navbar">
+            <ul class="navbar__menu">
+                <li class="navbar__item"></li>
+                <a href="../Profile_page/index.html" class="navbar__link" style="font-size: 15px;"><i
+                        data-feather="user"></i><span>Profile</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../active_job/index.html" class="navbar__link" style="font-size: 15px;"><i data-feather="home"></i><span>Active
+                            Jobs</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../job_listing/index.html" class="navbar__link" style="font-size: 15px;"><i
+                            data-feather="briefcase"></i><span>Landowner Jobs</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../SIgnUp_Page/index.html" class="navbar__link" style="font-size: 15px;"><i
+                            data-feather="edit"></i><span>Register</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../Labour_request/index.html" class="navbar__link" style="font-size: 15px;"><i
+                            data-feather="user-check"></i><span>Availaible
+                            labour</span></a>
+                </li>
+            </ul>
+        </nav>
 
         <header>
             <div class="header-container">
@@ -85,50 +82,51 @@
             </div>
         </header>
 
-    <!-- Job list modal -->
-<div id="job-list-modal" class="job-modal hidden">
-    <!-- Close button -->
-    <button id="close-job-modal" class="close-btn">&times;</button>
-    
-    <div class="job-container">
-        <!-- OLA Login Form -->
-        <div class="ola-login-form">
-            <!-- Back Button and Logo -->
-            <div class="header">
-                <button class="back-btn">X</button>
-            </div>
-
-            <!-- Input Fields for Mobile Number -->
-            <div class="login-inputs">
-                <!-- Login Title -->
-                <p class="login-title" style="font-size: x-large;">Enter your mobile number</p>
-                <p class="sub-text">A 4-digit OTP will be sent via SMS</p>
-
-                <!-- Mobile number input with country code -->
-                <div class="input-container">
-                    <div class="country-code">
-                        <img src="india-flag.png" alt="India Flag" class="flag-icon"> <!-- Replace with your flag image -->
-                        <span>+91</span>
+        <!-- Job list modal -->
+        <div id="job-list-modal" class="job-modal hidden">
+            <!-- Close button -->
+            <button id="close-job-modal" class="close-btn">&times;</button>
+            
+            <div class="job-container">
+                <!-- OLA Login Form -->
+                <div class="ola-login-form">
+                    <!-- Back Button and Logo -->
+                    <div class="header">
+                        <button class="back-btn">X</button>
                     </div>
-                    <input type="tel" id="mobile-number" placeholder="Enter your phone number" class="phone-number-input" required pattern="[6-9]{1}[0-9]{9}" maxlength="10">
-                </div>
 
-                <!-- Next button to send OTP -->
-                <button class="next-btn">Next</button>
-            </div>
+                    <!-- Input Fields for Mobile Number -->
+                    <div class="login-inputs">
+                        <!-- Login Title -->
+                        <p class="login-title" style="font-size: x-large;">Enter your mobile number</p>
+                        <p class="sub-text">A 4-digit OTP will be sent via SMS</p>
 
-            <!-- OTP Section: Initially Hidden -->
-            <div class="otp-section hidden">
-                <p class="otp-title">Enter OTP</p>
-                <p class="otp-subtext">We have sent a 4-digit OTP to your phone number</p>
-                <div>
-                    <input type="text" id="otp-input" maxlength="4" placeholder="Enter OTP" class="otp-input" disabled>
+                        <!-- Mobile number input with country code -->
+                        <div class="input-container">
+                            <div class="country-code">
+                                <img src="india-flag.png" alt="India Flag" class="flag-icon"> <!-- Replace with your flag image -->
+                                <span>+91</span>
+                            </div>
+                            <input type="tel" id="mobile-number" placeholder="Enter your phone number" class="phone-number-input" required pattern="[6-9]{1}[0-9]{9}" maxlength="10">
+                        </div>
+
+                        <!-- Next button to send OTP -->
+                        <button class="next-btn">Next</button>
+                    </div>
+
+                    <!-- OTP Section: Initially Hidden -->
+                    <div class="otp-section hidden">
+                        <p class="otp-title">Enter OTP</p>
+                        <p class="otp-subtext">We have sent a 4-digit OTP to your phone number</p>
+                        <div>
+                            <input type="text" id="otp-input" maxlength="4" placeholder="Enter OTP" class="otp-input" disabled>
+                        </div>
+                        <button class="verify-btn">Verify</button>
+                    </div>
                 </div>
-                <button class="verify-btn">Verify</button>
             </div>
         </div>
     </div>
-</div>
 
     <script src="script.js"></script>
 
