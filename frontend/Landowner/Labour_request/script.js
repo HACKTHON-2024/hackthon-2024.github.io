@@ -26,6 +26,12 @@ let selectedJobId = null;
 function fetchLabours() {
     const token = getToken();  // Get JWT token
     const labourList = document.getElementById('labour-list');
+    
+    if (!token) {
+        showAuthPopup(); // Show login/signup popup if not logged in
+        return;
+    }
+    
     labourList.innerHTML = '<p>Loading...</p>'; // Show loading indicator
 
     fetch('http://localhost:3000/landowner/available_labours', {
@@ -292,9 +298,7 @@ function handleConfirm(labour_id, job_id) {
 function updateAuthButton() {
     const authBtnContainer = document.getElementById('auth-btn-container');
     authBtnContainer.innerHTML = ''; // Clear any previous button
-
     const token = getToken(); // Check if token is available (user is logged in)
-    
     if (token) {
         // User is logged in        
         // Create 'Logout' button
@@ -308,28 +312,7 @@ function updateAuthButton() {
         // Append both buttons to the container
         authBtnContainer.appendChild(logoutButton);
         
-    } else {
-        // User is not logged in
-        // Create 'Login' button
-        const loginButton = document.createElement('button');
-        loginButton.classList.add('auth-btn');
-        loginButton.textContent = 'Login';
-        loginButton.addEventListener('click', function () {
-            window.location.href = '../signin/index.html'; // Redirect to login page
-        });
-
-        // Create 'Signup' button
-        const signupButton = document.createElement('button');
-        signupButton.classList.add('auth-btn');
-        signupButton.textContent = 'Signup';
-        signupButton.addEventListener('click', function () {
-            window.location.href = '../SIgnUp_Page/index.html'; // Redirect to signup page
-        });
-
-        // Append both buttons to the container
-        authBtnContainer.appendChild(loginButton);
-        authBtnContainer.appendChild(signupButton);
-    }
+    } 
 }
 
 // Function to handle logout
@@ -337,5 +320,31 @@ function handleLogout() {
     localStorage.removeItem('jwt'); // Remove JWT token from localStorage
     alert('You have been logged out.');
     updateAuthButton(); // Update the button to reflect the login state
-    window.location.href = '../signin/index.html'; // Redirect to login page after logout
+    window.location.href = 'http://localhost:3000/frontend/static/home_page/index.html'; // Redirect to login page after logout
+}
+// Function to show login/signup popup
+function showAuthPopup() {
+    const authPopup = document.getElementById('auth-popup');
+    const popupOverlay = document.querySelector('.popup-overlay');
+
+    authPopup.classList.remove('hidden');
+    popupOverlay.classList.remove('hidden');
+
+    // Add event listeners for login and signup buttons
+    document.getElementById('login-btn').addEventListener('click', function () {
+        window.location.href = '../signin/index.html'; // Redirect to login page
+    });
+
+    document.getElementById('signup-btn').addEventListener('click', function () {
+        window.location.href = '../signup/index.html'; // Redirect to signup page
+    });
+}
+
+// Close popup function (optional)
+function closeAuthPopup() {
+    const authPopup = document.getElementById('auth-popup');
+    const popupOverlay = document.querySelector('.popup-overlay');
+
+    authPopup.classList.add('hidden');
+    popupOverlay.classList.add('hidden');
 }
