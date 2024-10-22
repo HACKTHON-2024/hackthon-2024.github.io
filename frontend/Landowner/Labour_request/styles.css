@@ -654,6 +654,11 @@ h2 {
     display: none;
 }
 
+/*Popup login/signup css*/
+.login-btn{
+    width: 200px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
 

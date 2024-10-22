@@ -336,7 +336,7 @@ function showAuthPopup() {
     });
 
     document.getElementById('signup-btn').addEventListener('click', function () {
-        window.location.href = '../signup/index.html'; // Redirect to signup page
+        window.location.href = '../SIgnup_Page/index.html'; // Redirect to signup page
     });
 }
 
