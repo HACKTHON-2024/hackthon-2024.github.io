@@ -72,16 +72,16 @@ window.onclick = function(event) {
 // Redirect based on the button click and flag status
 landownerBtn.onclick = function() {
     if (isLogin) {
-        window.location.href = "../Landowner/signin/index.html"; // Replace with actual login path
+        window.location.href = "http://localhost:5500/frontend/Landowner/signin/index.html"; // Replace with actual login path
     } else {
-        window.location.href = "../Landowner/SignUp_Page/index.html"; // Replace with actual signup path
+        window.location.href = "http://localhost:5500/frontend/Landowner/SignUp_Page/index.html"; // Replace with actual signup path
     }
 }
 
 labourBtn.onclick = function() {
     if (isLogin) {
-        window.location.href = "../Labours/Login_Page/index.html"; // Replace with actual login path
+        window.location.href = "http://localhost:5500/frontend/Labours/Login_Page/index.html"; // Replace with actual login path
     } else {
-        window.location.href = "../Labours/SignUp_Page/index.html"; // Replace with actual signup path
+        window.location.href = "http://localhost:5500/frontend/Labours/SignUp_Page/index.html"; // Replace with actual signup path
     }
 }
