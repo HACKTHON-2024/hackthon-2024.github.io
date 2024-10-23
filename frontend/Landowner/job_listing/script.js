@@ -264,14 +264,7 @@ function showAuthPopup() {
     });
 }
 
-// Close popup function (optional)
-function closeAuthPopup() {
-    const authPopup = document.getElementById('auth-popup');
-    const popupOverlay = document.querySelector('.popup-overlay');
 
-    authPopup.classList.add('hidden');
-    popupOverlay.classList.add('hidden');
-}
 function getToken() {
     return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
 }

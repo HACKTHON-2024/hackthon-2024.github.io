@@ -321,7 +321,7 @@ h2 {
     position: relative;
     margin: 6%;
     max-width: 90%;
-    margin-top: 6%;
+    margin-top: 3%;
     margin-left: 10%;
 }
 
@@ -578,85 +578,95 @@ h2 {
     background-color: darkred;
 }
 
-/*Login Log out button css*/
-/* Container for the authentication buttons */
-#auth-btn-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-
-/* General styling for the authentication buttons */
-.auth-btn {
-    background-color: #4CAF50; /* Green background */
-    border: none;              /* No border */
-    color: white;              /* White text */
-    padding: 10px 20px;        /* Padding */
-    text-align: center;        /* Centered text */
-    text-decoration: none;     /* No underline */
-    display: inline-block;     /* Inline block for layout control */
-    font-size: 16px;           /* Text size */
-    margin: 4px 2px;           /* Some margin between buttons */
-    cursor: pointer;           /* Pointer cursor on hover */
-    border-radius: 8px;        /* Rounded corners */
-    transition: background-color 0.3s ease-in-out; /* Smooth transition */
-}
-
-/* Hover effect for the buttons */
-.auth-btn:hover {
-    background-color: #45a049; /* Darker green when hovered */
-}
-
-/* Active state for button (when clicked) */
-.auth-btn:active {
-    background-color: #3e8e41; /* Even darker green when pressed */
-    box-shadow: 0 5px #666;    /* Shadow when clicked */
-    transform: translateY(4px); /* Slight movement downwards */
-}
-
-/* Styling for Profile button specifically (optional if you want distinct colors) */
-.auth-btn.profile {
-    background-color: #008CBA; /* Blue background for Profile */
-}
-
-.auth-btn.profile:hover {
-    background-color: #007bb5; /* Darker blue on hover */
-}
-
-.popup {
+/* Authentication popup container */
+#auth-popup {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    border: 1px solid #ccc;
     padding: 20px;
-    z-index: 1000;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    z-index: 1002; /* Ensuring it's above other elements */
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: none; /* Hidden by default */
+    opacity: 0; /* Initially transparent */
+    transition: opacity 0.3s ease-in-out, display 0s 0.3s; /* Smooth fade in */
 }
 
-.popup.hidden {
-    display: none;
+/* When the popup is shown */
+#auth-popup.show {
+    display: block; /* Ensure it's visible */
+    opacity: 1; /* Fully visible */
+    transition: opacity 0.3s ease-in-out, display 0s; /* Adjust transition */
 }
 
-.popup-overlay {
+/* Popup content styling */
+#auth-popup .popup-content {
+    text-align: center; /* Center the text */
+}
+
+#auth-popup p {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Button styles */
+#auth-popup button {
+    background-color: #4CAF50; /* Blue background */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0; /* Remove any margins to prevent misalignment */
+}
+
+#auth-popup button:hover {
+    background-color: #0e8f0e;
+}
+
+/* Auth popup overlay */
+.auth-popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001; /* Just below the popup */
+    display: none; /* Hidden by default */
 }
 
-.popup-overlay.hidden {
-    display: none;
+.auth-popup-overlay.show {
+    display: block; /* Show overlay */
 }
 
-/*Popup login/signup css*/
-.login-btn{
-    width: 200px;
+#auth-popup .button-container {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    gap: 10px; /* Adds space between the buttons */
+}
+
+.logout-btn{
+    background-color: #4CAF50; /* Blue background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Padding for button size */
+    margin: 5px; /* Small margin around button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Text size */
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+/* Hover effect */
+.logout-btn:hover {
+    background-color: #0e8f0e; /* Darker blue on hover */
 }
 
 /* Responsive */

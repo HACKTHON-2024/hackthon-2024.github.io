@@ -257,6 +257,61 @@ h2 {
     color: #333;
 }
 
+/* Tooltip container */
+.tooltip {
+    cursor: pointer;
+    font-size: 12px; /* Adjust font size if needed */
+    color: #333;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 220px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 6px;
+    
+    /* Position the tooltip text below the element */
+    position: absolute;
+    z-index: 1;
+    bottom: -50%; /* Adjust this to position the tooltip above or below */
+    left: 160%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Show the tooltip text when hovering */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Style the "i" icon */
+.tooltip .info-icon {
+    display: inline-block;
+    margin-left: 0px;
+    background-color: #ffffff;
+    border: 1px solid black;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    line-height: 18px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.tooltip .info-icon:hover + .tooltiptext-right {
+    visibility: visible;
+    opacity: 1;
+}
+
 .options {
     display: flex;
     justify-content: flex-end;
@@ -317,7 +372,7 @@ h2 {
     position: relative;
     margin: 6%;
     max-width: 90%;
-    margin-top: 6%;
+    margin-top: 3%;
     margin-left: 10%;
 }
 

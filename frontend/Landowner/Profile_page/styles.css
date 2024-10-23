@@ -529,6 +529,45 @@ button:hover {
     margin-left: 5px;
 }
 
+/* Hide the popup initially */
+.hidden {
+    display: none;
+}
+
+/* Popup content */
+.popup-content {
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+}
+
+/* Buttons */
+button {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #45a049;
+}
+
+/* Paragraph styling */
+.popup-content p {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
