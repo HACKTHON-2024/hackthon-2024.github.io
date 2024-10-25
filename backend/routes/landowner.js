@@ -189,23 +189,36 @@ router.post('/createjob', landownerMiddleware,async (req, res) => {
 router.get("/available_jobs", landownerMiddleware, async function(req, res) {
   try {
     const { city, taluk, _id: landowner_id } = req.user;  // Get city, taluk, and landowner ID from req.user
-   
+    const { selectedDate } = req.query;  // Get the selected date from query parameters
+
     // Build the query with conditions for location (taluk, city)
     const query = {
       $or: [
         { city, taluk },  // Most specific: city and taluk
         { city }          // Less specific: city only
       ],
-      created_by: { $ne: landowner_id }  // Exclude jobs created by the current landowner
+      created_by: { $ne: landowner_id } // Exclude jobs created by the current landowner
+      
     };
 
     // Fetch jobs from the database using the query
-    const jobs = await Job.find(query);
-  
-    // Log the number of fetched jobs for debugging
-    console.log(jobs.length, "jobs fetched");
+    let jobs = await Job.find(query);
 
-    // Return the fetched jobs to the client
+    // Log the number of fetched jobs for debugging
+    console.log(jobs.length, "jobs fetched before date filter");
+
+    // If user provided a date, filter jobs based on the selected date
+    if (selectedDate) {
+      const date = new Date(selectedDate);
+
+      // Filter jobs based on start and end dates
+      jobs = jobs.filter(job => {
+        return new Date(job.start_date) <= date && new Date(job.end_date) >= date;
+      });
+
+      console.log(jobs.length, "jobs fetched after date filter");
+    }
+    // Return the filtered or unfiltered jobs to the client
     res.status(200).json({
       success: true,
       data: jobs

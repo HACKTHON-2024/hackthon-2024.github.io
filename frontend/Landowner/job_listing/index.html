@@ -22,7 +22,7 @@
 
     <div class="container">
         <h2>LandOwner Jobs</h2>
-        <input type="text" id="datepicker" class="datepicker" placeholder="Date">
+        <input type="date" id="datepicker" class="datepicker" placeholder="Date">
         <div class="options">
             <div class="dropdown">
                 <button class="dropbtn">Language</button>
@@ -127,6 +127,15 @@
             </div>
         </div>
     </div>
+    
+    <div id="auth-popup" class="popup hidden">
+        <div class="popup-content">
+            <p>You need to log in to access this feature.</p>
+            <button id="login-btn">Login</button>
+            <button id="signup-btn">Sign up</button>
+        </div>
+    </div>
+    <div class="popup-overlay hidden"></div>
 
     <script src="script.js"></script>
 

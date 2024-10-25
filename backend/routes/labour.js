@@ -107,7 +107,8 @@ router.post('/signin_by_otp', async (req, res) => {
 router.get("/available_jobs", labourMiddleware, async function(req, res) {
     try {
       const {  city, taluk } = req.user;  
-     
+      const { selectedDate } = req.query;  // Get the selected date from query parameters
+
       // Build the query to fetch jobs based on location (taluk, city)
       const query = {
         $or: [
@@ -121,9 +122,18 @@ router.get("/available_jobs", labourMiddleware, async function(req, res) {
       // Fetch jobs from the database using a single query
       const jobs = await Job.find(query);
       
-      // Log the length of the fetched jobs for debugging
-      console.log(jobs.length, "jobs fetched");
-  
+      
+  // If user provided a date, filter jobs based on the selected date
+  if (selectedDate) {
+    const date = new Date(selectedDate);
+
+    // Filter jobs based on start and end dates
+    jobs = jobs.filter(job => {
+      return new Date(job.start_date) <= date && new Date(job.end_date) >= date;
+    });
+
+    console.log(jobs.length, "jobs fetched after date filter");
+  }
       // Return the fetched jobs to the client
       res.status(200).json({
         success: true,
