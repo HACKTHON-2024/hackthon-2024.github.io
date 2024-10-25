@@ -1,42 +1,63 @@
-
-
-
 document.addEventListener('DOMContentLoaded', async function () {
-    // Fetch available jobs when the page loads
-    try {
-        const token = getToken();  // Get JWT token
-            
-        if (!token) {
-            showAuthPopup(); // Show login/signup popup if not logged in
-            return;
-        }
-                const response = await fetch('http://localhost:3000/labour/available_jobs', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
-            }
-        });
-        
-        if (!response.ok) {
-            // Check if the error is a 404, and redirect to the 404 page
-            if (response.status === 404) {
-                window.location.href = '../404/index.html';  // Adjust path to your 404 page
-            }
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    // Fetch jobs for the current date when the page loads
+    const datepicker = document.getElementById('datepicker');
 
-        const data = await response.json();
-        if (data.success) {
-            displayJobs(data.data); // Call function to display jobs
-        } else {
-            console.error(data.message);
+    // Set the default value of the date picker to today's date
+    const today = new Date().toISOString().split('T')[0];
+    datepicker.value = today; // Set the default date picker value to today
+    datepicker.setAttribute('min', today); // Prevent past dates from being selected
+
+    fetchJobs(today); // Fetch jobs for today's date when page loads
+
+    // Add change event listener to date picker to fetch jobs for the selected date
+    datepicker.addEventListener('change', function () {
+        const selectedDate = datepicker.value;
+        fetchJobs(selectedDate); // Fetch jobs for the newly selected date
+    });
+
+    // Function to fetch jobs from the server based on the selected date
+    async function fetchJobs(selectedDate) {
+        try {
+            const token = getToken(); // Get JWT token
+            if (!token) {
+                showAuthPopup(); // Show login/signup popup if not logged in
+                return;
+            }
+
+            // Construct the API URL with the selected date as a query parameter
+            let url = 'http://localhost:3000/labour/available_jobs';
+            if (selectedDate) {
+                url += `?selectedDate=${selectedDate}`; // Append selected date to the URL
+            }
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Add JWT to Authorization header
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                // Check for 404 and redirect to 404 page if necessary
+                if (response.status === 404) {
+                    window.location.href = '../404/index.html'; // Adjust the path to your 404 page
+                }
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            if (data.success) {
+                displayJobs(data.data); // Display jobs based on the selected date
+            } else {
+                console.error(data.message);
+            }
+        } catch (error) {
+            console.error('Error fetching jobs:', error);
         }
-    } catch (error) {
-        console.error('Error fetching jobs:', error);
     }
 
-    // Function to dynamically display jobs in the modal
+    // Function to dynamically display jobs in the modal (existing code)
     function displayJobs(jobs) {
         const jobListContainer = document.getElementById('job-list-container');
         jobListContainer.innerHTML = ''; // Clear any existing job cards
@@ -77,6 +98,54 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const jobId = this.dataset.jobId;
                 openModal(jobId); // Open modal and pass the jobId
             });
+        });
+    }
+
+    // Other existing code (Modal handling, OTP, registration, etc.)...
+
+    // Show authentication popup with overlay (existing code)
+    function showAuthPopup() {
+        // Create the overlay and popup for authentication
+        const overlay = document.createElement('div');
+        overlay.classList.add('auth-overlay'); // Styled in CSS
+
+        const popup = document.createElement('div');
+        popup.classList.add('auth-popup'); // Styled in CSS
+
+        const authMessage = document.createElement('p');
+        authMessage.innerText = 'Need to sign in or sign up?';
+        popup.appendChild(authMessage);
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.classList.add('button-container'); // Styled in CSS
+
+        const loginBtn = document.createElement('button');
+        loginBtn.innerText = 'Login';
+        loginBtn.onclick = function () {
+            window.location.href = '../signin/index.html';
+            removeAuthPopup(); // Remove popup on navigation
+        };
+
+        const signupBtn = document.createElement('button');
+        signupBtn.innerText = 'Sign Up';
+        signupBtn.onclick = function () {
+            window.location.href = '../SignUp_Page/index.html';
+            removeAuthPopup(); // Remove popup on navigation
+        };
+
+        buttonContainer.appendChild(loginBtn);
+        buttonContainer.appendChild(signupBtn);
+        popup.appendChild(buttonContainer);
+
+        document.body.appendChild(overlay);
+        document.body.appendChild(popup);
+
+        // Close popup when clicking outside or pressing Escape
+        overlay.addEventListener('click', removeAuthPopup);
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                removeAuthPopup();
+            }
         });
     }
 

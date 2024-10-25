@@ -1,28 +1,71 @@
 document.addEventListener('DOMContentLoaded', async function () {
+    // Fetch jobs for the current date when the page loads
     const datepicker = document.getElementById('datepicker');
 
-    // Set the default value of the date picker to the current date
+    // Set the default value of the date picker to today's date
     const today = new Date().toISOString().split('T')[0];
-    datepicker.value = today; // Set default to current date
-    datepicker.setAttribute('min', today);  // Prevent past dates
+    datepicker.value = today; // Set the default date picker value to today
+    datepicker.setAttribute('min', today); // Prevent past dates from being selected
 
-    // Fetch jobs for the current date when the page loads
-    fetchJobs(today);
+    fetchJobs(today); // Fetch jobs for today's date when page loads
 
-    // Ensure date picker allows selecting another date
+    // Add change event listener to date picker to fetch jobs for the selected date
     datepicker.addEventListener('change', function () {
         const selectedDate = datepicker.value;
-        fetchJobs(selectedDate); // Fetch jobs for the selected date
+        fetchJobs(selectedDate); // Fetch jobs for the newly selected date
     });
 
-    const labourList = document.querySelector('.labour-list');
+    // Function to fetch jobs from the server based on the selected date
+    async function fetchJobs(selectedDate) {
+        try {
+            const token = getToken(); // Get JWT token
+            if (!token) {
+                showAuthPopup(); // Show login/signup popup if not logged in
+                return;
+            }
 
-    // Function to create and display job cards dynamically
-    function createJobCard(job) {
-        const jobCard = document.createElement('div');
-        jobCard.classList.add('labour-card');
+            // Construct the API URL with the selected date as a query parameter
+            let url = 'http://localhost:3000/labour/available_jobs';
+            if (selectedDate) {
+                url += `?selectedDate=${selectedDate}`; // Append selected date to the URL
+            }
 
-        jobCard.innerHTML = `
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Add JWT to Authorization header
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                // Check for 404 and redirect to 404 page if necessary
+                if (response.status === 404) {
+                    window.location.href = '../404/index.html'; // Adjust the path to your 404 page
+                }
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            if (data.success) {
+                displayJobs(data.data); // Display jobs based on the selected date
+            } else {
+                console.error(data.message);
+            }
+        } catch (error) {
+            console.error('Error fetching jobs:', error);
+        }
+    }
+
+    // Function to dynamically display jobs in the modal (existing code)
+    function displayJobs(jobs) {
+        const jobListContainer = document.getElementById('job-list-container');
+        jobListContainer.innerHTML = ''; // Clear any existing job cards
+
+        jobs.forEach(job => {
+            const jobCard = document.createElement('div');
+            jobCard.classList.add('labour-card');
+            jobCard.innerHTML = `
             <div class="circle-stars-group">
                 <div class="circle"></div>
                 <div class="stars">
@@ -45,119 +88,66 @@ document.addEventListener('DOMContentLoaded', async function () {
                 <button class="request-btn" data-job-id="${job._id}">REQUEST</button>
             </div>
         `;
+            jobListContainer.appendChild(jobCard);
+        });
 
-        labourList.appendChild(jobCard);
-    }
-
-    // Fetch jobs from the server
-    async function fetchJobs(selectedDate) {
-        try {
-            const token = getToken(); 
-            if (!token) {
-                showAuthPopup(); // Show login/signup popup if not logged in
-                return;
-            }
-
-            let url = 'http://localhost:3000/landowner/available_jobs';
-            if (selectedDate) {
-                url += `?selectedDate=${selectedDate}`; // Append the selected date to the URL as a query parameter
-            }
-
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
-                    'Content-Type': 'application/json'
-                }});
-            
-            
-            const result = await response.json();
-            labourList.innerHTML = ''; // Clear previous jobs
-
-            if (result.success && result.data.length > 0) {
-                result.data.forEach(job => {
-                    createJobCard(job);
-                });
-                addRequestButtonEventListeners();
-            } else {
-                labourList.innerHTML = '<p>No jobs available for the selected date</p>';
-            }
-        } catch (error) {
-            console.error('Error fetching jobs:', error);
-            labourList.innerHTML = '<p>Error fetching jobs</p>';
-        }
-    }
-
-    // Add event listeners to request buttons
-    function addRequestButtonEventListeners() {
+        // Add click event listeners to all request buttons after rendering jobs
         const requestButtons = document.querySelectorAll('.request-btn');
         requestButtons.forEach(button => {
             button.addEventListener('click', function () {
-                const jobId = button.getAttribute('data-job-id');
-                openModal(jobId);
+                const jobId = this.dataset.jobId;
+                openModal(jobId); // Open modal and pass the jobId
             });
         });
     }
-});
 
+    // Other existing code (Modal handling, OTP, registration, etc.)...
 
-    // Additional functions for authentication and job request handling (same as before)
-    // ...
+    // Show authentication popup with overlay (existing code)
+    function showAuthPopup() {
+        // Create the overlay and popup for authentication
+        const overlay = document.createElement('div');
+        overlay.classList.add('auth-overlay'); // Styled in CSS
 
-// Show authentication popup with overlay
-function showAuthPopup() {
-    // Create the overlay
-    const overlay = document.createElement('div');
-    overlay.classList.add('auth-overlay'); // Styled in CSS
+        const popup = document.createElement('div');
+        popup.classList.add('auth-popup'); // Styled in CSS
 
-    // Create the popup
-    const popup = document.createElement('div');
-    popup.classList.add('auth-popup'); // Styled in CSS
+        const authMessage = document.createElement('p');
+        authMessage.innerText = 'Need to sign in or sign up?';
+        popup.appendChild(authMessage);
 
-    // Message above buttons
-    const authMessage = document.createElement('p');
-    authMessage.innerText = 'Need to sign in or sign up?';
-    popup.appendChild(authMessage);
+        const buttonContainer = document.createElement('div');
+        buttonContainer.classList.add('button-container'); // Styled in CSS
 
-    // Create container for the buttons
-    const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container'); // Styled in CSS for flexbox layout
+        const loginBtn = document.createElement('button');
+        loginBtn.innerText = 'Login';
+        loginBtn.onclick = function () {
+            window.location.href = '../signin/index.html';
+            removeAuthPopup(); // Remove popup on navigation
+        };
 
-    // Create login button
-    const loginBtn = document.createElement('button');
-    loginBtn.innerText = 'Login';
-    loginBtn.onclick = function () {
-        window.location.href = '../signin/index.html'; // Redirect to login page
-        removeAuthPopup(); // Remove popup on navigation
-    };
+        const signupBtn = document.createElement('button');
+        signupBtn.innerText = 'Sign Up';
+        signupBtn.onclick = function () {
+            window.location.href = '../SignUp_Page/index.html';
+            removeAuthPopup(); // Remove popup on navigation
+        };
 
-    // Create signup button
-    const signupBtn = document.createElement('button');
-    signupBtn.innerText = 'Sign Up';
-    signupBtn.onclick = function () {
-        window.location.href = '../SignUp_Page/index.html'; // Redirect to signup page
-        removeAuthPopup(); // Remove popup on navigation
-    };
+        buttonContainer.appendChild(loginBtn);
+        buttonContainer.appendChild(signupBtn);
+        popup.appendChild(buttonContainer);
 
-    // Append buttons to the container
-    buttonContainer.appendChild(loginBtn);
-    buttonContainer.appendChild(signupBtn);
+        document.body.appendChild(overlay);
+        document.body.appendChild(popup);
 
-    // Add the button container to the popup
-    popup.appendChild(buttonContainer);
-
-    // Append the overlay and popup to the body
-    document.body.appendChild(overlay);
-    document.body.appendChild(popup);
-
-    // Close popup when clicking outside or pressing Escape
-    overlay.addEventListener('click', removeAuthPopup);
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            removeAuthPopup();
-        }
-    });
-}
+        // Close popup when clicking outside or pressing Escape
+        overlay.addEventListener('click', removeAuthPopup);
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                removeAuthPopup();
+            }
+        });
+    }
 
 // Remove the authentication popup and overlay
 function removeAuthPopup() {
@@ -196,7 +186,7 @@ async function checkAuthStatus() {
         showAuthPopup();
     }
 }
-
+})
 // Get JWT token from localStorage
 function getToken() {
     return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage

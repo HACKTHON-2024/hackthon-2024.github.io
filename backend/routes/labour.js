@@ -108,7 +108,7 @@ router.get("/available_jobs", labourMiddleware, async function(req, res) {
     try {
       const {  city, taluk } = req.user;  
       const { selectedDate } = req.query;  // Get the selected date from query parameters
-
+        
       // Build the query to fetch jobs based on location (taluk, city)
       const query = {
         $or: [
@@ -117,12 +117,10 @@ router.get("/available_jobs", labourMiddleware, async function(req, res) {
         ],
         worker_id: { $ne: req.user._id } // Exclude jobs where the labour is already part of worker_id
     };
-
+    
   
       // Fetch jobs from the database using a single query
-      const jobs = await Job.find(query);
-      
-      
+      let jobs = await Job.find(query);
   // If user provided a date, filter jobs based on the selected date
   if (selectedDate) {
     const date = new Date(selectedDate);
@@ -131,6 +129,7 @@ router.get("/available_jobs", labourMiddleware, async function(req, res) {
     jobs = jobs.filter(job => {
       return new Date(job.start_date) <= date && new Date(job.end_date) >= date;
     });
+    
 
     console.log(jobs.length, "jobs fetched after date filter");
   }
