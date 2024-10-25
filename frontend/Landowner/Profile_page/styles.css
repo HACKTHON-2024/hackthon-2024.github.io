@@ -35,7 +35,7 @@
     background-color: rgb(224, 224, 224);
     /* Adjust based on the height of your header */
     left: 2px;
-    height: 260px;
+    height: auto;
     /* Full height minus the header's height */
     display: flex;
     flex-direction: column;
@@ -162,7 +162,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #ffffff;
-    background-image: url(./Images/nature.png);
+    background-image: url(http://localhost:3000/frontend/static/Images/nature.png);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -224,7 +224,7 @@ body {
     margin-left: 20px;
     border: 1px solid #ccc;
     position: relative; /* Change from fixed to relative */
-    z-index: 1000; /* Ensure it stays above other content */
+    z-index: -1; /* Ensure it stays above other content */
 }
 
 
@@ -309,22 +309,22 @@ header {
     left: 0;
     /* Align to the left of the page */
     width: 100%;
+    height: 13%;
     /* Full width */
     background-color: rgb(224, 224, 224);
     border-bottom: 0px solid #000000;
     padding: 12px 0px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 2000;
 }
 
 /* LabourField Heading Styles */
 header h1 {
-    font-family: 'Kavoon', cursive;
+    font-family:Arial, Helvetica, sans-serif;
     /* Apply the Kavoon font */
     font-size: 2.5em;
     /* Adjust size as needed */
     margin: 0;
-    background: linear-gradient(90deg, #91FF56, #666666);
+    background: #228B22;
     /* Gradient from #91FF56 to #666666 */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -339,6 +339,10 @@ header h1 {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+nav{
+    margin-left: auto;
 }
 
 .logo {
@@ -356,7 +360,8 @@ header h1 {
     margin-right: 10px;
     object-fit: cover;
     /* Ensures the image scales correctly within the circle */
-    background-color: #ccc;
+    background-color: rgb(224, 224, 224);
+    border: 1px solid black;
 }
 
 .logo h1 {
@@ -526,6 +531,123 @@ button:hover {
     height: 20px;
     vertical-align: middle;
     margin-left: 5px;
+}
+
+/* Hide the popup initially */
+.hidden {
+    display: none;
+}
+
+/* Popup content */
+.popup-content {
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+}
+
+/* Buttons */
+button {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #45a049;
+}
+
+/* Paragraph styling */
+.popup-content p {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Full-screen overlay to darken the background */
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 9998; /* Just below the popup */
+}
+
+/* Styles for the authentication popup */
+.auth-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 9999; /* Above the overlay */
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+/* Container for buttons to align them in a row */
+.auth-popup .button-container {
+    display: flex;
+    justify-content: space-between; /* Distribute space between buttons */
+    gap: 10px; /* Space between the buttons */
+}
+
+/* Styles for the login and signup buttons */
+.auth-popup button {
+    display: inline-block; /* Ensure buttons are inline for same-row layout */
+    width: 48%; /* Each button takes up half of the row with some gap */
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Bootstrap-style blue */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-popup button:hover {
+    background-color: #0e8f0e; /* Darker blue on hover */
+}
+
+/* Style for logout button */
+.logout-btn {
+    background-color: #4CAF50; /* Bootstrap-style red */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #0e8f0e; /* Darker red on hover */
+}
+
+/* For adding responsiveness */
+@media (max-width: 768px) {
+    .auth-popup {
+        width: 90%;
+    }
+
+    .auth-popup button {
+        width: 100%; /* Stack buttons in smaller screens */
+    }
 }
 
 
