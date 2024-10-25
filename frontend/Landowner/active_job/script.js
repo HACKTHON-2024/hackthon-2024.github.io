@@ -100,7 +100,7 @@ function showAuthPopup() {
     const signupBtn = document.createElement('button');
     signupBtn.innerText = 'Sign Up';
     signupBtn.onclick = function () {
-        window.location.href = '../SignUp_Page/index.html'; // Redirect to signup page
+        window.location.href = '../SIgnUp_Page/index.html'; // Redirect to signup page
         removeAuthPopup(); // Remove popup on navigation
     };
 

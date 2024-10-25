@@ -16,6 +16,23 @@ var ok = document.getElementById("ok");
 // Flag to track if it's login or signup
 var isLogin = true;
 
+// Check if user is logged in (replace 'userToken' with your key in localStorage or sessionStorage)
+var userLoggedIn = localStorage.getItem('jwt') !== null; // Assuming a token is saved on login
+
+// Function to show/hide login and signup buttons based on login status
+function updateAuthButtons() {
+    if (userLoggedIn) {
+        loginBtn.style.display = "none"; // Hide login button
+        signupBtn.style.display = "none"; // Hide signup button
+    } else {
+        loginBtn.style.display = "inline-block"; // Show login button
+        signupBtn.style.display = "inline-block"; // Show signup button
+    }
+}
+
+// Run the function to check on page load
+updateAuthButtons();
+
 // When the user clicks the "Log In" button, open the modal and set flag to login
 loginBtn.onclick = function() {
     isLogin = true;
@@ -49,7 +66,6 @@ ok.onclick = function() {
     alertt.style.display = "none"; // Hide the alert popup
     window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top of the page smoothly
 }
-
 
 // Close the modals when the user clicks on <span> (x)
 Array.from(closeButtons).forEach(function(closeButton) {
