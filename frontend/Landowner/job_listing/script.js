@@ -147,7 +147,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                 removeAuthPopup();
             }
         });
+        checkAuthStatus();
     }
+    
 
 // Remove the authentication popup and overlay
 function removeAuthPopup() {
@@ -196,4 +198,3 @@ function getToken() {
 document.addEventListener('DOMContentLoaded', function() {
     checkAuthStatus();
 })
-

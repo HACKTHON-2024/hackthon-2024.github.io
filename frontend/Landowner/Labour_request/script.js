@@ -1,14 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     const datepicker = document.getElementById('datepicker');
-     datepicker.addEventListener('focus', function () {
-         datepicker.type = 'date';
-     });
- 
-     datepicker.addEventListener('blur', function () {
-         if (!datepicker.value) {
-             datepicker.type = 'text';
-         }
-     });
+
+    // Set the default value of the date picker to today's date
+    const today = new Date().toISOString().split('T')[0];
+    datepicker.value = today; // Set the default date picker value to today
+
+    // Make the date picker read-only to prevent users from changing the date
+    datepicker.setAttribute('readonly', true);
  
      fetchLabours(); // Fetch labour data when the page loads
      updateAuthButton(); // Call the function to update the button based on login status
@@ -120,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
      const jobContainer = document.getElementById('job-container');
      jobContainer.innerHTML = '<p>Loading jobs...</p>'; // Show loading indicator
  
-     fetch('http://localhost:3000/landowner/active_jobs', {
+     fetch('http://localhost:3000/landowner/active_jobs_for_request_menu', {
          method: 'GET',
          headers: {
              'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
@@ -128,6 +126,8 @@ document.addEventListener('DOMContentLoaded', function () {
          }})
          .then(response => response.json())
          .then(data => {
+            console.log(data)// activeJobs and futureJobs are 2 array 
+            
              if (Array.isArray(data) && data.length > 0) {
                  displayActiveJobs(data, labourId);
              } else {
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
          })
          .catch(error => {
              jobContainer.innerHTML = '<p>Error fetching jobs.</p>'; // Show error message
-             console.error('Error fetching active jobs:', error);
+             //console.error('Error fetching active jobs:', error);
          });
  }
  
@@ -347,6 +347,3 @@ document.getElementById("logout-btn").addEventListener("click", showAuthPopup);
 
 // Example: Simulate logging in or signing up
 // For login button
-
-
-
