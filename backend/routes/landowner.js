@@ -284,6 +284,42 @@ router.get("/available_labours", landownerMiddleware, async function(req, res) {
     }
   });
   
+  router.get("/active_jobs_for_request_menu", landownerMiddleware, async function(req, res) {
+    try {
+        // Get the logged-in landowner's ID from the middleware
+        const landownerId = req.user._id;
+        const currentDate = new Date(); // Get the current date
+        // Fetch the landowner's job history with jobs populated
+        const landowner = await Landowner.findById(landownerId).populate('job_history');
+
+        // Separate jobs into active and future jobs
+        const activeJobs = landowner.job_history.filter(job => 
+            job.status && job.start_date <= currentDate && job.end_date >= currentDate
+        );
+
+        const futureJobs = landowner.job_history.filter(job => 
+            job.start_date > currentDate
+        );
+
+        // Send the active and future jobs in the response
+        res.status(200).json({
+            success: true,
+            data: {
+                activeJobs,
+                futureJobs
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching jobs:", error);
+        res.status(500).json({ message: "An error occurred while fetching active and future jobs" });
+    }
+});
+
+module.exports = router;
+
+
+module.exports = router;
+
   router.post("/request", landownerMiddleware, async function(req, res) {
     try {
         const  labour_id  = req.body.labour_id;
