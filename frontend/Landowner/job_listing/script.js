@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     datepicker.value = today; // Set the default date picker value to today
     datepicker.setAttribute('min', today); // Prevent past dates from being selected
 
+    checkAuthStatus(); // Check if the user is logged in
     fetchJobs(today); // Fetch jobs for today's date when page loads
 
     // Add change event listener to date picker to fetch jobs for the selected date
@@ -25,11 +26,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
 
             // Construct the API URL with the selected date as a query parameter
-            let url = 'http://localhost:3000/labour/available_jobs';
+            let url = 'http://localhost:3000/landowner/available_jobs';
             if (selectedDate) {
                 url += `?selectedDate=${selectedDate}`; // Append selected date to the URL
             }
-
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -37,16 +37,18 @@ document.addEventListener('DOMContentLoaded', async function () {
                     'Content-Type': 'application/json'
                 }
             });
-
+            
             if (!response.ok) {
+            
                 // Check for 404 and redirect to 404 page if necessary
                 if (response.status === 404) {
                     window.location.href = '../404/index.html'; // Adjust the path to your 404 page
                 }
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
+            
             const data = await response.json();
+           
             if (data.success) {
                 displayJobs(data.data); // Display jobs based on the selected date
             } else {
@@ -62,6 +64,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         const jobListContainer = document.getElementById('job-list-container');
         jobListContainer.innerHTML = ''; // Clear any existing job cards
 
+        if (jobs.length === 0) {
+            // Display a "No jobs available" message if the jobs array is empty
+            const noJobsMessage = document.createElement('p');
+            noJobsMessage.classList.add('no-jobs-message'); // Add a CSS class for styling
+            noJobsMessage.innerText = 'No jobs available for the selected date.';
+            jobListContainer.appendChild(noJobsMessage);
+            return; // Exit the function early as there are no jobs to display
+        }
+    
         jobs.forEach(job => {
             const jobCard = document.createElement('div');
             jobCard.classList.add('labour-card');
@@ -194,7 +205,3 @@ function getToken() {
     return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
 }
 
-// Fetch jobs on page load and check authentication
-document.addEventListener('DOMContentLoaded', function() {
-    checkAuthStatus();
-})

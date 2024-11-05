@@ -187,6 +187,7 @@ router.post('/createjob', landownerMiddleware,async (req, res) => {
 });
 
 router.get("/available_jobs", landownerMiddleware, async function(req, res) {
+  
   try {
     const { city, taluk, _id: landowner_id } = req.user;  // Get city, taluk, and landowner ID from req.user
     const { selectedDate } = req.query;  // Get the selected date from query parameters
