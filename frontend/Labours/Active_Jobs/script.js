@@ -101,7 +101,7 @@ function showAuthPopup() {
     const loginBtn = document.createElement('button');
     loginBtn.innerText = 'Login';
     loginBtn.onclick = function () {
-        window.location.href = '../signin/index.html'; // Redirect to login page
+        window.location.href = 'http://localhost:5500/frontend/Labours/Login_Page/index.html'; // Redirect to login page
         removeAuthPopup(); // Remove popup on navigation
     };
 
@@ -109,7 +109,7 @@ function showAuthPopup() {
     const signupBtn = document.createElement('button');
     signupBtn.innerText = 'Sign Up';
     signupBtn.onclick = function () {
-        window.location.href = '../SignUp_Page/index.html'; // Redirect to signup page
+        window.location.href = 'http://localhost:5500/frontend/Labours/SignUp_Page/index.html'; // Redirect to signup page
         removeAuthPopup(); // Remove popup on navigation
     };
 
