@@ -62,6 +62,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         const jobListContainer = document.getElementById('job-list-container');
         jobListContainer.innerHTML = ''; // Clear any existing job cards
 
+        if (jobs.length === 0) {
+            // Display a "No jobs available" message if the jobs array is empty
+            const noJobsMessage = document.createElement('p');
+            noJobsMessage.classList.add('no-jobs-message'); // Add a CSS class for styling
+            noJobsMessage.innerText = 'No jobs available for the selected date.';
+            jobListContainer.appendChild(noJobsMessage);
+            return; // Exit the function early as there are no jobs to display
+        }
+        
         jobs.forEach(job => {
             const jobCard = document.createElement('div');
             jobCard.classList.add('labour-card');
