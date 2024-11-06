@@ -5,35 +5,42 @@
             "cities": [
                 {
                     "name": "Chennai",
-                    "taluks": ["Chennai", "Ambattur", "Egmore", "Mylapore", "Guindy"]
+                    "taluks": ["Alandur", "Ambattur", "Aminjikarai", "Ayanavaram", "Egmore", "Guindy", "Madhavaram", "Madhuravoyal", "Mambalam", "Mylapore", "Perambur", "Purasavakkam", "Sholinganallur", "Thiruvottriyur", "Tondiarpet", "Velacherry"]
                 },
                 {
                     "name": "Coimbatore",
-                    "taluks": ["Coimbatore North", "Coimbatore South", "Sulur", "Pollachi", "Mettupalayam"]
+                    "taluks": ["Aanaimalai", "Annur", "Coimbatore(North)", "Coimbatore(South)", "Kinathukadavu", "Madukarai", "Mettupalayam", "Perur", "Pollachi", "Sulur", "Valparai"]
+
                 },
                 {
                     "name": "Madurai",
-                    "taluks": ["Madurai North", "Madurai South", "Thirumangalam", "Melur", "Vadipatti"]
+                    "taluks": ["Kallikudi", "Madurai (East)", "Madurai (North)", "Madurai (South)", "Madurai (West)", "Melur", "Peraiyur", "Thirumangalam", "Thiruparankundram", "Usilampatti", "Vadipatti"]
+
                 },
                 {
                     "name": "Tiruchirappalli",
-                    "taluks": ["Tiruchirappalli West", "Tiruchirappalli East", "Manapparai", "Lalgudi", "Thuraiyur"]
+                    "taluks": ["Lalgudi", "Manachanallur", "Manapparai", "Marungapuri", "Musiri", "Srirangam", "Thottiam", "Thuraiyur", "Tiruchirapalli (West)", "Tiruchirappalli (East)", "Tiruverumbur"]
+
                 },
                 {
                     "name": "Salem",
-                    "taluks": ["Salem", "Attur", "Mettur", "Omalur", "Sankari"]
+                    "taluks": ["Salem", "Attur", "Edapadi", "Gangavalli", "Kadaiyampatti", "Mettur", "Omalur", "Pethanayakanpalayam", "Salem South", "Salem West", "Sankari", "Vazhapadi", "Yercaud"]
+
                 },
                 {
                     "name": "Tirunelveli",
-                    "taluks": ["Tirunelveli", "Ambasamudram", "Sankarankovil", "Tenkasi", "Radhapuram"]
+                    "taluks":["Tirunelveli", "Ambasamudram", "Cheranmahadevi", "Manur", "Nanguneri", "Palayamkottai", "Radhapuram", "Thisayanvilai"]
+
                 },
                 {
                     "name": "Tiruppur",
-                    "taluks": ["Tiruppur North", "Tiruppur South", "Avinashi", "Udumalaipettai", "Dharapuram"]
+                    "taluks":["Avinashi", "Dharapuram", "Kangeyam", "Madathukkulam", "Oothukuli", "Palladam", "Tiruppur (North)", "Tiruppur (South)", "Udumalaipettai"]
+
                 },
                 {
                     "name": "Ranipet",
-                    "taluks": ["Ranipet", "Arcot", "Arakkonam", "Walajapet"]
+                    "taluks": ["Arakkonam", "Arcot", "Kalavai", "Nemili", "Sholingur", "Walajah"]
+
                 },
                 {
                     "name": "Nagercoil",
@@ -41,7 +48,8 @@
                 },
                 {
                     "name": "Thanjavur",
-                    "taluks": ["Thanjavur", "Papanasam", "Orathanadu", "Pattukkottai", "Peravurani"]
+                    "taluks":["Thanjavur", "Boothalur", "Kumbakonam", "Orathanadu", "Papanasam", "Pattukottai", "Peravurani", "Thiruvaiyaru", "Thiruvidaimaruthur"]
+
                 },
                 {
                     "name": "Vellore",
