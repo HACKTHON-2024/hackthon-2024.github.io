@@ -1,0 +1,117 @@
+{
+    "states": [
+        {
+            "name": "Tamil Nadu",
+            "cities": [
+                {
+                    "name": "Chennai",
+                    "taluks": ["Chennai", "Ambattur", "Egmore", "Mylapore", "Guindy"]
+                },
+                {
+                    "name": "Coimbatore",
+                    "taluks": ["Coimbatore North", "Coimbatore South", "Sulur", "Pollachi", "Mettupalayam"]
+                },
+                {
+                    "name": "Madurai",
+                    "taluks": ["Madurai North", "Madurai South", "Thirumangalam", "Melur", "Vadipatti"]
+                },
+                {
+                    "name": "Tiruchirappalli",
+                    "taluks": ["Tiruchirappalli West", "Tiruchirappalli East", "Manapparai", "Lalgudi", "Thuraiyur"]
+                },
+                {
+                    "name": "Salem",
+                    "taluks": ["Salem", "Attur", "Mettur", "Omalur", "Sankari"]
+                },
+                {
+                    "name": "Tirunelveli",
+                    "taluks": ["Tirunelveli", "Ambasamudram", "Sankarankovil", "Tenkasi", "Radhapuram"]
+                },
+                {
+                    "name": "Tiruppur",
+                    "taluks": ["Tiruppur North", "Tiruppur South", "Avinashi", "Udumalaipettai", "Dharapuram"]
+                },
+                {
+                    "name": "Ranipet",
+                    "taluks": ["Ranipet", "Arcot", "Arakkonam", "Walajapet"]
+                },
+                {
+                    "name": "Nagercoil",
+                    "taluks": ["Agastheeswaram", "Thovalai", "Kalkulam", "Vilavancode"]
+                },
+                {
+                    "name": "Thanjavur",
+                    "taluks": ["Thanjavur", "Papanasam", "Orathanadu", "Pattukkottai", "Peravurani"]
+                },
+                {
+                    "name": "Vellore",
+                    "taluks": ["Vellore", "Katpadi", "Gudiyatham", "Vaniyambadi", "Tirupathur"]
+                },
+                {
+                    "name": "Erode",
+                    "taluks": ["Erode", "Gobichettipalayam", "Bhavani", "Sathyamangalam", "Perundurai"]
+                },
+                {
+                    "name": "Dindigul",
+                    "taluks": ["Dindigul", "Palani", "Nilakkottai", "Natham", "Kodaikanal"]
+                },
+                {
+                    "name": "Theni",
+                    "taluks": ["Theni", "Periyakulam", "Uthamapalayam", "Bodinayakanur", "Andipatti"]
+                },
+                {
+                    "name": "Kanchipuram",
+                    "taluks": ["Kanchipuram", "Sriperumbudur", "Uthiramerur", "Chengalpattu", "Walajabad"]
+                },
+                {
+                    "name": "Thiruvallur",
+                    "taluks": ["Thiruvallur", "Ponneri", "Gummidipoondi", "Tiruttani", "Poonamallee"]
+                },
+                {
+                    "name": "Cuddalore",
+                    "taluks": ["Cuddalore", "Panruti", "Chidambaram", "Virudhachalam", "Kattumannarkoil"]
+                },
+                {
+                    "name": "Kanyakumari",
+                    "taluks": ["Nagercoil", "Kalkulam", "Vilavancode", "Thovalai", "Agastheeswaram"]
+                },
+                {
+                    "name": "Villupuram",
+                    "taluks": ["Villupuram", "Tindivanam", "Kallakurichi", "Gingee", "Sankarapuram"]
+                },
+                {
+                    "name": "Tiruvannamalai",
+                    "taluks": ["Tiruvannamalai", "Chengam", "Polur", "Arani", "Cheyyar"]
+                },
+                {
+                    "name": "Virudhunagar",
+                    "taluks": ["Virudhunagar", "Sivakasi", "Rajapalayam", "Aruppukkottai", "Sattur"]
+                },
+                {
+                    "name": "Karur",
+                    "taluks": ["Karur", "Kulithalai", "Aravakurichi", "Krishnarayapuram", "Manmangalam"]
+                },
+                {
+                    "name": "Nagapattinam",
+                    "taluks": ["Nagapattinam", "Vedaranyam", "Thirukkuvalai", "Sirkazhi", "Kilvelur"]
+                },
+                {
+                    "name": "Pudukkottai",
+                    "taluks": ["Pudukkottai", "Aranthangi", "Illuppur", "Kulathur", "Avudaiyarkoil"]
+                },
+                {
+                    "name": "Ramanathapuram",
+                    "taluks": ["Ramanathapuram", "Paramakudi", "Rameswaram", "Mudukulathur", "Kamuthi"]
+                },
+                {
+                    "name": "Thoothukudi",
+                    "taluks": ["Thoothukudi", "Kovilpatti", "Sattankulam", "Srivaikuntam", "Ottapidaram"]
+                },
+                {
+                    "name": "Namakkal",
+                    "taluks": ["Namakkal", "Rasipuram", "Tiruchengode", "Kolli Hills", "Komarapalayam"]
+                }
+            ]
+        }
+    ]
+}
