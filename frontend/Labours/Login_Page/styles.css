@@ -3,7 +3,6 @@ body {
     margin: 0;
     padding: 0;
     background-color: #ffffff;
-    background-image: url(http://localhost:3000/frontend/static/Images/login.png);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size:cover;
@@ -86,13 +85,13 @@ nav a:hover {
 }
 .login-container, .password-container, .otp-container {
     position: absolute;
-    right: 10%; /* Adjust based on your requirement */
+    left: 10%; /* Adjust based on your requirement */
     top: 55%; /* Centers vertically */
     transform: translateY(-50%); /* Centers container correctly */
-    height: 50%; /* Set height to auto to fit content */
+    height: auto; /* Set height to auto to fit content */
     width: 30%; /* Adjust width as needed */
     padding: 30px; /* Increase padding for better spacing */
-    background: rgba(255, 255, 255, 0.85); /* Slightly opaque background */
+    background: rgba(212, 212, 212, 0.85); /* Slightly opaque background */
     border-radius: 15px; /* Smooth borders */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Elevate box with shadow */
     text-align: center;

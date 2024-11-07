@@ -159,7 +159,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
-    background-image: url(http://localhost:3000/frontend/static/Images/nature.jpg);
+    background-image: url(http://localhost:3000/frontend/static/Images/nature.png);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -325,7 +325,7 @@ nav a:hover {
     /* Move the form upwards */
     text-align: center;
     margin: 0 auto;
-    width: 13%;
+    width: 30%;
     /* Adjust the width if needed */
     background-color: #31CE43;
     /* Background color for the form */
