@@ -9,9 +9,9 @@ async function onclickconfirm() {
             alternate_mobile_number: document.getElementById('alternate-phone').value,
             email: document.getElementById('email').value,
             address: document.getElementById('address').value,
-            state: document.getElementById('land-state').value,
-            city: document.getElementById('land-city').value,
-            taluk: document.getElementById('land-taluk').value,
+            state: document.getElementById('state').value,
+            city: document.getElementById('city').value,
+            taluk: document.getElementById('taluk').value,
             password: document.getElementById('password').value,
             job_skills:document.getElementById('job-skills').value
 
@@ -60,3 +60,52 @@ async function onclickconfirm() {
         errorMessageElement.textContent = 'There was an error submitting the form. Please try again.';
     }
 }
+async function loadLocationData() {
+    const response = await fetch('http://localhost:3000/frontend/static/india_data.json');
+    const data = await response.json();
+    const stateSelect = document.getElementById('state');
+    const citySelect = document.getElementById('city');
+    const talukSelect = document.getElementById('taluk');
+
+    // Populate states
+    data.states.forEach(state => {
+        const option = document.createElement('option');
+        option.value = state.name;
+        option.textContent = state.name;
+        stateSelect.appendChild(option);
+    });
+
+    // Populate cities based on selected state
+    stateSelect.addEventListener('change', function() {
+        citySelect.innerHTML = '<option value="">-- Select City --</option>';
+        talukSelect.innerHTML = '<option value="">-- Select Taluk --</option>';
+        
+        const selectedState = data.states.find(state => state.name === stateSelect.value);
+        if (selectedState) {
+            selectedState.cities.forEach(city => {
+                const cityOption = document.createElement('option');
+                cityOption.value = city.name;
+                cityOption.textContent = city.name;
+                citySelect.appendChild(cityOption);
+            });
+        }
+    });
+
+    // Populate taluks based on selected city
+    citySelect.addEventListener('change', function() {
+        talukSelect.innerHTML = '<option value="">-- Select Taluk --</option>';
+
+        const selectedState = data.states.find(state => state.name === stateSelect.value);
+        const selectedCity = selectedState?.cities.find(city => city.name === citySelect.value);
+        
+        if (selectedCity) {
+            selectedCity.taluks.forEach(taluk => {
+                const talukOption = document.createElement('option');
+                talukOption.value = taluk;
+                talukOption.textContent = taluk;
+                talukSelect.appendChild(talukOption);
+            });
+        }
+    });
+}
+document.addEventListener('DOMContentLoaded', loadLocationData);
