@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
      const jobContainer = document.getElementById('job-container');
      jobContainer.innerHTML = '<p>Loading jobs...</p>'; // Show loading indicator
  
-     fetch('http://localhost:3000/landowner/active_jobs_for_request_menu', {
+     fetch('http://localhost:3000/landowner/active_jobs', {
          method: 'GET',
          headers: {
              'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
