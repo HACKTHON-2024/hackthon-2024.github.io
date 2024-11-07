@@ -147,24 +147,37 @@ router.get("/available_jobs", labourMiddleware, async function(req, res) {
     }
   });  
 
-//joint current active jobs 
+// current active jobs that fetch the jobs from history and update the status field based on dates and filter the active jobs
 router.get("/active_jobs", labourMiddleware, async function(req, res) {
     try {
-     
-        // labourMiddleware sets req.user to the logged-in landowner
         const labourId = req.user._id;
-        // Fetch the labour's job history
+
+        // Fetch the labour with populated job_history
         const labour = await Labour.findById(labourId).populate('job_history');
-        // Filter the jobs where the status is true
+
+        if (!labour || !labour.job_history) {
+            return res.status(404).json({ message: "No job history found for this laborer" });
+        }
+
+        // Update the status for each job based on current date
+        const currentDate = new Date();
+        labour.job_history.forEach(job => {
+            job.status = currentDate >= job.start_date && currentDate <= job.end_date;
+        });
+
+        // Save updated jobs
+        await Promise.all(labour.job_history.map(job => job.save()));
+
+        // Filter for active jobs
         const activeJobs = labour.job_history.filter(job => job.status);
-        // Send the active jobs in the response
-       
+
         res.json(activeJobs);
     } catch (error) {
-        console.error(error);
+        console.error("Error updating and fetching active jobs:", error);
         res.status(500).json({ message: "An error occurred while fetching active jobs" });
     }
-  });
+});
+
   
 router.post("/endroll", labourMiddleware, async function(req, res) {
     const job_id = req.body.jobId;   // Get job ID from the request body

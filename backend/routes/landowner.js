@@ -266,55 +266,83 @@ router.get("/available_labours", landownerMiddleware, async function(req, res) {
     }
   });
 
-
+// current active jobs that fetch the jobs from history and update the status field based on dates and filter the active jobs
   router.get("/active_jobs", landownerMiddleware, async function(req, res) {
     try {
-     
         // landownerMiddleware sets req.user to the logged-in landowner
         const landownerId = req.user._id;
-        // Fetch the landowner's job history
+
+        // Fetch the landowner with populated job_history
         const landowner = await Landowner.findById(landownerId).populate('job_history');
-        // Filter the jobs where the status is true
+
+        if (!landowner || !landowner.job_history) {
+            return res.status(404).json({ message: "No job history found for this landowner" });
+        }
+
+        // Update the status for each job based on current date
+        const currentDate = new Date();
+        landowner.job_history.forEach(job => {
+            job.status = currentDate >= job.start_date && currentDate <= job.end_date;
+        });
+
+        // Save updated jobs
+        await Promise.all(landowner.job_history.map(job => job.save()));
+
+        // Filter for active jobs
         const activeJobs = landowner.job_history.filter(job => job.status);
-        // Send the active jobs in the response
-       
+
         res.json(activeJobs);
     } catch (error) {
-        console.error(error);
+        console.error("Error updating and fetching active jobs:", error);
         res.status(500).json({ message: "An error occurred while fetching active jobs" });
     }
-  });
-  
-  router.get("/active_jobs_for_request_menu", landownerMiddleware, async function(req, res) {
-    try {
-        // Get the logged-in landowner's ID from the middleware
-        const landownerId = req.user._id;
-        const currentDate = new Date(); // Get the current date
-        // Fetch the landowner's job history with jobs populated
-        const landowner = await Landowner.findById(landownerId).populate('job_history');
-
-        // Separate jobs into active and future jobs
-        const activeJobs = landowner.job_history.filter(job => 
-            job.status && job.start_date <= currentDate && job.end_date >= currentDate
-        );
-
-        const futureJobs = landowner.job_history.filter(job => 
-            job.start_date > currentDate
-        );
-
-        // Send the active and future jobs in the response
-        res.status(200).json({
-            success: true,
-            data: {
-                activeJobs,
-                futureJobs
-            }
-        });
-    } catch (error) {
-        console.error("Error fetching jobs:", error);
-        res.status(500).json({ message: "An error occurred while fetching active and future jobs" });
-    }
 });
+
+  
+router.get("/active_jobs_for_request_menu", landownerMiddleware, async function(req, res) {
+  try {
+      // Get the logged-in landowner's ID from the middleware
+      const landownerId = req.user._id;
+      const currentDate = new Date(); // Get the current date
+
+      // Fetch the landowner's job history with jobs populated
+      const landowner = await Landowner.findById(landownerId).populate('job_history');
+
+      // Update the status of each job based on the current date
+      landowner.job_history.forEach((job) => {
+          if (job.start_date <= currentDate && job.end_date >= currentDate) {
+              job.status = true; // Job is active
+          } else {
+              job.status = false; // Job is not active
+          }
+      });
+
+      // Save updated job statuses
+      await Promise.all(landowner.job_history.map(job => job.save()));
+
+      // Separate jobs into active and future jobs
+      const activeJobs = landowner.job_history.filter(job => 
+          job.status && job.start_date <= currentDate && job.end_date >= currentDate
+      );
+
+      const futureJobs = landowner.job_history.filter(job => 
+          job.start_date > currentDate
+      );
+
+      // Send the active and future jobs in the response
+      res.status(200).json({
+          success: true,
+          data: {
+              activeJobs,
+              futureJobs
+          }
+      });
+  } catch (error) {
+      console.error("Error fetching jobs:", error);
+      res.status(500).json({ message: "An error occurred while fetching active and future jobs" });
+  }
+});
+
 
 module.exports = router;
 
