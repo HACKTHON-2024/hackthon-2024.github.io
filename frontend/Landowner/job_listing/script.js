@@ -59,6 +59,162 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
+    // Open modal for phone number input
+    function openModal(jobId) {
+        const jobListModal = document.getElementById('job-list-modal');
+        jobListModal.classList.remove('hidden'); // Show the modal
+
+        // Set job ID as data attribute to the modal
+        jobListModal.setAttribute('data-job-id', jobId);
+    }
+
+    // Wait until the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const nextBtn = document.querySelector('.next-btn');
+    const backBtn = document.querySelector('.back-btn');
+    const loginInputs = document.querySelector('.login-inputs');
+    const otpSection = document.querySelector('.otp-section');
+    const jobModal = document.getElementById('job-list-modal');
+    const closeJobModal = document.getElementById('close-job-modal');
+
+    // Event listener for "Next" button to show OTP section
+    nextBtn.addEventListener('click', () => {
+        if (document.getElementById('mobile-number').checkValidity()) {
+            loginInputs.classList.add('hidden'); // Hide login inputs
+            otpSection.classList.remove('hidden'); // Show OTP section
+        } else {
+            alert('Please enter a valid mobile number.');
+        }
+    });
+
+    // Event listener for "Back" button to go back to mobile input
+    backBtn.addEventListener('click', () => {
+        otpSection.classList.add('hidden'); // Hide OTP section
+        loginInputs.classList.remove('hidden'); // Show login inputs
+    });
+
+    // Close the modal when "close" button is clicked
+    closeJobModal.addEventListener('click', () => {
+        jobModal.classList.add('hidden'); // Hide the job modal
+    });
+});
+
+
+
+    // Event listener for "Next" button to send OTP
+    document.querySelector('.next-btn').addEventListener('click', function () {
+        const mobileNumber = document.querySelector('.phone-number-input').value; // Get the phone number input
+        const jobId = document.getElementById('job-list-modal').getAttribute('data-job-id'); // Retrieve the job ID from the modal
+
+        if (validateMobileNumber(mobileNumber)) {
+            sendOtp(mobileNumber, jobId);
+        } else {
+            alert('Please enter a valid mobile number');
+        }
+    });
+
+    // Send OTP using server API
+    function sendOtp(mobileNumber, jobId) {
+        fetch('http://localhost:3000/otp/send-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ mobileNumber }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show OTP section and set jobId and mobileNumber
+                const otpSection = document.querySelector('.otp-section');
+                otpSection.classList.remove('hidden');
+                otpSection.setAttribute('data-job-id', jobId);
+                otpSection.setAttribute('data-mobile-number', mobileNumber);
+
+                // Enable and focus on the OTP input field
+                const otpInput = document.querySelector('.otp-input');
+                otpInput.removeAttribute('disabled'); // Enable the OTP input field
+                otpInput.focus(); // Focus on the OTP input field
+            } else {
+                alert('Error sending OTP');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    // Event listener for Verify button to confirm OTP
+    document.querySelector('.verify-btn').addEventListener('click', function () {
+        const otp = document.querySelector('.otp-input').value;
+        const jobId = document.querySelector('.otp-section').getAttribute('data-job-id'); // Retrieve job ID from OTP section
+        const mobileNumber = document.querySelector('.otp-section').getAttribute('data-mobile-number'); // Retrieve mobile number from OTP section
+
+        if (otp.length === 4) {  // Assuming OTP is 4 digits
+            confirmOtp(otp, jobId, mobileNumber);
+        } else {
+            alert('Please enter a valid 4-digit OTP');
+        }
+    });
+
+    // Verify OTP via server
+    function confirmOtp(otp, jobId, mobileNumber) {
+        fetch('http://localhost:3000/otp/verify-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ otp, mobileNumber }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // OTP verified, send job request
+                sendJobRequest(jobId, mobileNumber);
+            } else {
+                alert('Invalid OTP, please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error verifying OTP:', error);
+        });
+    }
+
+    // Send job request to the server after OTP verification
+    async function sendJobRequest(jobId, mobileNumber) {
+
+        try {
+            const token = getToken();  // Get JWT token
+            const response = await fetch('http://localhost:3000/landowner/request_by_owner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+
+                },
+                body: JSON.stringify({ jobId, mobileNumber })
+            });
+
+            const result = await response.json(); // Assuming response is in JSON format
+
+            if (response.ok && result.success) { // Ensure both HTTP and result success
+                alert('Job request sent successfully');
+                closeModal(); // Close the modal on success
+            } else {
+                throw new Error(result.message || 'Failed to send job request');
+            }
+        } catch (error) {
+            console.error('Error sending job request:', error);
+            alert('Error sending job request: ' + error.message);
+        }
+    }
+
+    // Validate mobile number (Indian format)
+    function validateMobileNumber(mobileNumber) {
+        const mobilePattern = /^[6-9]\d{9}$/; // Indian mobile number pattern
+        return mobilePattern.test(mobileNumber);
+    }
+
     // Function to dynamically display jobs in the modal (existing code)
     function displayJobs(jobs) {
         const jobListContainer = document.getElementById('job-list-container');
