@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             
                 // Check for 404 and redirect to 404 page if necessary
                 if (response.status === 404) {
-                    window.location.href = '../404/index.html'; // Adjust the path to your 404 page
+                    window.location.href = 'http://localhost:5500/frontend/static/404/index.html'; // Adjust the path to your 404 page
                 }
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -59,47 +59,28 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    // Open modal for phone number input
+    // Function to open the modal
     function openModal(jobId) {
         const jobListModal = document.getElementById('job-list-modal');
-        jobListModal.classList.remove('hidden'); // Show the modal
-
-        // Set job ID as data attribute to the modal
-        jobListModal.setAttribute('data-job-id', jobId);
+        jobListModal.classList.remove('hidden'); // Show the modal by removing the 'hidden' class
+        jobListModal.setAttribute('data-job-id', jobId); // Set job ID for further use
     }
 
-    // Wait until the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const nextBtn = document.querySelector('.next-btn');
-    const backBtn = document.querySelector('.back-btn');
-    const loginInputs = document.querySelector('.login-inputs');
-    const otpSection = document.querySelector('.otp-section');
-    const jobModal = document.getElementById('job-list-modal');
-    const closeJobModal = document.getElementById('close-job-modal');
+    // Function to close the modal
+    function closeModal() {
+        const jobListModal = document.getElementById('job-list-modal');
+        jobListModal.classList.add('hidden'); // Hide the modal by adding the 'hidden' class
+    }
 
-    // Event listener for "Next" button to show OTP section
-    nextBtn.addEventListener('click', () => {
-        if (document.getElementById('mobile-number').checkValidity()) {
-            loginInputs.classList.add('hidden'); // Hide login inputs
-            otpSection.classList.remove('hidden'); // Show OTP section
-        } else {
-            alert('Please enter a valid mobile number.');
+    // Event listener for close button
+    document.getElementById('close-job-modal').addEventListener('click', closeModal);
+
+    // Close modal if clicking outside of the content
+    document.getElementById('job-list-modal').addEventListener('click', function (event) {
+        if (event.target.id === 'job-list-modal') {
+            closeModal(); // Close the modal
         }
     });
-
-    // Event listener for "Back" button to go back to mobile input
-    backBtn.addEventListener('click', () => {
-        otpSection.classList.add('hidden'); // Hide OTP section
-        loginInputs.classList.remove('hidden'); // Show login inputs
-    });
-
-    // Close the modal when "close" button is clicked
-    closeJobModal.addEventListener('click', () => {
-        jobModal.classList.add('hidden'); // Hide the job modal
-    });
-});
-
-
 
     // Event listener for "Next" button to send OTP
     document.querySelector('.next-btn').addEventListener('click', function () {
