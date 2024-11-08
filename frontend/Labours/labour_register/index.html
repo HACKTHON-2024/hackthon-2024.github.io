@@ -1,0 +1,171 @@
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LabourField Profile</title>
+        <link href="https://fonts.googleapis.com/css2?family=Kavoon&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+        <script src="https://unpkg.com/feather-icons"></script>
+        <link rel="stylesheet" href="styles.css">
+        <script src="script.js"></script>
+
+    </head>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            feather.replace();
+        });
+    </script>
+
+    <body>
+
+        <header>
+            <div class="header-container">
+                <div class="logo">
+                    <img src="http://localhost:3000/frontend/static/Images/logo.png" alt="Logo">
+                    <h1>LabourField</h1>
+                </div>
+                <nav>
+                    <a href="http://localhost:5500/frontend/static/home_page/index.html">Home</a>
+                    <a href="http://localhost:5500/frontend/static/home_page/index.html">About Us</a>
+                    <a href="http://localhost:5500/frontend/static/home_page/index.html">Services</a>
+                    <a href="http://localhost:5500/frontend/static/home_page/index.html">Help & Support</a>
+                </nav>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <ul class="navbar__menu">
+                <li class="navbar__item"></li>
+                <a href="../Profile_page/index.html" class="navbar__link" style="font-size: 15px;"><i
+                        data-feather="user"></i><span>Profile</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../Active_Jobs/index.html" class="navbar__link" style="font-size: 15px;"><i data-feather="home"></i><span>Active
+                            Jobs</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../LandOwner_Jobs/index.html" class="navbar__link" style="font-size: 15px;"><i
+                            data-feather="briefcase"></i><span>Landowner Jobs</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../labour_register/index.html" class="navbar__link" style="font-size: 15px;"><i
+                            data-feather="edit"></i><span>Register</span></a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="form-container">
+            <img src="http://localhost:3000/frontend/static/Images/image2973-5y8c.svg" alt="Profile Picture" class="img">
+
+            <h1 class="signup">Labour Resigter</h1>
+            <div class="form">
+
+                <div class="form-group">
+                    <div class="half-width">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Enter your name">
+                    </div>
+                    <div class="half-width">
+                        <label for="gender">Gender</label>
+                        <input type="text" id="gender" placeholder="Male/Female">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="half-width">
+                        <label for="dob">DOB</label>
+                        <input type="date" id="dob">
+                    </div>
+                    <div class="half-width">
+                        <label for="aadhaar">Aadhaar ID</label>
+                        <input type="tel" id="aadhaar" placeholder="Enter Aadhaar ID">
+                    </div>
+                </div>
+
+                <h2>Contact Information</h2>
+
+                <div class="form-group">
+                    <div class="half-width">
+                        <label for="mobile">Mobile Number</label>
+                        <div class="otp-group">
+                            <input type="tel" id="mobile" placeholder="Mobile Number">
+                            <button>Get OTP</button>
+                        </div>
+                    </div>
+                    <div class="half-width">
+                        <label for="otp">Verify OTP</label>
+                        <div class="otp-group">
+                            <input type="number" id="otp" placeholder="Verify OTP">
+                            <button>Verify OTP</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="half-width">
+                        <label for="alternate-phone">Alternate Phone no.</label>
+                        <input type="tel" id="alternate-phone" placeholder="Enter alternate phone number">
+                    </div>
+                    <div class="half-width">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email">
+                    </div>    
+                    <div class="form-group half-width" style="margin-top: 1%;">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" placeholder="Enter your address">
+                    </div> 
+                    <div class="form-group half-width" style="margin-top: 1%;">
+                        <label for="job-skills">Job Skills</label>
+                        <input type="text" id="job-skills" placeholder="Enter your skills">
+                    </div>
+                    
+                    <div class="half-width" >
+                        <label for="state">State:</label>
+                        <select id="state">
+                            <option value="">-- Select State --</option>
+                        </select>
+                    </div> 
+
+                    <div class="half-width" >
+                        <label for="city">City:</label>
+                        <select id="city">
+                            <option value="">-- Select City --</option>
+                        </select>
+                    </div>
+
+                    <div class="half-width" >
+                        <label for="taluk">Taluk:</label>
+                        <select id="taluk">
+                            <option value="">-- Select Taluk --</option>
+                        </select>
+                    </div>
+
+                    </div> 
+            
+                </div>           
+
+                <h2>Security Information</h2>
+
+                <div class="form-group">
+                    <div class="half-width">
+                        <label for="password">Password</label>
+                        <input type="text" id="password" placeholder="Enter Passowrd">
+                    </div>
+                    <div class="half-width">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="text" id="confirm-password" placeholder="Enter Confirm Password">
+                    </div>
+                </div>  
+                <div id="error-message" style="color: red;"></div>
+
+                <button class="submit-btn" onclick="onclickconfirm()">Confirm</button>
+            </div>
+
+        </div>
+
+    </body>
+
+    </html>
