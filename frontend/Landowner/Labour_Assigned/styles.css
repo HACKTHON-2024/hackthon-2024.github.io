@@ -259,18 +259,17 @@ nav a:hover {
 /*Form Section*/
 .form {
     flex: 2;
-    background-color: rgba(172, 172, 172, 0.5); /* Adjust the opacity here */
+    background-color: rgba(172, 172, 172, 0.5);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     margin-left: 20px;
     border: 1px solid #ccc;
-    position: relative; /* Change from fixed to relative */
-    z-index: -1; /* Ensure it stays above other content */
+    position: relative;
+    z-index: -1;
+    margin: 2% auto;
+    width: 94%;
 }
-
-
-
 
 .form label {
     display: block;
@@ -287,7 +286,7 @@ nav a:hover {
 
 .form-row-box {
     display: flex;
-
+    align-items: center;
     flex-wrap: wrap;
     gap: 15px;
     margin-top: 10px;
@@ -297,7 +296,6 @@ nav a:hover {
 .form-row-box .box {
     width: 49%;
     height: 57px;
-    /* Left and right alignment */
     padding: 15px;
 }
 
@@ -353,13 +351,62 @@ nav a:hover {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     border: 1px solid #ccc;
     border-radius: 10px;
-    margin-top: 20px;
-    width: 98%;
-    /* Adjust this value to your desired width */
+    width: 94%;
     margin: 20px auto;
-    /* This centers the section horizontally */
-    margin-left: 1.8%;
+}
 
+/* Worker Container */
+.worker-container {
+    margin-bottom: 15px;
+    background-color: #d8d8d8;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 5px;
+    overflow: hidden;
+    width: 100%;
+}
+
+/* Worker Summary */
+.worker-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e6e6e6;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.worker-summary .arrow {
+    transition: transform 0.3s ease;
+}
+
+/* Worker Details */
+.worker-details {
+    padding: 15px;
+    background-color: #e0e0e0;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.worker-details p {
+    margin: 8px 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form, .job-created-section {
+        width: 95%;
+        margin: 20px auto;
+    }
+    
+    .form-row-box .box {
+        width: 100%;
+    }
+    
+    .worker-details p {
+        font-size: 0.9em;
+    }
 }
 
 .job-created-section h2 {
