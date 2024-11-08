@@ -109,49 +109,21 @@ function toggleWorkerDetails(workerSummaryElement) {
 }
 
 // Authentication functions (auth popup, getToken, etc.)
-// Show authentication popup with overlay
 function showAuthPopup() {
-    const overlay = document.createElement('div');
-    overlay.classList.add('auth-overlay');
-
-    const popup = document.createElement('div');
-    popup.classList.add('auth-popup');
-
-    const authMessage = document.createElement('p');
-    authMessage.innerText = 'Need to sign in or sign up?';
-    popup.appendChild(authMessage);
-
-    const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container');
-
-    const loginBtn = document.createElement('button');
-    loginBtn.innerText = 'Login';
-    loginBtn.onclick = function () {
-        window.location.href = '../signin/index.html';
-        removeAuthPopup();
-    };
-
-    const signupBtn = document.createElement('button');
-    signupBtn.innerText = 'Sign Up';
-    signupBtn.onclick = function () {
-        window.location.href = '../SignUp_Page/index.html';
-        removeAuthPopup();
-    };
-
-    buttonContainer.appendChild(loginBtn);
-    buttonContainer.appendChild(signupBtn);
-    popup.appendChild(buttonContainer);
-
-    document.body.appendChild(overlay);
-    document.body.appendChild(popup);
-
-    overlay.addEventListener('click', removeAuthPopup);
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-            removeAuthPopup();
-        }
-    });
+    const overlay = document.getElementById('auth-overlay');
+    overlay.classList.remove('hidden');
 }
+
+// Event listeners for login and signup buttons
+document.getElementById('login-btn').addEventListener('click', function() {
+    // Redirect to login page
+    window.location.href = '../signin/index.html'; // Replace with your login page URL
+});
+
+document.getElementById('signup-btn').addEventListener('click', function() {
+    // Redirect to signup page
+    window.location.href = '../SignUp_Page/index.html'; // Replace with your signup page URL
+});
 
 // Remove authentication popup and overlay
 function removeAuthPopup() {
