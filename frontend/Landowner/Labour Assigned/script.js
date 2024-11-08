@@ -117,58 +117,20 @@ function toggleJobDetails(jobSummaryElement) {
 
 // Show authentication popup with overlay
 function showAuthPopup() {
-    // Create the overlay
-    const overlay = document.createElement('div');
-    overlay.classList.add('auth-overlay'); // Styled in CSS
-
-    // Create the popup
-    const popup = document.createElement('div');
-    popup.classList.add('auth-popup'); // Styled in CSS
-
-    // Message above buttons
-    const authMessage = document.createElement('p');
-    authMessage.innerText = 'Need to sign in or sign up?';
-    popup.appendChild(authMessage);
-
-    // Create container for the buttons
-    const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container'); // Styled in CSS for flexbox layout
-
-    // Create login button
-    const loginBtn = document.createElement('button');
-    loginBtn.innerText = 'Login';
-    loginBtn.onclick = function () {
-        window.location.href = '../signin/index.html'; // Redirect to login page
-        removeAuthPopup(); // Remove popup on navigation
-    };
-
-    // Create signup button
-    const signupBtn = document.createElement('button');
-    signupBtn.innerText = 'Sign Up';
-    signupBtn.onclick = function () {
-        window.location.href = '../SignUp_Page/index.html'; // Redirect to signup page
-        removeAuthPopup(); // Remove popup on navigation
-    };
-
-    // Append buttons to the container
-    buttonContainer.appendChild(loginBtn);
-    buttonContainer.appendChild(signupBtn);
-
-    // Add the button container to the popup
-    popup.appendChild(buttonContainer);
-
-    // Append the overlay and popup to the body
-    document.body.appendChild(overlay);
-    document.body.appendChild(popup);
-
-    // Close popup when clicking outside or pressing Escape
-    overlay.addEventListener('click', removeAuthPopup);
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            removeAuthPopup();
-        }
-    });
+    const overlay = document.getElementById('auth-overlay');
+    overlay.classList.remove('hidden');
 }
+
+// Event listeners for login and signup buttons
+document.getElementById('login-btn').addEventListener('click', function() {
+    // Redirect to login page
+    window.location.href = '../signin/index.html'; // Replace with your login page URL
+});
+
+document.getElementById('signup-btn').addEventListener('click', function() {
+    // Redirect to signup page
+    window.location.href = '../SignUp_Page/index.html'; // Replace with your signup page URL
+});
 
 // Remove the authentication popup and overlay
 function removeAuthPopup() {

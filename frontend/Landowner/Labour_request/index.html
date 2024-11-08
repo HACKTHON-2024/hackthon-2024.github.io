@@ -92,48 +92,48 @@
         </header>
 
         <!-- Confirmation popup -->
-<div id="confirmation-popup" class="confirmation-popup hidden">
-    <div class="confirmation-content">
-        <p>Do you want to confirm this job request?</p>
-        <div class="popup-buttons">
-            <button id="confirm-btn">Confirm</button>
-            <button id="cancel-btn">Cancel</button>
+        <div id="confirmation-popup" class="confirmation-popup hidden">
+            <div class="confirmation-content">
+                <p>Do you want to confirm this job request?</p>
+                <div class="popup-buttons">
+                    <button id="confirm-btn">Confirm</button>
+                    <button id="cancel-btn">Cancel</button>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-<!-- Popup Overlay for confirmation -->
-<div class="popup-overlay hidden"></div>
+        <!-- Popup Overlay for confirmation -->
+        <div class="popup-overlay hidden"></div>
 
-<!-- Job list modal -->
-<div id="job-list-modal" class="job-modal hidden">
-    <button id="close-job-modal" class="close-btn">X</button>
-    <div class="job-container">
-        <p>Active Jobs</p>
-        <div id="active-jobs-container">
-            <!-- Active job cards will be dynamically inserted here -->
+        <!-- Job list modal -->
+        <div id="job-list-modal" class="job-modal hidden">
+            <button id="close-job-modal" class="close-btn">X</button>
+            <div class="job-container">
+                <p>Active Jobs</p>
+                <div id="active-jobs-container">
+                    <!-- Active job cards will be dynamically inserted here -->
+                </div>
+                <p>Future Jobs</p>
+                <div id="future-jobs-container">
+                    <!-- Future job cards will be dynamically inserted here -->
+                </div>
+            </div>
         </div>
-        <p>Future Jobs</p>
-        <div id="future-jobs-container">
-            <!-- Future job cards will be dynamically inserted here -->
+
+        <!-- Authentication popup -->
+        <div id="auth-popup" class="popup hidden">
+            <div class="popup-content">
+                <p>You need to log in to access this feature.</p>
+                <div class="button-container">
+                    <button id="login-btn">Login</button>
+                    <button id="signup-btn">Sign up</button>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
-<!-- Authentication popup -->
-<div id="auth-popup" class="popup hidden">
-    <div class="popup-content">
-        <p>You need to log in to access this feature.</p>
-        <div class="button-container">
-            <button id="login-btn">Login</button>
-            <button id="signup-btn">Sign up</button>
-        </div>
-    </div>
-</div>
 
 
-<!-- Popup Overlay for auth popup -->
-<div class="auth-popup-overlay hidden"></div>
+        <!-- Popup Overlay for auth popup -->
+        <div class="auth-popup-overlay hidden"></div>
 
 
     </div>
