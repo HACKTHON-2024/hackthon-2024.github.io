@@ -56,67 +56,91 @@
             }
         }
 
-        // Fetch job data and display dynamically
-        async function fetchJobData() {
-            try {
-                const token = getToken();  // Get JWT token
-            
-                if (!token) {
-                    showAuthPopup(); // Show login/signup popup if not logged in
-                    return;
-                }
-                   const response = await fetch('http://localhost:3000/labour/get_job_history', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
-                        'Content-Type': 'application/json'
-                    }
-                });
-                const jobs = await response.json();
-                console.log(jobs)
-                const jobContainer = document.querySelector('.job-created-section');
+      // Fetch job data and display dynamically, separating completed and future jobs
+async function fetchJobData() {
+    try {
+        const token = getToken(); // Get JWT token
 
-                jobContainer.innerHTML = '<h2>Jobs History:</h2>';
-
-                jobs.forEach(job => {
-                    const jobElement = document.createElement('div');
-                    jobElement.classList.add('job-container');
-
-                    jobElement.innerHTML = `
-                        <div class="job-summary" onclick="toggleJobDetails(this)">
-                            <div class="job-header">
-                                <p><strong>Job Title:</strong> ${job.title}</p>
-                                <p><strong>Start Date:</strong> ${formatDate(job.start_date)}</p>
-                                <p><strong>End Date:</strong> ${formatDate(job.end_date)}</p>
-                                <span class="arrow">▼</span>
-                            </div>
-                        </div>
-                        <div class="job-details" style="display: none;">
-                            <p><strong>Job Description:</strong></p>
-                            <div class="editable-box">
-                                <span>${job.description}</span>
-                            </div>
-                            <p><strong>Job Location:</strong></p>
-                            <div class="editable-box">
-                                <span>${job.location}</span>
-                            </div>
-                            <p><strong>Amount:</strong></p>
-                            <div class="editable-box">
-                                <span>${job.amount}</span>
-                            </div>
-                            <p><strong>Workers needed:</strong></p>
-                            <div class="editable-box">
-                                <span>${job.worker_id.length}/${job.number_of_workers}</span>
-                            </div>
-                        </div>
-                    `;
-                    jobContainer.appendChild(jobElement);
-                });
-            } catch (error) {
-                console.error('Error fetching job data:', error);
-            }
+        if (!token) {
+            showAuthPopup(); // Show login/signup popup if not logged in
+            return;
         }
 
+        const response = await fetch('http://localhost:3000/labour/get_job_history', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`, // Add JWT to Authorization header
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const jobs = await response.json();
+        console.log('Job Data:', jobs);
+
+        // Get the current date to compare with job dates
+        const currentDate = new Date();
+
+        // Separate jobs into completed and future
+        const completedJobs = jobs.filter(job => new Date(job.end_date) < currentDate);
+        const futureJobs = jobs.filter(job => new Date(job.start_date) > currentDate);
+
+        // Container for displaying jobs
+        const jobContainer = document.querySelector('.job-created-section');
+        jobContainer.innerHTML = '<h2>Jobs History:</h2>';
+
+        // Create sections for completed and future jobs
+        const completedJobsContainer = document.createElement('div');
+        const futureJobsContainer = document.createElement('div');
+
+        completedJobsContainer.innerHTML = '<h3>Completed Jobs:</h3>';
+        futureJobsContainer.innerHTML = '<h3>Future Jobs:</h3>';
+
+        // Function to render jobs in a container
+        function displayJobs(jobs, container) {
+            if (jobs.length === 0) {
+                container.innerHTML += '<p>No jobs available in this category.</p>';
+                return;
+            }
+
+            jobs.forEach((job) => {
+                const jobElement = document.createElement('div');
+                jobElement.classList.add('job-container');
+
+                jobElement.innerHTML = `
+                    <div class="job-summary" onclick="toggleJobDetails(this)">
+                        <div class="job-header">
+                            <p><strong>Job Title:</strong> ${job.title}</p>
+                            <p><strong>Start Date:</strong> ${formatDate(job.start_date)}</p>
+                            <p><strong>End Date:</strong> ${formatDate(job.end_date)}</p>
+                            <span class="arrow">▼</span>
+                        </div>
+                    </div>
+                    <div class="job-details" style="display: none;">
+                        <p><strong>Job Description:</strong></p>
+                        <div class="editable-box"><span>${job.description}</span></div>
+                        <p><strong>Job Location:</strong></p>
+                        <div class="editable-box"><span>${job.location}</span></div>
+                        <p><strong>Amount:</strong></p>
+                        <div class="editable-box"><span>${job.amount}</span></div>
+                        <p><strong>Workers needed:</strong></p>
+                        <div class="editable-box"><span>${job.worker_id.length}/${job.number_of_workers}</span></div>
+                    </div>
+                `;
+                container.appendChild(jobElement);
+            });
+        }
+
+        // Display completed and future jobs in their respective containers
+        displayJobs(completedJobs, completedJobsContainer);
+        displayJobs(futureJobs, futureJobsContainer);
+
+        // Append the completed and future job containers to the main job container
+        jobContainer.appendChild(completedJobsContainer);
+        jobContainer.appendChild(futureJobsContainer);
+    } catch (error) {
+        console.error('Error fetching job data:', error);
+    }
+}
         // This function toggles between view mode and edit mode
         function toggleEdit() {
             const isEditing = document.getElementById('editButton').style.display === 'none';
