@@ -109,36 +109,44 @@ async function fetchJobData() {
                 jobElement.classList.add('job-container');
 
                 jobElement.innerHTML = `
-                    <div class="job-summary" onclick="toggleJobDetails(this)">
-                        <div class="job-header">
-                            <p><strong>Job Title:</strong> ${job.title}</p>
-                            <p><strong>Start Date:</strong> ${formatDate(job.start_date)}</p>
-                            <p><strong>End Date:</strong> ${formatDate(job.end_date)}</p>
-                            <span class="arrow">▼</span>
-                        </div>
+                <div class="job-summary" onclick="toggleJobDetails(this)">
+                    <div class="job-header">
+                        <p><strong>Job Title:</strong> ${job.title}</p>
+                        <p><strong>Start Date:</strong> ${formatDate(job.start_date)}</p>
+                        <p><strong>End Date:</strong> ${formatDate(job.end_date)}</p>
+                        <span class="arrow">▼</span>
                     </div>
-                    <div class="job-details" style="display: none;">
-                        <p><strong>Job Description:</strong> ${job.description}</p>
-                        <p><strong>Job Location:</strong> ${job.location}</p>
-                        <p><strong>Amount:</strong> ${job.amount}</p>
-                        <p><strong>Status:</strong> ${job.status}</p>
-                          <p><strong>Workers needed:</strong> ${job.worker_id.length}/${job.number_of_workers}</p>
-                    </div>
-                `;
-                container.appendChild(jobElement);
-            });
-        }
-
-        // Display completed and future jobs in their respective containers
-        displayJobs(completedJobs, completedJobsContainer);
-        displayJobs(futureJobs, futureJobsContainer);
-
-        // Append the completed and future job containers to the main job container
-        jobContainer.appendChild(completedJobsContainer);
-        jobContainer.appendChild(futureJobsContainer);
-    } catch (error) {
-        console.error('Error fetching job data:', error);
+                </div>
+                <div class="job-details" style="display: none;">
+                    <p><strong>Job Description:</strong> ${job.description}</p>
+                    <p><strong>Job Location:</strong> ${job.location}</p>
+                    <p><strong>Amount:</strong> ${job.amount}</p>
+                    <p><strong>Status:</strong> ${job.status}</p>
+                    <p><strong>Workers needed:</strong> ${job.worker_id.length}/${job.number_of_workers}</p>
+                    <!-- Details Button -->
+                    <button class="details-button" onclick="viewJobDetails('${job._id}')">View Details</button>
+                </div>
+            `;
+            container.appendChild(jobElement);
+        });
     }
+
+     // Display completed and future jobs
+     displayJobs(completedJobs, completedJobsContainer);
+     displayJobs(futureJobs, futureJobsContainer);
+
+     // Append completed and future job containers to main job container
+     jobContainer.appendChild(completedJobsContainer);
+     jobContainer.appendChild(futureJobsContainer);
+
+ } catch (error) {
+     console.error('Error fetching job data:', error);
+ }
+}
+
+// Function to navigate to job details page with job ID
+function viewJobDetails(jobId) {
+ window.location.href = `/frontend/Landowner/Labour_Assigned/index.html?jobId=${jobId}`;
 }
 
 

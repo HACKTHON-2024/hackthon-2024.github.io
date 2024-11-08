@@ -633,5 +633,47 @@ router.post("/request_by_owner", landownerMiddleware, async function(req, res) {
   }
 });
 
+
+
+// Route to fetch job details along with worker details
+router.get("/job/:jobId", async (req, res) => {
+  const { jobId } = req.params;  // Getting the jobId from the request parameters
+
+  try {
+    // Fetching job details and populating the 'worker_id' field with the worker details
+    const job = await Job.findById(jobId)
+      .populate({
+        path: "worker_id",  // Populating the workers' details
+        select: "username gender mobile_number job_skills address state city taluk"  // You can modify the fields to return as needed
+      })
+      .exec();
+
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    // Returning the job details along with workers' details
+    res.status(200).json({
+      job: {
+        title: job.title,
+        description: job.description,
+        location: job.location,
+        amount: job.amount,
+        status: job.status,
+        start_date: job.start_date,
+        end_date: job.end_date,
+        number_of_workers: job.number_of_workers,
+        state: job.state,
+        city: job.city,
+        taluk: job.taluk,
+        workers: job.worker_id // This will contain the worker details
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 router.use(landownerMiddleware)
 module.exports = router;
