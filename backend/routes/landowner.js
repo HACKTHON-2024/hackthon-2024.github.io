@@ -315,7 +315,7 @@ router.get("/active_jobs_for_request_menu", landownerMiddleware, async function(
       const futureJobs = landowner.job_history.filter(job => 
           job.start_date > currentDate
       );
-
+      
       // Send the active and future jobs in the response
       res.status(200).json({
           success: true,

@@ -95,13 +95,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     // Send OTP using server API
-    function sendOtp(mobileNumber, jobId) {
+    function sendOtp(identifier, jobId) {
         fetch('http://localhost:3000/otp/send-otp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ mobileNumber }),
+            body: JSON.stringify({ identifier }),
         })
         .then(response => response.json())
         .then(data => {
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const otpSection = document.querySelector('.otp-section');
                 otpSection.classList.remove('hidden');
                 otpSection.setAttribute('data-job-id', jobId);
-                otpSection.setAttribute('data-mobile-number', mobileNumber);
+                otpSection.setAttribute('data-mobile-number', identifier);
 
                 // Enable and focus on the OTP input field
                 const otpInput = document.querySelector('.otp-input');
@@ -139,19 +139,19 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     // Verify OTP via server
-    function confirmOtp(otp, jobId, mobileNumber) {
+    function confirmOtp(otp, jobId, identifier) {
         fetch('http://localhost:3000/otp/verify-otp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ otp, mobileNumber }),
+            body: JSON.stringify({ otp, identifier }),
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 // OTP verified, send job request
-                sendJobRequest(jobId, mobileNumber);
+                sendJobRequest(jobId, identifier);
             } else {
                 alert('Invalid OTP, please try again.');
             }
