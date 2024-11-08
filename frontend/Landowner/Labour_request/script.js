@@ -103,107 +103,103 @@ document.addEventListener('DOMContentLoaded', function () {
  }
  
  // Show job list modal and fetch active jobs
- function showJobModal(labourId) {
-     const jobModal = document.getElementById('job-list-modal');
-     jobModal.classList.remove('hidden');
-     jobModal.style.opacity = 0;
-     setTimeout(() => jobModal.style.opacity = 1, 50);
- 
-     fetchActiveJobs(labourId);
- }
+function showJobModal(labourId) {
+    const jobModal = document.getElementById('job-list-modal');
+    jobModal.classList.remove('hidden');
+    jobModal.style.opacity = 0;
+    setTimeout(() => jobModal.style.opacity = 1, 50);
+
+    fetchActiveAndFutureJobs(labourId);
+}
  
  // Same for fetching jobs
- function fetchActiveJobs(labourId) {
-     const token = getToken();  // Get JWT token
-     const jobContainer = document.getElementById('job-container');
-     jobContainer.innerHTML = '<p>Loading jobs...</p>'; // Show loading indicator
- 
-     fetch('http://localhost:3000/landowner/active_jobs_for_request_menu', {
-         method: 'GET',
-         headers: {
-             'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
-             'Content-Type': 'application/json'
-         }})
-         .then(response => response.json())
-         .then(data => {
-            console.log(data.data.activeJobs)// activeJobs and futureJobs are 2 array 
-            console.log(data.data.futureJobs)
-             if (Array.isArray(data) && data.length > 0) {
-                 displayActiveJobs(data, labourId);
-             } else {
-                 jobContainer.innerHTML = '<p>No active jobs available.</p>'; // Handle no jobs
-             }
-         })
-         .catch(error => {
-             jobContainer.innerHTML = '<p>Error fetching jobs.</p>'; // Show error message
-             //console.error('Error fetching active jobs:', error);
-         });
- }
+ // Fetch both active and future jobs from the backend
+function fetchActiveAndFutureJobs(labourId) {
+    const token = getToken();  // Get JWT token
+    const activeJobsContainer = document.getElementById('active-jobs-container');
+    const futureJobsContainer = document.getElementById('future-jobs-container');
+
+    activeJobsContainer.innerHTML = '<p>Loading jobs...</p>';
+    futureJobsContainer.innerHTML = '<p>Loading jobs...</p>';
+
+    fetch('http://localhost:3000/landowner/active_jobs_for_request_menu', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const { activeJobs, futureJobs } = data.data;
+            displayJobs(activeJobs, activeJobsContainer, labourId, 'No active jobs available.');
+            displayJobs(futureJobs, futureJobsContainer, labourId, 'No future jobs available.');
+        } else {
+            activeJobsContainer.innerHTML = `<p>Error: ${data.message}</p>`;
+            futureJobsContainer.innerHTML = `<p>Error: ${data.message}</p>`;
+        }
+    })
+    .catch(error => {
+        activeJobsContainer.innerHTML = '<p>Error fetching active jobs.</p>';
+        futureJobsContainer.innerHTML = '<p>Error fetching future jobs.</p>';
+        console.error('Error fetching jobs:', error);
+    });
+}
  
  // Display active jobs dynamically
- function displayActiveJobs(jobs, labourId) {
-     const jobContainer = document.getElementById('job-container');
-     jobContainer.innerHTML = ''; // Clear existing content
- 
-     jobs.forEach(job => {
-         const jobCard = document.createElement('div');
-         jobCard.classList.add('job-container');
- 
-         jobCard.innerHTML = `
-             <div class="job-summary" onclick="toggleJobDetails(this)">
-         <div class="job-header">
-             <p><strong>Job Title:</strong> ${job.title}</p>
-             <p><strong>Start Date:</strong> ${new Date(job.start_date).toISOString().split('T')[0]}</p>
-             <p><strong>End Date:</strong> ${new Date(job.end_date).toISOString().split('T')[0]}</p>
-             <span class="arrow">▼</span>
-         </div>
-     </div>
-         </div>
- 
-         <div class="job-details" style="display: none;">
-             <p><strong>Job Description:</strong></p>
-             <div class="editable-box">
-                 <span>${job.description}</span>
-             </div>
- 
-             <p><strong>Job Location:</strong></p>
-             <div class="editable-box">
-                 <span>${job.location}</span>
-             </div>
-             <p><strong>Amount:</strong></p>
-             <div class="editable-box">
-                 <span>${job.amount} rs</span>
-             </div>
- 
-             <p><strong>Status:</strong></p>
-             <div class="editable-box">
-                 <span>${job.status}</span>
-             </div>
- 
-             <p><strong>No. of Workers:</strong></p>
-             <div class="editable-box">
-                 <span>${job.number_of_workers}</span>
-             </div>
-             <div>
-                 <button class="confirm-job-btn" data-job-id="${job._id}">Confirm</button>
-             </div>
-         `;
- 
-         jobContainer.appendChild(jobCard);
-     });
- 
-     // Add toggle for job details visibility
-     toggleJobDetails();
- 
-     // Add event listeners for "Confirm" buttons
-     document.querySelectorAll('.confirm-job-btn').forEach(button => {
-         button.addEventListener('click', function () {
-             selectedJobId = this.getAttribute('data-job-id');
-             // Only show the popup, no API call yet
-             showConfirmationPopup(selectedLabourId, selectedJobId);
-         });
-     });
- }
+ function displayJobs(jobs, container, labourId, emptyMessage) {
+    container.innerHTML = ''; // Clear existing content
+
+    if (jobs.length === 0) {
+        container.innerHTML = `<p>${emptyMessage}</p>`;
+        return;
+    }
+
+    jobs.forEach(job => {
+        const jobCard = document.createElement('div');
+        jobCard.classList.add('job-container');
+
+        jobCard.innerHTML = `
+            <div class="job-summary" onclick="toggleJobDetails(this)">
+                <div class="job-header">
+                    <p><strong>Job Title:</strong> ${job.title}</p>
+                    <p><strong>Start Date:</strong> ${new Date(job.start_date).toISOString().split('T')[0]}</p>
+                    <p><strong>End Date:</strong> ${new Date(job.end_date).toISOString().split('T')[0]}</p>
+                    <span class="arrow">▼</span>
+                </div>
+            </div>
+            <div class="job-details" style="display: none;">
+                <p><strong>Job Description:</strong></p>
+                <div class="editable-box"><span>${job.description}</span></div>
+                <p><strong>Job Location:</strong></p>
+                <div class="editable-box"><span>${job.location}</span></div>
+                <p><strong>Amount:</strong></p>
+                <div class="editable-box"><span>${job.amount} rs</span></div>
+                <p><strong>Status:</strong></p>
+                <div class="editable-box"><span>${job.status}</span></div>
+                <p><strong>No. of Workers:</strong></p>
+                <div class="editable-box"><span>${job.number_of_workers}</span></div>
+                <div>
+                    <button class="confirm-job-btn" data-job-id="${job._id}">Confirm</button>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(jobCard);
+    });
+
+    // Add toggle functionality for job details visibility
+    toggleJobDetails();
+
+    // Add event listeners for "Confirm" buttons
+    container.querySelectorAll('.confirm-job-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            selectedJobId = this.getAttribute('data-job-id');
+            showConfirmationPopup(labourId, selectedJobId);
+        });
+    });
+}
  
  // Function to toggle job details visibility
  function toggleJobDetails() {
