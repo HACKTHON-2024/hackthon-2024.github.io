@@ -1,7 +1,17 @@
 document.addEventListener('DOMContentLoaded', async function () {
+
+    const datepicker = document.getElementById('datepicker');
+
+    // Set the default value of the date picker to today's date
+    const today = new Date().toISOString().split('T')[0];
+    datepicker.value = today; // Set the default date picker value to today
+
+    // Make the date picker read-only to prevent users from changing the date
+    datepicker.setAttribute('readonly', true);
+
     const labourList = document.querySelector('.labour-list');
 
-    // Fetch active jobs from the server
+    // Function to fetch active jobs from the server
     async function fetchActiveJobs() {
         try {
             const token = getToken();  // Get JWT token
@@ -13,7 +23,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                     'Content-Type': 'application/json'
                 }
             });
-    
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

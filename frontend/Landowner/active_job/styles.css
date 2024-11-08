@@ -317,9 +317,11 @@ h2 {
 }
 
 .options {
+    position: relative;
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
+    justify-content: end;
+    margin-right: 2%;
+    top: -21px;
 }
 
 .dropdown {
@@ -360,18 +362,32 @@ h2 {
     display: block;
 }
 
-.datepicker {
-    position: absolute;
-    top: 0%;
-    left: 70%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    width: 200px;
-    height: 37px;
-    /* You can also try relative, fixed, or sticky */
+.datepicker-container {
+    position: relative;
+    display: flex;
+    justify-content: end;
+    margin-right: 12%;
+    top: 16px; /* Adjust the value to move the container down */
 }
 
+
+.datepicker {
+    padding: 10px;
+    padding-right: 35px; /* Space for the icon */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    height: 37px;
+    cursor: pointer;
+    width: 20%;
+}
+
+.icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* So the icon doesn't block clicks */
+}
 .labour-list {
     position: relative;
     margin: 6%;

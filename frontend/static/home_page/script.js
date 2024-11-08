@@ -22,11 +22,11 @@ var userLoggedIn = localStorage.getItem('jwt') !== null; // Assuming a token is 
 // Function to show/hide login and signup buttons based on login status
 function updateAuthButtons() {
     if (userLoggedIn) {
-        loginBtn.style.display = "none"; // Hide login button
-        signupBtn.style.display = "none"; // Hide signup button
+        modal.style.display = "none"; // Hide login button
+        modal.style.display = "none"; // Hide signup button
     } else {
-        loginBtn.style.display = "inline-block"; // Show login button
-        signupBtn.style.display = "inline-block"; // Show signup button
+        loginBtn.style.display = "block"; // Show login button
+        signupBtn.style.display = "block"; // Show signup button
     }
 }
 
