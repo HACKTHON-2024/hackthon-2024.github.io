@@ -203,3 +203,9 @@ function getToken() {
     return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
 }
 
+  // Function to open the modal
+  function openModal(jobId) {
+    selectedJobId = jobId; // Set the selected job ID
+    jobListModal.classList.remove('hidden'); // Show the modal
+}
+
