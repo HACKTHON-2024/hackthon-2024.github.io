@@ -433,11 +433,10 @@ router.get("/view_requests", landownerMiddleware, async function(req, res) {
       res.status(500).json({ message: "An error occurred while fetching the profile" });
     }
   });
-  
+
   router.get("/get_job_history", landownerMiddleware, async (req, res) => {
     try {
         const user_id = req.user._id; // Assuming req.user contains authenticated landowner's ID
-        const currentDate = new Date(); // Current date to compare job statuses
 
         // Fetch the landowner's job history and populate the job details
         const landowner = await Landowner.findById(user_id).populate('job_history').exec();
@@ -446,20 +445,7 @@ router.get("/view_requests", landownerMiddleware, async function(req, res) {
             return res.status(404).json({ message: "No jobs found in the landowner's job history" });
         }
 
-        // Separate completed and ongoing jobs
-        const completedJobs = landowner.job_history.filter(job => job.end_date < currentDate);
-        const ongoingJobs = landowner.job_history.filter(job => 
-            job.start_date <= currentDate && job.end_date >= currentDate
-        );
-
-        // Send the completed and ongoing jobs in the response
-        res.status(200).json({
-            success: true,
-            data: {
-                completedJobs,
-                ongoingJobs
-            }
-        });
+        res.status(200).json(landowner.job_history);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "An error occurred while fetching jobs", error: error.message });
