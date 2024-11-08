@@ -20,13 +20,13 @@ function getJobIdFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('jobId'); // Retrieves jobId parameter from the URL
 }
-// Format date utility function
+// Format date utility function to return 'yyyy-MM-dd' format
 function formatDate(dateString) {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
 }
 
 // Fetch job details and populate form fields and worker details
