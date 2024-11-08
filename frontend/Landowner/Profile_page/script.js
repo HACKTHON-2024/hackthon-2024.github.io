@@ -122,7 +122,7 @@ async function fetchJobData() {
                         <p><strong>Job Location:</strong> ${job.location}</p>
                         <p><strong>Amount:</strong> ${job.amount}</p>
                         <p><strong>Status:</strong> ${job.status}</p>
-                        <p><strong>No. of Workers:</strong> ${job.number_of_workers}</p>
+                          <p><strong>Workers needed:</strong> ${job.worker_id.length}/${job.number_of_workers}</p>
                     </div>
                 `;
                 container.appendChild(jobElement);

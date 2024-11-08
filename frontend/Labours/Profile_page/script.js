@@ -65,7 +65,7 @@
                     showAuthPopup(); // Show login/signup popup if not logged in
                     return;
                 }
-                                   const response = await fetch('http://localhost:3000/labour/get_job_history', {
+                   const response = await fetch('http://localhost:3000/labour/get_job_history', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
@@ -103,6 +103,10 @@
                             <p><strong>Amount:</strong></p>
                             <div class="editable-box">
                                 <span>${job.amount}</span>
+                            </div>
+                            <p><strong>Workers needed:</strong></p>
+                            <div class="editable-box">
+                                <span>${job.worker_id.length}/${job.number_of_workers}</span>
                             </div>
                         </div>
                     `;

@@ -91,6 +91,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 <p><strong>Amount:</strong> ₹${job.amount}</p>
                 <p><strong>Start Date:</strong> ${new Date(job.start_date).toLocaleDateString()}</p>
                 <p><strong>End Date:</strong> ${new Date(job.end_date).toLocaleDateString()}</p>
+                <p><strong>Workers needed:</strong> ${job.worker_id.length}/${job.number_of_workers}</p>
+
             </div>
             <div class="location">
                 <p><strong>Location:</strong> ${job.taluk}, ${job.city}</p>
