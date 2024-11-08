@@ -70,8 +70,9 @@ async function fetchJobData() {
         });
 
         const jobs = await response.json();
-        console.log('Job Data:', jobs);
-
+        //console.log('Job Data:', jobs.data)
+        console.log('Job Data:', jobs.data.completedJobs);
+        console.log('Job Data:', jobs.data.ongoingJobs);
         const jobContainer = document.querySelector('.job-created-section');
         jobContainer.innerHTML = '<h2>Jobs Created:</h2>';
 
