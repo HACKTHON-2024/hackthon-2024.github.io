@@ -108,12 +108,18 @@
 <!-- Job list modal -->
 <div id="job-list-modal" class="job-modal hidden">
     <button id="close-job-modal" class="close-btn">X</button>
-    <div class="job-container" id="job-container">
-        <!-- Job cards will be dynamically inserted here -->
+    <div class="job-container">
+        <p>Active Jobs</p>
+        <div id="active-jobs-container">
+            <!-- Active job cards will be dynamically inserted here -->
+        </div>
+        <p>Future Jobs</p>
+        <div id="future-jobs-container">
+            <!-- Future job cards will be dynamically inserted here -->
+        </div>
     </div>
 </div>
 
-<!-- Authentication popup -->
 <!-- Authentication popup -->
 <div id="auth-popup" class="popup hidden">
     <div class="popup-content">

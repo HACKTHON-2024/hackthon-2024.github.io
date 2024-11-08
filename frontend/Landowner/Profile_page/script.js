@@ -58,6 +58,13 @@ async function fetchProfileData() {
 }
 
 // Fetch job history and display dynamically
+// Utility function to format date
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+}
+
+// Fetch job history and display dynamically, separating completed and future jobs
 async function fetchJobData() {
     try {
         const token = getToken();
@@ -72,36 +79,68 @@ async function fetchJobData() {
         const jobs = await response.json();
         console.log('Job Data:', jobs);
 
+        // Get the current date to compare with job dates
+        const currentDate = new Date();
+
+        // Separate jobs into completed and future
+        const completedJobs = jobs.filter(job => new Date(job.end_date) < currentDate);
+        const futureJobs = jobs.filter(job => new Date(job.start_date) > currentDate);
+
+        // Container for displaying jobs
         const jobContainer = document.querySelector('.job-created-section');
         jobContainer.innerHTML = '<h2>Jobs Created:</h2>';
 
-        jobs.forEach((job) => {
-            const jobElement = document.createElement('div');
-            jobElement.classList.add('job-container');
+        // Create sections for completed and future jobs
+        const completedJobsContainer = document.createElement('div');
+        const futureJobsContainer = document.createElement('div');
 
-            jobElement.innerHTML = `
-                <div class="job-summary" onclick="toggleJobDetails(this)">
-                    <div class="job-header">
-                        <p><strong>Job Title:</strong> ${job.title}</p>
-                        <p><strong>Start Date:</strong> ${formatDate(job.start_date)}</p>
-                        <p><strong>End Date:</strong> ${formatDate(job.end_date)}</p>
-                        <span class="arrow">▼</span>
+        completedJobsContainer.innerHTML = '<h3>Completed Jobs:</h3>';
+        futureJobsContainer.innerHTML = '<h3>Future Jobs:</h3>';
+
+        // Function to render jobs in a container
+        function displayJobs(jobs, container) {
+            if (jobs.length === 0) {
+                container.innerHTML += '<p>No jobs available in this category.</p>';
+                return;
+            }
+
+            jobs.forEach((job) => {
+                const jobElement = document.createElement('div');
+                jobElement.classList.add('job-container');
+
+                jobElement.innerHTML = `
+                    <div class="job-summary" onclick="toggleJobDetails(this)">
+                        <div class="job-header">
+                            <p><strong>Job Title:</strong> ${job.title}</p>
+                            <p><strong>Start Date:</strong> ${formatDate(job.start_date)}</p>
+                            <p><strong>End Date:</strong> ${formatDate(job.end_date)}</p>
+                            <span class="arrow">▼</span>
+                        </div>
                     </div>
-                </div>
-                <div class="job-details" style="display: none;">
-                    <p><strong>Job Description:</strong> ${job.description}</p>
-                    <p><strong>Job Location:</strong> ${job.location}</p>
-                    <p><strong>Amount:</strong> ${job.amount}</p>
-                    <p><strong>Status:</strong> ${job.status}</p>
-                    <p><strong>No. of Workers:</strong> ${job.number_of_workers}</p>
-                </div>
-            `;
-            jobContainer.appendChild(jobElement);
-        });
+                    <div class="job-details" style="display: none;">
+                        <p><strong>Job Description:</strong> ${job.description}</p>
+                        <p><strong>Job Location:</strong> ${job.location}</p>
+                        <p><strong>Amount:</strong> ${job.amount}</p>
+                        <p><strong>Status:</strong> ${job.status}</p>
+                        <p><strong>No. of Workers:</strong> ${job.number_of_workers}</p>
+                    </div>
+                `;
+                container.appendChild(jobElement);
+            });
+        }
+
+        // Display completed and future jobs in their respective containers
+        displayJobs(completedJobs, completedJobsContainer);
+        displayJobs(futureJobs, futureJobsContainer);
+
+        // Append the completed and future job containers to the main job container
+        jobContainer.appendChild(completedJobsContainer);
+        jobContainer.appendChild(futureJobsContainer);
     } catch (error) {
         console.error('Error fetching job data:', error);
     }
 }
+
 
 // Toggle job details visibility
 function toggleJobDetails(jobSummaryElement) {
