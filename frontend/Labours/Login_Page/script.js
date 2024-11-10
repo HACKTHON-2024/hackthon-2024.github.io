@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Simple validation
         if (!identifier) {
-            alert("Please enter email or mobile number");
+            showMessage('error', 'Input Required', 'Please enter email or mobile number');
             return;
         }
 
@@ -37,11 +37,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const identifier = document.getElementById('email-input').value;
 
         if (!password) {
-            alert("Please enter your password");
+            showMessage('error', 'Input Required', 'Please enter your password');
             return;
         }
 
-        // Send login request
         try {
             const response = await fetch('http://localhost:3000/labour/signin', {
                 method: 'POST',
@@ -50,19 +49,19 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const result = await response.json();
-            console.log(result)
             if (response.ok) {
-                // Store JWT in local storage
                 localStorage.setItem('jwt', result.token);
-                alert("Logged in successfully");
+                showMessage('success', 'Success!', 'Logged in successfully');
                 
-                // Redirect to the desired page after successful login
-                window.location.href = "../LandOwner_Jobs/index.html"; // Replace "/dashboard" with your desired URL
+                // Redirect after message is shown
+                setTimeout(() => {
+                    window.location.href = "../LandOwner_Jobs/index.html";
+                }, 2000);
             } else {
-                alert(result.message || "Login failed");
+                showMessage('error', 'Login Failed', result.message || "Invalid credentials");
             }
         } catch (error) {
-            alert("Error logging in");
+            showMessage('error', 'Error', 'Error logging in. Please try again.');
         }
     });
 
@@ -71,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const identifier = document.getElementById('email-input').value;
 
         if (!identifier) {
-            alert("Please enter email or mobile number");
+            showMessage('error', 'Input Required', 'Please enter email or mobile number');
             return;
         }
 
@@ -90,12 +89,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Show OTP container
                 passwordContainer.classList.add('hidden');
                 otpContainer.classList.remove('hidden');
-                alert("OTP sent successfully");
+                showMessage('success', 'OTP Sent', 'OTP has been sent successfully');
             } else {
-                alert(result.message || "Failed to send OTP");
+                showMessage('error', 'Failed', result.message || "Failed to send OTP");
             }
         } catch (error) {
-            alert("Error sending OTP");
+            showMessage('error', 'Error', 'Error sending OTP');
         }
     });
 
@@ -160,12 +159,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (response.ok) {
-                alert("OTP resent successfully");
+                showMessage('success', 'OTP Resent', 'OTP has been resent successfully');
             } else {
-                alert("Failed to resend OTP");
+                showMessage('error', 'Failed', 'Failed to resend OTP');
             }
         } catch (error) {
-            alert("Error resending OTP");
+            showMessage('error', 'Error', 'Error resending OTP');
         }
     });
 
@@ -180,3 +179,30 @@ document.addEventListener('DOMContentLoaded', function () {
         passwordContainer.classList.remove('hidden');
     });
 });
+
+function showMessage(type, title, message) {
+    const overlay = document.getElementById('messageOverlay');
+    const messageBox = overlay.querySelector('.message-box');
+    const icon = overlay.querySelector('.message-icon i');
+    const titleElement = overlay.querySelector('h3');
+    const messageElement = overlay.querySelector('p');
+
+    // Set message type (success or error)
+    icon.className = type === 'success' 
+        ? 'fas fa-check-circle success-icon'
+        : 'fas fa-exclamation-circle error-icon';
+
+    // Set content
+    titleElement.textContent = title;
+    messageElement.textContent = message;
+
+    // Show overlay
+    overlay.classList.remove('hidden');
+    setTimeout(() => overlay.classList.add('show'), 10);
+
+    // Auto hide after 3 seconds
+    setTimeout(() => {
+        overlay.classList.remove('show');
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+    }, 3000);
+}

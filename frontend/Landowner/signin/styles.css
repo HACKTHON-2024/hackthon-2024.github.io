@@ -51,10 +51,14 @@ body {
     transform: translateY(-2px);
 }
 
+/* Logo Styles */
 .logo-img {
     width: 35px;
     height: 35px;
     filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
+    border: 2px solid var(--primary-color);  /* Add border */
+    border-radius: 50%;  /* Make it circular */
+    padding: 2px;  /* Add some space between image and border */
 }
 
 .logo-text {
@@ -171,6 +175,7 @@ main {
 .auth-container {
     max-width: 400px;
     margin: 2rem auto;
+    max-height: 90vh;
 }
 
 .auth-box {
