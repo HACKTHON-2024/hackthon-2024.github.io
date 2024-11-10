@@ -1,234 +1,475 @@
-body {
-    font-family: Arial, sans-serif;
+:root {
+    --primary-color: #2E7D32;
+    --secondary-color: #81C784;
+    --accent-color: #FFA000;
+    --text-color: #333;
+    --border-color: #E0E0E0;
+}
+
+* {
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
-    background-image: url(http://localhost:3000/frontend/static/Images/login.png);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size:cover;
-    background-position: center;
+    box-sizing: border-box;
 }
 
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(rgba(148, 231, 145, 0.5), rgba(255, 255, 255, 0.6)),
+                url('https://images.unsplash.com/photo-1464226184884-fa280b87c399') center/cover no-repeat fixed;
+    min-height: 100vh;
+}
 
-header {
-    position: fixed;
+/* Modern Header Styles */
+.site-header {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.98));
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
     top: 0;
-    /* Align to the top of the page */
-    left: 0;
-    /* Align to the left of the page */
-    width: 100%;
-    /* Full width */
-    background-color: rgb(224, 224, 224);
-    border-bottom: 0px solid #000000;
-    padding: 12px 0px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 2000;
+    z-index: 1000;
+    border-bottom: 2px solid var(--primary-color);
 }
-
-/* LabourField Heading Styles */
-header h1 {
-    font-family:Arial, Helvetica, sans-serif;
-    /* Apply the Kavoon font */
-    font-size: 2.5em;
-    /* Adjust size as needed */
-    margin: 0;
-    background: #228B22;
-    /* Gradient from #91FF56 to #666666 */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
 
 .header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
-}
-
-.logo {
+    padding: 0.5rem 2rem;
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
-.logo img {
-    height: 40px;
-    /* Adjust the size as needed */
-    width: 40px;
-    /* Ensure the width and height are equal for a circle */
-    border-radius: 50%;
-    /* Makes the image circular */
-    margin-right: 10px;
-    object-fit: cover;
-    /* Ensures the image scales correctly within the circle */
-    background-color: rgb(224, 224, 224);
-    border: 1px solid black;
+/* Logo Styles */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem;
 }
 
-.logo h1 {
-    font-size: 2em;
-    margin: 0;
+.logo-container:hover {
+    transform: translateY(-2px);
 }
 
-nav a {
+.logo-img {
+    width: 35px;
+    height: 35px;
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-family: 'Merriweather', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.5px;
+}
+
+.tagline {
+    font-size: 0.75rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* Navigation Styles */
+.main-nav ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.nav-link {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
     text-decoration: none;
-    color: #333;
-    margin: 0 15px;
-    font-size: 1em;
+    color: var(--text-color);
+    padding: 0.3rem;
+    position: relative;
+    transition: all 0.3s ease;
 }
 
-nav a:hover {
-    color: #4CAF50;
-    /* Or any color you prefer for hover effect */
+.nav-link i {
+    font-size: 1rem;
+    color: var(--primary-color);
 }
-.login-container, .password-container, .otp-container {
+
+.nav-link span {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.nav-link::after {
+    content: '';
     position: absolute;
-    right: 10%; /* Adjust based on your requirement */
-    top: 55%; /* Centers vertically */
-    transform: translateY(-50%); /* Centers container correctly */
-    height: 50%; /* Set height to auto to fit content */
-    width: 30%; /* Adjust width as needed */
-    padding: 30px; /* Increase padding for better spacing */
-    background: rgba(255, 255, 255, 0.85); /* Slightly opaque background */
-    border-radius: 15px; /* Smooth borders */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Elevate box with shadow */
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Add animation for active link */
+.nav-link.active {
+    color: var(--primary-color);
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+
+    .main-nav ul {
+        gap: 0.8rem;
+        margin-top: 1rem;
+    }
+
+    .nav-link {
+        padding: 0.3rem;
+    }
+
+    .brand-name {
+        font-size: 1.2rem;
+    }
+
+    .tagline {
+        font-size: 0.7rem;
+    }
+}
+
+/* Add this in your head section for icons */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+/* Main Content Styles */
+main {
+    padding: 2rem 5%;
+}
+
+.auth-container {
+    max-width: 400px;
+    margin: 2rem auto;
+}
+
+.auth-box {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+}
+
+.auth-box h2 {
+    color: var(--primary-color);
+    font-family: 'Merriweather', serif;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.auth-box h2::after {
+    content: '🌾';  /* Wheat emoji */
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+/* Primary Button Styles */
+.primary-button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.primary-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+    background: linear-gradient(45deg, #1B5E20, var(--primary-color));
+}
+
+.primary-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(46, 125, 50, 0.2);
+}
+
+/* Secondary Button Styles (for OTP and other secondary actions) */
+.secondary-button {
+    width: 100%;
+    padding: 12px;
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.secondary-button:hover {
+    background: #f0f8f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.1);
+}
+
+.secondary-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Optional: Add ripple effect on click */
+.primary-button::after,
+.secondary-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.primary-button:active::after,
+.secondary-button:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* Disabled state */
+.primary-button:disabled,
+.secondary-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.divider {
+    text-align: center;
+    margin: 1rem 0;
+    position: relative;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background: var(--border-color);
+}
+
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+.divider span {
+    background: white;
+    padding: 0 10px;
+    color: #666;
+}
+
+.auth-footer {
+    margin-top: 1.5rem;
     text-align: center;
 }
 
-.password-container, .otp-container {
-    top: 57%; /* Slightly lower position for these screens */
-    height: auto; /* Adjust height to fit content */
+.auth-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+}
+
+.auth-footer a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.auth-footer a:hover::after {
+    width: 100%;
+}
+
+.auth-footer .back-link {
+    display: block;
+    margin-bottom: 1rem;
 }
 
 .hidden {
     display: none;
 }
 
-.login-input input, .password-input input, .otp-input input {
-    width: 85%; /* Keep input width consistent */
-    padding: 12px; /* Comfortable padding for all inputs */
-    margin: 15px 0; /* Add vertical spacing */
-    border-radius: 8px; /* Rounded input corners */
-    border: 1px solid #aaa; /* Slightly darker border for better contrast */
+/* OTP specific styles */
+.otp-message {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #666;
 }
 
-.login-button, .password-button, .otp-button {
-    width: 85%; /* Consistent width for buttons */
-    padding: 12px; /* Comfortable padding */
-    margin: 15px 0; /* Spacing for uniformity */
-    background-color: #4CAF50; /* Consistent button color */
-    color: white;
-    border: none;
-    border-radius: 8px; /* Match button radius to inputs */
-    cursor: pointer;
-    font-size: 16px; /* Slightly larger font size */
-}
-
-.login-button:hover, .password-button:hover, .otp-button:hover {
-    background-color: #45A049; /* Slightly darker on hover */
-}
-
-.otp-button {
-    background-color: #4CAF50; /* Lighter background for secondary actions */
-    color: #333;
-    border: 1px solid #ccc; /* Match border with inputs */
-    border-radius: 8px;
-    cursor: pointer;
-    margin: 15px 0;
-}
-
-.otp-button:hover {
-    background-color: #45A049; /* Slight hover effect */
-}
-
-.back-link, .signup-link {
-    text-decoration: none;
-    color: #4CAF50;
-    margin: 15px 0;
+.resend-link {
     display: block;
-    font-size: 14px; /* Slightly larger font */
+    text-align: center;
+    margin: 1rem 0;
+    color: var(--primary-color);
+    text-decoration: none;
 }
 
-.signup-link:hover, .back-link:hover {
-    text-decoration: underline;
+/* Message Overlay Styles */
+.message-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
 }
 
-.resend {
-    color: #007bff;
-    cursor: pointer;
-    margin-top: 15px;
+.message-overlay.show {
+    opacity: 1;
+    visibility: visible;
 }
 
-.resend:hover {
-    text-decoration: underline;
+.message-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 400px;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    animation: slideIn 0.5s ease forwards;
 }
 
-/*otp verification css*/
-
-
-/* Responsive */
-@media (max-width: 768px) {
-
-    .header-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .logo h1 {
-        justify-content: flex-start;
-        font-size: 1.5em;
-    }
-
-    nav {
-        margin: 0px;
-        /* Adjust spacing for smaller screens */
-    }
-
-    nav a {
-        justify-content: center;
-        margin: 10px;
-    }
-
-    .navbar {
-        position: fixed;
-    }
-
-
+.message-overlay.show .message-box {
+    transform: translateY(0);
 }
 
-@media (max-width: 480px) {
-    .profile img {
-        width: 100px;
-        height: 100px;
-    }
-
-    .profile h2 {
-        font-size: 1.2em;
-    }
-
+.message-icon {
+    font-size: 2.5rem;
 }
 
+.success-icon {
+    color: #2E7D32;
+}
 
+.error-icon {
+    color: #d32f2f;
+}
 
-/* Responsive Text Sizing */
-@media (max-width: 1200px) {
-    body {
-        font-size: 14px;
+.message-content h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-family: 'Merriweather', serif;
+}
+
+.message-content p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-@media (max-width: 768px) {
-    body {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        font-size: 10px;
-    }
+/* Hide class */
+.hidden {
+    display: none;
 }

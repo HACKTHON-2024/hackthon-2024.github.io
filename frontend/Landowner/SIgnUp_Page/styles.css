@@ -496,3 +496,15 @@ input[type="tel"] {
         font-size: 10px;
     }
 }
+
+.error-text {
+    color: #ff3333;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.input-error {
+    border: 1px solid #ff3333 !important;
+}

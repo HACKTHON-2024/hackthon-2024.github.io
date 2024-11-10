@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Simple validation
         if (!identifier) {
-            alert("Please enter email or mobile number");
+            showMessage('error', 'Input Required', 'Please enter email or mobile number');
             return;
         }
 
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const identifier = document.getElementById('email-input').value;
 
         if (!password) {
-            alert("Please enter your password");
+            showMessage('error', 'Input Required', 'Please enter your password');
             return;
         }
 
@@ -50,18 +50,19 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const result = await response.json();
-            console.log(result)
             if (response.ok) {
-                // Store JWT in local storage
                 localStorage.setItem('jwt', result.token);
-                alert("Logged in successfully");
-
-                window.location.href = "../job_listing/index.html";
+                showMessage('success', 'Success!', 'Logged in successfully');
+                
+                // Redirect after message is shown
+                setTimeout(() => {
+                    window.location.href = "../job_listing/index.html";
+                }, 2000);
             } else {
-                alert(result.message || "Login failed");
+                showMessage('error', 'Login Failed', result.message || "Invalid credentials");
             }
         } catch (error) {
-            alert("Error logging in");
+            showMessage('error', 'Error', 'Error logging in. Please try again.');
         }
     });
 
@@ -70,31 +71,28 @@ document.addEventListener('DOMContentLoaded', function () {
         const identifier = document.getElementById('email-input').value;
 
         if (!identifier) {
-            alert("Please enter email or mobile number");
+            showMessage('error', 'Input Required', 'Please enter email or mobile number');
             return;
         }
 
         try {
-            // Send OTP based on the earlier check (isEmail)
             const route = isEmail ? 'http://localhost:3000/mail_otp/send-otp' : 'http://localhost:3000/otp/send-otp';
             const response = await fetch(route, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ identifier })
             });
-            console.log("befor await")
+
             const result = await response.json();
-            console.log(result)
             if (response.ok) {
-                // Show OTP container
                 passwordContainer.classList.add('hidden');
                 otpContainer.classList.remove('hidden');
-                alert("OTP sent successfully");
+                showMessage('success', 'OTP Sent', 'OTP has been sent successfully');
             } else {
-                alert(result.message || "Failed to send OTP");
+                showMessage('error', 'Failed', result.message || "Failed to send OTP");
             }
         } catch (error) {
-            alert("Error sending OTP");
+            showMessage('error', 'Error', 'Error sending OTP. Please try again.');
         }
     });
 
@@ -104,12 +102,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const identifier = document.getElementById('email-input').value;
 
         if (!otp) {
-            alert("Please enter the OTP");
+            showMessage('error', 'Input Required', 'Please enter the OTP');
             return;
         }
 
         try {
-            // Verify OTP based on the earlier check (isEmail)
             const route = isEmail ? 'http://localhost:3000/mail_otp/verify-otp' : 'http://localhost:3000/otp/verify-otp';
             const response = await fetch(route, {
                 method: 'POST',
@@ -119,7 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const result = await response.json();
             if (response.ok) {
-                // Now log in the user using the same /signin route
                 const loginResponse = await fetch('http://localhost:3000/landowner/signin_by_otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -127,21 +123,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 const loginResult = await loginResponse.json();
-                console.log(loginResult.token)
                 if (loginResponse.ok) {
-                    // Store JWT token
                     localStorage.setItem('jwt', loginResult.token);
-                    alert("Logged in successfully");
-
-                    window.location.href = "../job_listing/index.html";
+                    showMessage('success', 'Success!', 'Logged in successfully');
+                    
+                    // Redirect after message is shown
+                    setTimeout(() => {
+                        window.location.href = "../job_listing/index.html";
+                    }, 2000);
                 } else {
-                    alert(loginResult.message || "Login failed");
+                    showMessage('error', 'Login Failed', loginResult.message || "Login failed");
                 }
             } else {
-                alert(result.message || "OTP verification failed");
+                showMessage('error', 'Verification Failed', result.message || "OTP verification failed");
             }
         } catch (error) {
-            alert("Error verifying OTP");
+            showMessage('error', 'Error', 'Error verifying OTP. Please try again.');
         }
     });
 
@@ -158,12 +155,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (response.ok) {
-                alert("OTP resent successfully");
+                showMessage('success', 'OTP Resent', 'OTP has been resent successfully');
             } else {
-                alert("Failed to resend OTP");
+                showMessage('error', 'Failed', 'Failed to resend OTP');
             }
         } catch (error) {
-            alert("Error resending OTP");
+            showMessage('error', 'Error', 'Error resending OTP. Please try again.');
         }
     });
 
@@ -178,3 +175,37 @@ document.addEventListener('DOMContentLoaded', function () {
         passwordContainer.classList.remove('hidden');
     });
 });
+
+function showMessage(type, title, message) {
+    const overlay = document.getElementById('messageOverlay');
+    const messageBox = overlay.querySelector('.message-box');
+    const icon = overlay.querySelector('.message-icon i');
+    const titleElement = overlay.querySelector('h3');
+    const messageElement = overlay.querySelector('p');
+
+    // Set message type (success or error)
+    icon.className = type === 'success' 
+        ? 'fas fa-check-circle success-icon'
+        : 'fas fa-exclamation-circle error-icon';
+
+    // Set content
+    titleElement.textContent = title;
+    messageElement.textContent = message;
+
+    // Show overlay
+    overlay.classList.remove('hidden');
+    setTimeout(() => overlay.classList.add('show'), 10);
+
+    // Auto hide after 3 seconds
+    setTimeout(() => {
+        overlay.classList.remove('show');
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+    }, 3000);
+}
+
+// Usage examples:
+// Success message
+// showMessage('success', 'Success!', 'You have successfully logged in.');
+
+// Error message
+// showMessage('error', 'Error!', 'Invalid credentials. Please try again.');

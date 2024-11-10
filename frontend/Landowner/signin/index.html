@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LabourField Profile</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kavoon&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="styles.css">
     <script src="script.js"></script>
@@ -14,54 +14,109 @@
 
 <body>
 
-    <header>
+    <header class="site-header">
         <div class="header-container">
-            <div class="logo">
-                <img src="http://localhost:3000/frontend/static/Images/logo.png" alt="Logo">
-                <h1>LabourField</h1>
+            <div class="logo-container">
+                <img src="https://img.icons8.com/color/48/farm.png" alt="Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="brand-name">LabourField</span>
+                    <span class="tagline">Connecting Farms & Labor</span>
+                </div>
             </div>
-            <nav>
-                <a href="http://localhost:5500/frontend/static/home_page/index.html">Home</a>
-                <a href="http://localhost:5500/frontend/static/home_page/index.html">About Us</a>
-                <a href="http://localhost:5500/frontend/static/home_page/index.html">Services</a>
-                <a href="http://localhost:5500/frontend/static/home_page/index.html">Help & Support</a>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-info-circle"></i>
+                            <span>About Us</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-tractor"></i>
+                            <span>Services</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-headset"></i>
+                            <span>Help & Support</span>
+                        </a>
+                    </li>
+                </ul>
             </nav>
         </div>
     </header>
 
-    <!-- First Login Screen -->c
-    <div class="login-container active" id="login-container">
-        <h1>LandOwner Log In</h1>
-        <div class="login-input">
-            <input type="text" placeholder="Email or Mobile phone number" id="email-input">
+    <main>
+        <!-- Login Screen -->
+        <div class="auth-container active" id="login-container">
+            <div class="auth-box">
+                <h2>LandOwner Log In</h2>
+                <div class="input-group">
+                    <input type="text" placeholder="Email or Mobile phone number" id="email-input">
+                </div>
+                <button class="primary-button" id="continue-button">Continue</button>
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="#" class="signup-link">Sign up</a></p>
+                </div>
+            </div>
         </div>
-        <button class="login-button" id="continue-button">Continue</button>
-        <p>Don't have an account? <a href="#" class="signup-link">Sign up</a></p>
-    </div>
 
-    <!-- Second Password & OTP Screen -->
-    <div class="password-container hidden" id="password-container">
-        <h2>Password</h2>
-        <div class="password-input">
-            <input type="password" placeholder="Password" id="password-input">
+        <!-- Password Screen -->
+        <div class="auth-container hidden" id="password-container">
+            <div class="auth-box">
+                <h2>Enter Password</h2>
+                <div class="input-group">
+                    <input type="password" placeholder="Password" id="password-input">
+                </div>
+                <button class="primary-button" id="password-continue">Continue</button>
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                <button class="secondary-button" id="otp-button">Get an OTP</button>
+                <div class="auth-footer">
+                    <a href="#" class="back-link" id="go-back-link">Go Back</a>
+                    <p>Don't have an account? <a href="#" class="signup-link">Sign up</a></p>
+                </div>
+            </div>
         </div>
-        <button class="password-button" id="password-continue">Continue</button>
-        <p>OR</p>
-        <button class="otp-button" id="otp-button" style="color: white;">Get an OTP</button>
-        <a href="#" class="back-link" id="go-back-link">Go Back</a>
-        <p>Don't have an account? <a href="#" class="signup-link">Sign up</a></p>
-    </div>
 
-    <!-- OTP Verification Screen -->
-    <div class="otp-container hidden" id="otp-container">
-        <h2>Verify and log in</h2>
-        <p>Enter the OTP sent to your mobile 90031XXXXX</p>
-        <div class="otp-input">
-            <input type="text" placeholder="Enter 4 digit PIN" id="otp-input">
+        <!-- OTP Screen -->
+        <div class="auth-container hidden" id="otp-container">
+            <div class="auth-box">
+                <h2>Verify and log in</h2>
+                <p class="otp-message">Enter the OTP sent to your mobile 90031XXXXX</p>
+                <div class="input-group">
+                    <input type="text" maxlength="4" placeholder="Enter 4 digit PIN" id="otp-input">
+                </div>
+                <button class="primary-button" id="otp-login">Login</button>
+                <div class="auth-footer">
+                    <a href="#" class="resend-link" id="resend1">Resend OTP</a>
+                    <a href="#" class="back-link" id="go-back-password">Go Back</a>
+                </div>
+            </div>
         </div>
-        <button class="otp-button" id="otp-login" style="color: white;">Login</button>
-        <div class="resend" id="resend1">Resend OTP</div>
-        <a href="#" class="back-link" id="go-back-password">Go Back</a>
+    </main>
+
+    <!-- Add this right after your main content div -->
+    <div class="message-overlay hidden" id="messageOverlay">
+        <div class="message-box">
+            <div class="message-icon">
+                <i class="fas fa-check-circle success-icon"></i>
+            </div>
+            <div class="message-content">
+                <h3></h3>
+                <p></p>
+            </div>
+        </div>
     </div>
 
 </body>
