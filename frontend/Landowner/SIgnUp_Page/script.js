@@ -1,24 +1,82 @@
 async function onclickconfirm() {
     try {
+        // Create an array of required validations
+        const validations = [
+            { name: 'Name', result: validateName() },
+            { name: 'Gender', result: validateGender() },
+            { name: 'Date of Birth', result: validateDOB() },
+            { name: 'Aadhaar', result: validateAadhaar() },
+            { name: 'Mobile', result: validateMobile() },
+            { name: 'Email', result: validateEmail() },
+            { name: 'Land Size', result: validateLandSize() },
+            { name: 'Location', result: validateLocation() },
+            { name: 'Land Type', result: validateLandType() },
+            { name: 'Password', result: validatePassword() },
+            { name: 'Confirm Password', result: validateConfirmPassword() }
+        ];
+
+        // Check if any validations failed
+        const failedValidations = validations.filter(v => !v.result);
+        
+        if (failedValidations.length > 0) {
+            const errorMessageElement = document.getElementById('error-message');
+            const failedFields = failedValidations.map(v => v.name);
+            
+            // Create formatted error message
+            errorMessageElement.innerHTML = `
+                <button id="error-message-close">&times;</button>
+                <h3>Please Fix the Following Errors:</h3>
+                <ul>
+                    ${failedFields.map(field => `<li>${field}</li>`).join('')}
+                </ul>
+            `;
+            
+            errorMessageElement.classList.add('show');
+            
+            // Add close button functionality
+            document.getElementById('error-message-close').onclick = function() {
+                errorMessageElement.classList.remove('show');
+            };
+            
+            // Don't throw error, just return
+            return;
+        }
+
+        // Check terms acceptance
+        const termsAccepted = document.querySelector('input[type="checkbox"]').checked;
+        if (!termsAccepted) {
+            const errorMessageElement = document.getElementById('error-message');
+            errorMessageElement.innerHTML = `
+                <button id="error-message-close">&times;</button>
+                <h3>Please Accept Terms and Conditions</h3>
+            `;
+            errorMessageElement.classList.add('show');
+            
+            document.getElementById('error-message-close').onclick = function() {
+                errorMessageElement.classList.remove('show');
+            };
+            return;
+        }
+
+        // Proceed with form submission if all validations pass
         const formData = {
-            username: document.getElementById('name').value,
+            username: document.getElementById('name').value.trim(),
             gender: document.getElementById('gender').value,
             DOB: document.getElementById('dob').value,
-            aadhaar_ID: document.getElementById('aadhaar').value,
-            mobile_number: document.getElementById('mobile').value,
-            alternate_mobile_number: document.getElementById('alternate-phone').value,
-            email: document.getElementById('email').value,
-            address: document.getElementById('address').value,
-            land_location: document.getElementById('land-location').value,
-            land_size: document.getElementById('land-size').value,
+            aadhaar_ID: document.getElementById('aadhaar').value.trim(),
+            mobile_number: document.getElementById('mobile').value.trim(),
+            alternate_mobile_number: document.getElementById('alternate-phone')?.value.trim() || '',
+            email: document.getElementById('email').value.trim(),
+            address: document.getElementById('address').value.trim(),
+            land_location: document.getElementById('land-location').value.trim(),
+            land_size: document.getElementById('land-size').value.trim(),
             state: document.getElementById('state').value,
             city: document.getElementById('city').value,
             taluk: document.getElementById('taluk').value,
             land_type: document.getElementById('land-type').value,
-            password: document.getElementById('password').value,
+            password: document.getElementById('password').value
         };
 
-        // Make an asynchronous API call using fetch
         const response = await fetch('http://localhost:3000/landowner/signup', {
             method: 'POST',
             headers: {
@@ -27,40 +85,104 @@ async function onclickconfirm() {
             body: JSON.stringify(formData),
         });
 
-        // Handle the response from the server
+        const result = await response.json();
+
         if (!response.ok) {
-            let errorData;
-            try {
-                errorData = await response.json();
-            } catch (e) {
-                console.error('Error parsing response:', e);
-                throw new Error('Failed to parse server error response');
-            }
-
-            if (errorData && errorData.errors) {
-                console.error('Server validation errors:', errorData.errors);
-                const errorMessageElement = document.getElementById('error-message');
-                errorMessageElement.innerHTML = 'Validation errors:<br>' +
-                    errorData.errors.map(e => `<strong>${e.field}:</strong> ${e.message}`).join('<br>');
-            } else {
-                console.error('Unexpected error format:', errorData);
-                throw new Error('Unexpected error format from the server');
-            }
-
-            return; // Stop further execution
+            const errorMessageElement = document.getElementById('error-message');
+            errorMessageElement.innerHTML = `
+                <button id="error-message-close">&times;</button>
+                <h3>Registration Failed</h3>
+                <p>${result.message || 'Please try again later.'}</p>
+            `;
+            errorMessageElement.classList.add('show');
+            document.querySelector('.overlay').classList.add('show');
+            
+            document.getElementById('error-message-close').onclick = function() {
+                errorMessageElement.classList.remove('show');
+                document.querySelector('.overlay').classList.remove('show');
+            };
+            return;
         }
 
-        const result = await response.json();
-        console.log('Form submitted successfully:', result);
+        // Show success message
+        const successMessage = document.createElement('div');
+        successMessage.id = 'success-message';
+        successMessage.innerHTML = `
+            <div class="success-content">
+                <i class="fas fa-check-circle"></i>
+                <h3>Registration Successful!</h3>
+                <p>You will be redirected to the login page shortly...</p>
+            </div>
+        `;
+        document.body.appendChild(successMessage);
+        document.querySelector('.overlay').classList.add('show');
 
-        // Show success message to the user
-        alert('Form submitted successfully!');
+        // Add success message styles
+        const successStyles = `
+            #success-message {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+                text-align: center;
+                border: 2px solid #4CAF50;
+            }
+
+            #success-message .success-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            #success-message i {
+                font-size: 48px;
+                color: #4CAF50;
+            }
+
+            #success-message h3 {
+                color: #4CAF50;
+                margin: 0;
+                font-size: 24px;
+            }
+
+            #success-message p {
+                color: #666;
+                margin: 0;
+            }
+        `;
+        const styleElement = document.createElement('style');
+        styleElement.textContent = successStyles;
+        document.head.appendChild(styleElement);
+
+        // Redirect after 2 seconds
+        setTimeout(() => {
+            window.location.href = '../login/index.html';
+        }, 2000);
+
     } catch (error) {
         console.error('Error:', error);
         const errorMessageElement = document.getElementById('error-message');
-        errorMessageElement.textContent = 'There was an error submitting the form. Please try again.';
+        errorMessageElement.innerHTML = `
+            <button id="error-message-close">&times;</button>
+            <h3>Error</h3>
+            <p>${error.message || 'An unexpected error occurred. Please try again.'}</p>
+        `;
+        errorMessageElement.classList.add('show');
+        document.querySelector('.overlay').classList.add('show');
+        
+        document.getElementById('error-message-close').onclick = function() {
+            errorMessageElement.classList.remove('show');
+            document.querySelector('.overlay').classList.remove('show');
+        };
     }
 }
+
 async function loadLocationData() {
     const response = await fetch('http://localhost:3000/frontend/static/india_data.json');
     const data = await response.json();
@@ -90,6 +212,7 @@ async function loadLocationData() {
                 citySelect.appendChild(cityOption);
             });
         }
+        validateLocation();
     });
 
     // Populate taluks based on selected city
@@ -107,40 +230,17 @@ async function loadLocationData() {
                 talukSelect.appendChild(talukOption);
             });
         }
+        validateLocation();
     });
+
+    // Add validation for taluk
+    talukSelect.addEventListener('change', validateLocation);
 }
 document.addEventListener('DOMContentLoaded', loadLocationData);
 
-function validateName() {
-    const name = document.getElementById('name');
-    const errorElement = document.getElementById('name-error');
-    
-    if (name.value.length < 2) {
-        showError(name, errorElement, 'Name must be at least 2 characters long');
-    } else if (!/^[a-zA-Z\s]*$/.test(name.value)) {
-        showError(name, errorElement, 'Name should only contain letters');
-    } else {
-        clearError(name, errorElement);
-    }
-}
-
-function validateGender() {
-    const gender = document.getElementById('gender');
-    const errorId = 'gender-error';
-    
-    if (!gender.value) {
-        showError(gender, errorId, 'Gender is required');
-        return false;
-    } else if (!['male', 'female', 'other'].includes(gender.value.toLowerCase())) {
-        showError(gender, errorId, 'Please enter Male, Female, or Other');
-        return false;
-    } else {
-        clearError(gender, errorId);
-        return true;
-    }
-}
-
 function showError(inputElement, errorId, message) {
+    if (!inputElement || !errorId) return;
+
     inputElement.style.borderColor = '#ff3333';
     let errorElement = document.getElementById(errorId);
     
@@ -148,7 +248,8 @@ function showError(inputElement, errorId, message) {
         errorElement = document.createElement('span');
         errorElement.id = errorId;
         errorElement.className = 'error-text';
-        inputElement.insertAdjacentElement('afterend', errorElement);
+        // Insert error message after the input element
+        inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
     }
     
     errorElement.textContent = message;
@@ -156,11 +257,45 @@ function showError(inputElement, errorId, message) {
 }
 
 function clearError(inputElement, errorId) {
+    if (!inputElement || !errorId) return;
+
     inputElement.style.borderColor = '';
     const errorElement = document.getElementById(errorId);
     if (errorElement) {
         errorElement.textContent = '';
         errorElement.style.display = 'none';
+    }
+}
+
+function validateName() {
+    const name = document.getElementById('name');
+    if (!name) return false;
+    
+    if (!name.value.trim()) {
+        showError(name, 'name-error', 'Name is required');
+        return false;
+    } else if (name.value.length < 2) {
+        showError(name, 'name-error', 'Name must be at least 2 characters long');
+        return false;
+    } else if (!/^[a-zA-Z\s]*$/.test(name.value)) {
+        showError(name, 'name-error', 'Name should only contain letters');
+        return false;
+    } else {
+        clearError(name, 'name-error');
+        return true;
+    }
+}
+
+function validateGender() {
+    const gender = document.getElementById('gender');
+    const errorElement = document.getElementById('gender-error');
+    
+    if (!gender || !gender.value) {
+        showError(gender, 'gender-error', 'Please select a gender');
+        return false;
+    } else {
+        clearError(gender, 'gender-error');
+        return true;
     }
 }
 
@@ -226,25 +361,35 @@ function validateMobile() {
 function validateAlternateMobile() {
     const altMobile = document.getElementById('alternate-phone');
     const mainMobile = document.getElementById('mobile');
-    const errorId = 'alternate-phone-error';
     
+    // If the alternate mobile field doesn't exist, return true as it's optional
+    if (!altMobile) {
+        return true;
+    }
+
+    const errorId = 'alternate-phone-error';
     const mobileRegex = /^[6-9]\d{9}$/;
     
-    if (altMobile.value) {  // Optional field
-        if (!mobileRegex.test(altMobile.value)) {
-            showError(altMobile, errorId, 'Enter valid 10-digit mobile number starting with 6-9');
-            return false;
-        } else if (altMobile.value === mainMobile.value) {
-            showError(altMobile, errorId, 'Alternate number should be different from primary number');
-            return false;
-        } else {
-            clearError(altMobile, errorId);
-            return true;
-        }
-    } else {
+    // If the field exists but is empty, it's valid (optional field)
+    if (!altMobile.value.trim()) {
         clearError(altMobile, errorId);
         return true;
     }
+
+    // If a value is provided, validate it
+    if (!mobileRegex.test(altMobile.value)) {
+        showError(altMobile, errorId, 'Enter valid 10-digit mobile number starting with 6-9');
+        return false;
+    } 
+    
+    // Check if it's the same as primary number
+    if (mainMobile && altMobile.value === mainMobile.value) {
+        showError(altMobile, errorId, 'Alternate number should be different from primary number');
+        return false;
+    }
+
+    clearError(altMobile, errorId);
+    return true;
 }
 
 function validateEmail() {
@@ -269,124 +414,388 @@ function validateLandSize() {
     const landSize = document.getElementById('land-size');
     const errorElement = document.getElementById('land-size-error');
     
-    const sizeRegex = /^\d+(\.\d{1,2})?$/;
-    
-    if (!landSize.value) {
-        showError(landSize, errorElement, 'Land size is required');
-    } else if (!sizeRegex.test(landSize.value)) {
-        showError(landSize, errorElement, 'Enter valid land size (up to 2 decimal places)');
-    } else if (parseFloat(landSize.value) <= 0) {
-        showError(landSize, errorElement, 'Land size must be greater than 0');
-    } else {
-        clearError(landSize, errorElement);
+    if (!landSize || !landSize.value) {
+        showError(landSize, 'land-size-error', 'Land size is required');
+        return false;
     }
+    
+    const size = parseFloat(landSize.value);
+    if (isNaN(size) || size <= 0) {
+        showError(landSize, 'land-size-error', 'Please enter a valid land size greater than 0');
+        return false;
+    }
+    
+    clearError(landSize, 'land-size-error');
+    return true;
 }
 
 function validateLocation() {
     const state = document.getElementById('state');
     const city = document.getElementById('city');
     const taluk = document.getElementById('taluk');
+    let isValid = true;
     
-    const stateError = document.getElementById('state-error');
-    const cityError = document.getElementById('city-error');
-    const talukError = document.getElementById('taluk-error');
-    
-    if (!state.value) {
-        showError(state, stateError, 'Please select a state');
+    // Validate State
+    if (!state || !state.value) {
+        showError(state, 'state-error', 'Please select a state');
+        isValid = false;
     } else {
-        clearError(state, stateError);
+        clearError(state, 'state-error');
     }
     
-    if (!city.value) {
-        showError(city, cityError, 'Please select a city');
+    // Validate City
+    if (!city || !city.value) {
+        showError(city, 'city-error', 'Please select a city');
+        isValid = false;
     } else {
-        clearError(city, cityError);
+        clearError(city, 'city-error');
     }
     
-    if (!taluk.value) {
-        showError(taluk, talukError, 'Please select a taluk');
+    // Validate Taluk
+    if (!taluk || !taluk.value) {
+        showError(taluk, 'taluk-error', 'Please select a taluk');
+        isValid = false;
     } else {
-        clearError(taluk, talukError);
+        clearError(taluk, 'taluk-error');
     }
+    
+    return isValid;
 }
 
 function validateLandType() {
     const landType = document.getElementById('land-type');
     const errorElement = document.getElementById('land-type-error');
     
-    if (!landType.value) {
-        showError(landType, errorElement, 'Please select land type');
-    } else {
-        clearError(landType, errorElement);
+    if (!landType || !landType.value) {
+        showError(landType, 'land-type-error', 'Please select a land type');
+        return false;
     }
+    
+    clearError(landType, 'land-type-error');
+    return true;
 }
 
 function validatePassword() {
     const password = document.getElementById('password');
-    const errorId = 'password-error';
+    if (!password) return false;
+    
+    if (!password.value) {
+        showError(password, 'password-error', 'Password is required');
+        return false;
+    }
     
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     
-    if (!password.value) {
-        showError(password, errorId, 'Password is required');
+    if (!passwordRegex.test(password.value)) {
+        showError(password, 'password-error', 
+            'Password must contain at least 8 characters, including uppercase, lowercase, number and special character');
         return false;
-    } else if (!passwordRegex.test(password.value)) {
-        showError(password, errorId, 'Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character');
-        return false;
-    } else {
-        clearError(password, errorId);
-        return true;
     }
+    
+    clearError(password, 'password-error');
+    return true;
 }
 
-// Update the event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    // Add input event listeners for real-time validation
-    const validationMap = {
-        'name': validateName,
-        'gender': validateGender,
-        'dob': validateDOB,
-        'aadhaar': validateAadhaar,
-        'mobile': validateMobile,
-        'alternate-phone': validateAlternateMobile,
-        'email': validateEmail,
-        'state': validateLocation,
-        'city': validateLocation,
-        'taluk': validateLocation,
-        'password': validatePassword
-    };
-
-    // Add event listeners for all inputs
-    Object.keys(validationMap).forEach(inputId => {
-        const element = document.getElementById(inputId);
-        if (element) {
-            const eventType = ['state', 'city', 'taluk'].includes(inputId) ? 'change' : 'input';
-            element.addEventListener(eventType, validationMap[inputId]);
-        }
-    });
-
-    const gender = document.getElementById('gender');
-    if (gender) {
-        gender.addEventListener('input', validateGender);
-        // Also validate on blur to catch paste events
-        gender.addEventListener('blur', validateGender);
+function validateConfirmPassword() {
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm-password');
+    if (!confirmPassword || !password) return false;
+    
+    if (!confirmPassword.value) {
+        showError(confirmPassword, 'confirm-password-error', 'Please confirm your password');
+        return false;
     }
-});
+    
+    if (password.value !== confirmPassword.value) {
+        showError(confirmPassword, 'confirm-password-error', 'Passwords do not match');
+        return false;
+    }
+    
+    clearError(confirmPassword, 'confirm-password-error');
+    return true;
+}
 
-// Add CSS styles programmatically
+// Add CSS for better error display
 const style = document.createElement('style');
 style.textContent = `
     .error-text {
         color: #ff3333;
         font-size: 12px;
         margin-top: 4px;
-        display: block;
+        display: none;
         font-family: Arial, sans-serif;
-        margin-bottom: 10px;
     }
 
-    input.error {
-        border-color: #ff3333 !important;
+    input:invalid,
+    select:invalid,
+    textarea:invalid {
+        border-color: #ff3333;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #4CAF50;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    .form-group.error input,
+    .form-group.error select,
+    .form-group.error textarea {
+        border-color: #ff3333;
+    }
+
+    #error-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff1f1;
+        border: 2px solid #ff3333;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        max-width: 80%;
+        width: auto;
+        text-align: left;
+        display: none;
+    }
+
+    #error-message.show {
+        display: block;
+    }
+
+    #error-message h3 {
+        color: #ff3333;
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    #error-message ul {
+        margin: 0;
+        padding-left: 20px;
+        color: #666;
+    }
+
+    #error-message li {
+        margin-bottom: 5px;
+    }
+
+    #error-message-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #666;
+    }
+
+    #error-message-close:hover {
+        color: #ff3333;
+    }
+
+    .location-fields {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .location-field {
+        position: relative;
+        flex: 1;
+    }
+
+    .location-field select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        transition: border-color 0.3s ease;
+    }
+
+    .location-field select:focus {
+        outline: none;
+        border-color: #4CAF50;
+    }
+
+    .location-field .error-text {
+        position: absolute;
+        bottom: -20px;
+        left: 0;
+        font-size: 12px;
+        color: #ff3333;
+    }
+
+    .location-field select.error {
+        border-color: #ff3333;
+    }
+
+    @media (max-width: 768px) {
+        .location-fields {
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .location-field .error-text {
+            bottom: -18px;
+        }
+    }
+
+    #error-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        max-width: 400px;
+        width: 90%;
+        display: none;
+        border: 2px solid #ff3333;
+    }
+
+    #error-message.show {
+        display: block;
+    }
+
+    #error-message h3 {
+        color: #ff3333;
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 18px;
+    }
+
+    #error-message ul {
+        margin: 0;
+        padding-left: 20px;
+        color: #666;
+    }
+
+    #error-message li {
+        margin-bottom: 5px;
+    }
+
+    #error-message-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #666;
+        padding: 0;
+        line-height: 1;
+    }
+
+    #error-message-close:hover {
+        color: #ff3333;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+    }
+
+    .overlay.show {
+        display: block;
     }
 `;
 document.head.appendChild(style);
+
+// Update the event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    const validationMap = {
+        'name': { validate: validateName, errorId: 'name-error' },
+        'gender': { validate: validateGender, errorId: 'gender-error' },
+        'dob': { validate: validateDOB, errorId: 'dob-error' },
+        'aadhaar': { validate: validateAadhaar, errorId: 'aadhaar-error' },
+        'mobile': { validate: validateMobile, errorId: 'mobile-error' },
+        'email': { validate: validateEmail, errorId: 'email-error' },
+        'land-size': { validate: validateLandSize, errorId: 'land-size-error' },
+        'land-type': { validate: validateLandType, errorId: 'land-type-error' },
+        'password': { validate: validatePassword, errorId: 'password-error' },
+        'confirm-password': { validate: validateConfirmPassword, errorId: 'confirm-password-error' }
+    };
+
+    // Add event listeners for all inputs
+    Object.entries(validationMap).forEach(([inputId, { validate }]) => {
+        const element = document.getElementById(inputId);
+        if (element) {
+            element.addEventListener('input', validate);
+            element.addEventListener('blur', validate);
+        }
+    });
+
+    // Special handling for password fields
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm-password');
+
+    if (password && confirmPassword) {
+        password.addEventListener('input', () => {
+            validatePassword();
+            if (confirmPassword.value) {
+                validateConfirmPassword();
+            }
+        });
+
+        confirmPassword.addEventListener('input', validateConfirmPassword);
+    }
+
+    // Add event listeners for location fields
+    const state = document.getElementById('state');
+    const city = document.getElementById('city');
+    const taluk = document.getElementById('taluk');
+
+    if (state) {
+        state.addEventListener('change', function() {
+            validateLocation();
+        });
+    }
+
+    if (city) {
+        city.addEventListener('change', function() {
+            validateLocation();
+        });
+    }
+
+    if (taluk) {
+        taluk.addEventListener('change', function() {
+            validateLocation();
+        });
+    }
+});
