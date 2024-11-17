@@ -422,5 +422,123 @@ router.get("/job/:jobId", async (req, res) => {
     }
 });
 
+router.get("/landowner_request_details", labourMiddleware, async (req, res) => {
+    try { 
+        const labour_id = req.user._id;
+        
+       
+       
+
+        // Fetch requests for this labour and populate both job and landowner details
+        const requests = await Requests.find({ labour_id })
+            .populate({
+                path: 'job_id',
+                populate: {
+                    path: 'created_by',
+                    select: 'username mobile_number address' // Select relevant landowner fields
+                }
+            })
+            .sort({ date: -1 }); // Sort by date descending (most recent first)
+
+        if (!requests || requests.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No requests found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: requests
+        });
+
+    } catch (error) {
+        console.error("Error fetching request details:", error);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching request details",
+            error: error.message
+        });
+    }
+});
+
+router.post("/handle_request", labourMiddleware, async (req, res) => {
+    try {
+
+        const { request_id, action } = req.body;
+        
+    
+
+        // Validate inputs
+        if (!request_id || !action) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Missing required fields: request_id or action" 
+            });
+        }
+
+        // Validate action
+        if (!['ACCEPTED', 'REJECTED'].includes(action)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Invalid action. Must be 'ACCEPTED' or 'REJECTED'" 
+            });
+        }
+
+        // Update request status
+        const updatedRequest = await Requests.findByIdAndUpdate(
+            request_id,
+            { status: action },
+            { new: true }
+        ).populate('job_id');
+
+        if (!updatedRequest) {
+            return res.status(404).json({
+                success: false,
+                message: "Request not found"
+            });
+        }
+
+        if (action === 'ACCEPTED') {
+            // If accepted, update job and labour relationships
+            await Promise.all([
+                // Add labour to job's workers
+                Job.findByIdAndUpdate(
+                    updatedRequest.job_id._id,
+                    { $addToSet: { worker_id: updatedRequest.labour_id } }
+                ),
+
+                // Add job to labour's job history
+                Labour.findByIdAndUpdate(
+                    updatedRequest.labour_id,
+                    { $addToSet: { job_history: updatedRequest.job_id._id } }
+                )
+            ]);
+
+            // You could also send notification to landowner here
+            
+        } else {
+            // If rejected, you might want to:
+            // 1. Mark the request as rejected
+            // 2. Optionally notify the landowner
+            // 3. Maybe store rejection reason if provided
+        }
+
+        res.status(200).json({
+            success: true,
+            message: `Request ${action.toLowerCase()} successfully`,
+            request: updatedRequest
+        });
+
+    } catch (error) {
+        console.error('Error handling request:', error);
+        res.status(500).json({
+            success: false,
+            message: "Error processing request",
+            error: error.message
+        });
+    }
+});
+
 router.use(labourMiddleware)
 module.exports = router;

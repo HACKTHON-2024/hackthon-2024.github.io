@@ -62,14 +62,14 @@
   });
 
 
-  const requestschema=new mongoose.Schema({
-    labour_id:{ type: mongoose.Schema.Types.ObjectId, ref: 'Labour' },
-    status:{type: Boolean },
-    job_id:{ type: mongoose.Schema.Types.ObjectId, ref: 'Job' },
-    date: {type:Date}
-  })
+  const requestSchema = new mongoose.Schema({
+    labour_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Labour', required: true },
+    job_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Job', required: true },
+    status: { type: String, enum: ['ACCEPTED', 'REJECTED', null], default: null },
+    date: { type: Date, default: Date.now }
+  });
 
-  const Requests=mongoose.model('Requests',requestschema)
+  const Requests=mongoose.model('Requests',requestSchema)
   const Landowner = mongoose.model('Landowner', landownerSchema);
 
 
