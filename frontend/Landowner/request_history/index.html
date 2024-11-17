@@ -1,0 +1,135 @@
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LandOwner Jobs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kavoon&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        feather.replace();
+    });
+</script>
+
+<body>
+
+    <div class="container">
+        <div class="page-controls">
+            <h2>Job Requests</h2>
+            <div class="controls-group">
+                <input type="date" id="datepicker" class="datepicker" placeholder="Date" readonly>
+                <div class="language-dropdown-container">
+                    <button class="language-btn">
+                        <i class="fas fa-globe"></i>
+                        <span>Language</span>
+                    </button>
+                    <div class="language-dropdown">
+                        <a href="#" class="language-option">English</a>
+                        <a href="#" class="language-option">Tamil</a>
+                        <a href="#" class="language-option">Hindi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="request-list" id="request-list-container">
+            <!-- Requests will be dynamically inserted here -->
+        </div>
+
+        <nav class="navbar">
+            <ul class="navbar__menu">
+                <li class="navbar__item">
+                    <a href="../job_listing/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="home"></i>
+                        <span>LandOwner Jobs</span>
+                    </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../active_job/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="briefcase"></i>
+                        <span>Active Jobs</span>
+                    </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../Register/" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="edit"></i>
+                        <span>Register</span>
+                    </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../landowner_request/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="user-check"></i>
+                        <span>Job Requests</span>
+                    </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../Profile_page/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../Create_Job/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="plus"></i>
+                        <span>Create Job</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <header class="site-header">
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../../static/Images/logo.png" alt="Logo" class="logo-img">
+                    <div class="logo-text">
+                        <span class="brand-name">LabourField</span>
+                        <span class="tagline">Connecting Farms & Labor</span>
+                    </div>
+                </div>
+                
+                <div class="nav-group">
+                    <nav class="main-nav">
+                        <ul>
+                            <li>
+                                <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
+                                    <i class="fas fa-home"></i>
+                                    <span>Home</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>About Us</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
+                                    <i class="fas fa-tractor"></i>
+                                    <span>Services</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
+                                    <i class="fas fa-headset"></i>
+                                    <span>Help & Support</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div id="auth-btn-container">
+                        <!-- Logout button will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+    
+    <script src="script.js"></script>
+
+</body>
+
+</html>
