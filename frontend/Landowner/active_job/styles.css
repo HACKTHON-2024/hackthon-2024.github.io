@@ -1014,3 +1014,50 @@ h2 {
         font-size: 10px;
     }
 }
+
+/* Job Details Button Styling */
+.job-actions {
+    margin-top: 15px;
+    text-align: right;
+    padding: 0 15px 15px;
+}
+
+.details-btn {
+    /* Base button styling */
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Arial, sans-serif;
+    
+    /* Color and background */
+    color: #ffffff;
+    background: #228B22; /* Forest Green */
+    border: none;
+    border-radius: 5px;
+    
+    /* Shadow and effects */
+    box-shadow: 0 2px 4px rgba(34, 139, 34, 0.2);
+    
+    /* Transition effects */
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.details-btn:hover {
+    background: #166816; /* Darker green on hover */
+    box-shadow: 0 4px 8px rgba(34, 139, 34, 0.3);
+    transform: translateY(-1px);
+}
+
+.details-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(34, 139, 34, 0.2);
+}
+
+/* Responsive styles for details button */
+@media (max-width: 768px) {
+    .details-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
