@@ -10,6 +10,43 @@ document.addEventListener('DOMContentLoaded', function () {
  
      fetchLabours(); // Fetch labour data when the page loads
      updateAuthButton(); // Call the function to update the button based on login status
+
+    // Language dropdown functionality
+    const languageBtn = document.querySelector('.language-btn');
+    const languageDropdown = document.querySelector('.language-dropdown');
+
+    languageBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        languageDropdown.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.language-dropdown-container')) {
+            languageDropdown.classList.remove('show');
+        }
+    });
+
+    // Handle language selection
+    document.querySelectorAll('.language-option').forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            const selectedLang = this.getAttribute('data-lang');
+            const languageText = this.textContent;
+            
+            // Update button text
+            languageBtn.querySelector('span').textContent = languageText;
+            
+            // Close dropdown
+            languageDropdown.classList.remove('show');
+            
+            // Store selected language
+            localStorage.setItem('selectedLanguage', selectedLang);
+            
+            // You can add translation logic here
+            changeLanguage(selectedLang);
+        });
+    });
  });
  
  function getToken() {
@@ -71,13 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
          labourCard.innerHTML = `
              <div class="circle-stars-group">
                  <div class="circle"></div>
-                 <div class="stars">
-                     <span class="star">&#9733;</span>
-                     <span class="star">&#9733;</span>
-                     <span class="star">&#9733;</span>
-                     <span class="star">&#9733;</span>
-                     <span class="star">&#9733;</span>
-                 </div>
              </div>
              <div class="labour-info">
                  <p><strong>NAME:</strong> ${labour.username}</p>
@@ -235,30 +265,45 @@ function fetchActiveAndFutureJobs(labourId) {
  // Show confirmation popup
 function showConfirmationPopup(labourId, jobId) {
     const confirmationPopup = document.getElementById('confirmation-popup');
-    const popupOverlay = document.querySelector('.popup-overlay'); // Use correct overlay for confirmation
+    const popupOverlay = document.querySelector('.popup-overlay');
 
-    confirmationPopup.classList.add('show');
-    popupOverlay.classList.add('show');
+    // Show popup and overlay
+    confirmationPopup.style.display = 'block';
+    popupOverlay.style.display = 'block';
 
-    // Add event listeners for buttons
-    document.getElementById('confirm-btn').addEventListener('click', function () {
+    // Clear existing event listeners
+    const confirmBtn = document.getElementById('confirm-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    
+    // Remove old event listeners
+    confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+    cancelBtn.replaceWith(cancelBtn.cloneNode(true));
+    
+    // Get new references after cloning
+    const newConfirmBtn = document.getElementById('confirm-btn');
+    const newCancelBtn = document.getElementById('cancel-btn');
+
+    // Add new event listeners
+    newConfirmBtn.addEventListener('click', () => {
         handleConfirm(labourId, jobId);
+        confirmationPopup.style.display = 'none';
+        popupOverlay.style.display = 'none';
     });
-    document.getElementById('cancel-btn').addEventListener('click', function () {
-        confirmationPopup.classList.remove('show');
-        popupOverlay.classList.remove('show');
+
+    newCancelBtn.addEventListener('click', () => {
+        confirmationPopup.style.display = 'none';
+        popupOverlay.style.display = 'none';
     });
 }
  
  // Send job confirmation request to the backend
  function handleConfirm(labour_id, job_id) {
-     const token = getToken();  // Get JWT token
+     const token = getToken();
      fetch('http://localhost:3000/landowner/request_confirm', {
          method: 'POST',
          headers: {
              'Content-Type': 'application/json',
-             'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
- 
+             'Authorization': `Bearer ${token}`,
          },
          body: JSON.stringify({
              job_id: job_id,
@@ -267,20 +312,18 @@ function showConfirmationPopup(labourId, jobId) {
      })
      .then(response => response.json())
      .then(data => {
-         if (data.message) {
-             alert('Job request confirmed!');
+         if (data.success || data.message) {
+             alert('Job request confirmed successfully!');
+             // Close the job modal
+             const jobModal = document.getElementById('job-list-modal');
+             jobModal.classList.add('hidden');
          } else {
-             alert('Error: ' + data.error);
+             alert('Error: ' + (data.error || 'Failed to confirm job request'));
          }
      })
      .catch(error => {
          console.error('Error during confirmation:', error);
-     })
-     .finally(() => {
-         const confirmationPopup = document.getElementById('confirmation-popup');
-         const popupOverlay = document.querySelector('.popup-overlay');
-         confirmationPopup.classList.remove('show');
-         popupOverlay.classList.remove('show');
+         alert('An error occurred while confirming the job request');
      });
  }
  
@@ -343,3 +386,42 @@ document.getElementById("logout-btn").addEventListener("click", showAuthPopup);
 
 // Example: Simulate logging in or signing up
 // For login button
+
+// Function to handle language change
+function changeLanguage(lang) {
+    // Add your translation logic here
+    console.log(`Language changed to: ${lang}`);
+    // Example: Update UI text based on selected language
+    const translations = {
+        en: {
+            title: 'LABOUR REQUEST',
+            home: 'Home',
+            about: 'About Us',
+            services: 'Services',
+            support: 'Help & Support'
+            // Add more translations as needed
+        },
+        ta: {
+            title: 'தொழிலாளர் கோரிக்கை',
+            home: 'முகப்பு',
+            about: 'எங்களை பற்றி',
+            services: 'சேவைகள்',
+            support: 'உதவி & ஆதரவு'
+            // Add more translations as needed
+        },
+        hi: {
+            title: 'श्रमिक अनुरोध',
+            home: 'होम',
+            about: 'हमारे बारे में',
+            services: 'सेवाएं',
+            support: 'सहायता और समर्थन'
+            // Add more translations as needed
+        }
+    };
+
+    // Update UI elements with translated text
+    if (translations[lang]) {
+        document.querySelector('h2').textContent = translations[lang].title;
+        // Update other elements as needed
+    }
+}
