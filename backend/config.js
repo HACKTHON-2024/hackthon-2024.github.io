@@ -1,2 +1,2 @@
-const jwt_scret ='labour-field';
-module.exports = { jwt_scret };  // Export it
+const jwt_secret ='labour-field';
+module.exports = { jwt_secret };  // Export it

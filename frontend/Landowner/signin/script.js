@@ -67,34 +67,53 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Event listener for OTP button (Get OTP)
-    otpButton.addEventListener('click', async function () {
-        const identifier = document.getElementById('email-input').value;
+    // Event listener for OTP button (Get OTP)
+otpButton.addEventListener('click', async function () {
+    const identifier = document.getElementById('email-input').value;
 
-        if (!identifier) {
-            showMessage('error', 'Input Required', 'Please enter email or mobile number');
+    if (!identifier) {
+        showMessage('error', 'Input Required', 'Please enter email or mobile number');
+        return;
+    }
+
+    try {
+        // Validate if the user exists (email or mobile number)
+        const validateResponse = await fetch('http://localhost:3000/landowner/validate-user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ identifier })
+        });
+
+        const validateResult = await validateResponse.json();
+
+        if (!validateResponse.ok) {
+            // User does not exist, show an error message
+            showMessage('error', 'User Not Found', validateResult.message || 'User does not exist in the system');
             return;
         }
 
-        try {
-            const route = isEmail ? 'http://localhost:3000/mail_otp/send-otp' : 'http://localhost:3000/otp/send-otp';
-            const response = await fetch(route, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ identifier })
-            });
+        // User exists, now send OTP
+        const route = isEmail ? 'http://localhost:3000/mail_otp/send-otp' : 'http://localhost:3000/otp/send-otp';
+        const response = await fetch(route, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ identifier })
+        });
 
-            const result = await response.json();
-            if (response.ok) {
-                passwordContainer.classList.add('hidden');
-                otpContainer.classList.remove('hidden');
-                showMessage('success', 'OTP Sent', 'OTP has been sent successfully');
-            } else {
-                showMessage('error', 'Failed', result.message || "Failed to send OTP");
-            }
-        } catch (error) {
-            showMessage('error', 'Error', 'Error sending OTP. Please try again.');
+        const result = await response.json();
+
+        if (response.ok) {
+            // Show OTP container
+            passwordContainer.classList.add('hidden');
+            otpContainer.classList.remove('hidden');
+            showMessage('success', 'OTP Sent', 'OTP has been sent successfully');
+        } else {
+            showMessage('error', 'Failed', result.message || "Failed to send OTP");
         }
-    });
+    } catch (error) {
+        showMessage('error', 'Error', 'Error sending OTP');
+    }
+});
 
     // Event listener for OTP Login button (Verify OTP)
     otpLoginButton.addEventListener('click', async function () {

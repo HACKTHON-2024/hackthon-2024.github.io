@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Landowner,Labour,Job,Requests}= require('../db/db')
-const { jwt_scret } = require('../config');
+const { jwt_secret } = require('../config');
 const jwt=require("jsonwebtoken");
 const {registerlandowner,signin,createjobs,updateLandownerProfile }=require("../type")
 const {landownerMiddleware}=require("../middleware/landowner")
@@ -91,7 +91,7 @@ router.post('/signin_by_otp', async (req, res) => {
 
       if (landowner) {
           // Generate JWT token since OTP is already verified
-          const token = jwt.sign({ username: landowner.username }, jwt_scret); // Token valid for 1 hour
+          const token = jwt.sign({ username: landowner.username }, jwt_secret); // Token valid for 1 hour
           
           // Send token as response
           return res.status(200).json({ token });
@@ -107,25 +107,35 @@ router.post('/signin_by_otp', async (req, res) => {
 
 
 router.post('/signin', async (req, res) => {
-    const identifier = req.body.identifier; // This will be email or phone number
-    const password = req.body.password;
-   
-    // Find a landowner by either email or phone number
-  // Find a landowner by either email or phone number
-  const landowner = await Landowner.findOne({
-    $or: [
-        { email: identifier },
-        {  mobile_number: identifier }
-    ]
+  const { identifier, password } = req.body;
+
+  try {
+      // Find a laborer by either email or phone number
+      const landowner = await Landowner.findOne({
+          $or: [
+              { email: identifier },
+              { mobile_number: identifier }
+          ]
+      });
+
+      if (!landowner) {
+          return res.status(401).json({ message: 'Invalid credentials' });
+      }
+
+      // Check if the provided password matches the stored password
+      if (landowner.password !== password) {
+          return res.status(401).json({ message: 'Invalid credentials' });
+      }
+
+      // Generate JWT token
+      const token = jwt.sign({ username: landowner.username }, jwt_secret, { expiresIn: '1h' });
+      return res.status(200).json({ token });
+  } catch (error) {
+      console.error('Error during sign-in:', error);
+      return res.status(500).json({ message: 'Internal server error' });
+  }
 });
-    if (landowner) {
-        const token = jwt.sign({ username: landowner.username }, jwt_scret); // Assuming landowner has a username field
-        
-        return res.status(200).json({ token });
-    }
-    
-    return res.status(401).json({ message: 'Invalid credentials' });
-});
+
 
 
 router.post('/createjob', landownerMiddleware,async (req, res) => {
@@ -672,6 +682,32 @@ router.get("/job/:jobId", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.post('/validate-user', async (req, res) => {
+  const { identifier } = req.body;
+
+  try {
+      let userExists;
+
+      // Determine if the identifier is an email or mobile number
+      if (identifier.includes('@')) {
+          // Check for email in the database
+          userExists = await Landowner.findOne({ email: identifier });
+      } else {
+          // Check for mobile number in the database
+          userExists = await Landowner.findOne({ mobile_number: identifier });
+      }
+
+      if (userExists) {
+          res.status(200).json({ success: true, message: 'User exists' });
+      } else {
+          res.status(404).json({ success: false, message: 'User not found' });
+      }
+  } catch (error) {
+      console.error('Error validating user:', error);
+      res.status(500).json({ success: false, message: 'Error validating user' });
   }
 });
 

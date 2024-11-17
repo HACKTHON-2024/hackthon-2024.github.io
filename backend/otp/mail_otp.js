@@ -10,13 +10,15 @@ let otpStore = {};
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
 apiKey.apiKey = process.env.BREVO_API_KEY;  // Load API key from .env
-
+console.log(process.env.BREVO_API_KEY)
 const transactionalEmailsApi = new SibApiV3Sdk.TransactionalEmailsApi();
 
 // Function to generate a 6-digit OTP
+
 function generateOTP() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    return Math.floor(1000 + Math.random() * 9000).toString();
 }
+
 
 // POST route to send OTP email
 router.post('/send-otp', async (req, res) => {
