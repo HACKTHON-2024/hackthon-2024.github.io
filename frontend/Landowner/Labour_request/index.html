@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <script>
@@ -18,8 +19,35 @@
 </script>
 
 <body>
-
+    <div id="alert-container" class="alert-container hidden">
+        <div class="alert-overlay"></div>
+        <div class="alert-content">
+            <div class="alert-icon">
+                <!-- Icons will be inserted via JavaScript -->
+            </div>
+            <div class="alert-message">
+                <h3 class="alert-title"></h3>
+                <p class="alert-description"></p>
+            </div>
+            <button class="alert-close">&times;</button>
+        </div>
+    </div>
+    
     <div class="container">
+        <div id="alert-container" class="alert-container hidden">
+            <div class="alert-overlay"></div>
+            <div class="alert-content">
+                <div class="alert-icon">
+                    <!-- Icons will be inserted via JavaScript -->
+                </div>
+                <div class="alert-message">
+                    <h3 class="alert-title"></h3>
+                    <p class="alert-description"></p>
+                </div>
+                <button class="alert-close">&times;</button>
+            </div>
+        </div>
+        
         <div class="page-controls">
             <h2>LABOUR REQUEST</h2>
             <div class="controls-group">

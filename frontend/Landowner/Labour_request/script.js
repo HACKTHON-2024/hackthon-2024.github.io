@@ -47,6 +47,14 @@ document.addEventListener('DOMContentLoaded', function () {
             changeLanguage(selectedLang);
         });
     });
+
+    // Add event listener for alert close button
+    const alertCloseBtn = document.querySelector('.alert-close');
+    if (alertCloseBtn) {
+        alertCloseBtn.addEventListener('click', function() {
+            document.getElementById('alert-container').classList.add('hidden');
+        });
+    }
  });
  
  function getToken() {
@@ -313,17 +321,16 @@ function showConfirmationPopup(labourId, jobId) {
      .then(response => response.json())
      .then(data => {
          if (data.success || data.message) {
-             alert('Job request confirmed successfully!');
-             // Close the job modal
+             showAlert('Your job request has been confirmed successfully!', 'success');
              const jobModal = document.getElementById('job-list-modal');
              jobModal.classList.add('hidden');
          } else {
-             alert('Error: ' + (data.error || 'Failed to confirm job request'));
+             showAlert((data.error || 'Failed to confirm job request'), 'error');
          }
      })
      .catch(error => {
          console.error('Error during confirmation:', error);
-         alert('An error occurred while confirming the job request');
+         showAlert('An error occurred while confirming the job request', 'error');
      });
  }
  
@@ -351,7 +358,7 @@ function showConfirmationPopup(labourId, jobId) {
  // Function to handle logout
  function handleLogout() {
      localStorage.removeItem('jwt'); // Remove JWT token from localStorage
-     alert('You have been logged out.');
+     showAlert('You have been logged out.', 'success');
      updateAuthButton(); // Update the button to reflect the login state
      window.location.href = 'http://localhost:3000/frontend/static/home_page/index.html'; // Redirect to login page after logout
  }
@@ -425,3 +432,52 @@ function changeLanguage(lang) {
         // Update other elements as needed
     }
 }
+
+function showAlert(message, type = 'success') {
+    const alertContainer = document.getElementById('alert-container');
+    const alertTitle = alertContainer.querySelector('.alert-title');
+    const alertDescription = alertContainer.querySelector('.alert-description');
+    const alertIcon = alertContainer.querySelector('.alert-icon');
+    
+    // Define icons
+    const icons = {
+        success: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>`,
+        error: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>`
+    };
+
+    // Set title and description based on type
+    if (type === 'success') {
+        alertTitle.textContent = 'Success!';
+        alertDescription.textContent = message;
+    } else {
+        alertTitle.textContent = 'Error!';
+        alertDescription.textContent = message;
+    }
+    
+    // Set icon
+    alertIcon.innerHTML = icons[type];
+    
+    // Set alert type class
+    alertContainer.className = 'alert-container';
+    alertContainer.classList.add(`alert-${type}`);
+    
+    // Show alert
+    alertContainer.classList.remove('hidden');
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        alertContainer.classList.add('hidden');
+    }, 3000);
+}
+
+// Add event listener for close button
+document.querySelector('.alert-close').addEventListener('click', () => {
+    document.getElementById('alert-container').classList.add('hidden');
+});
+
+// Usage example:
+// showAlert('Your message here');
