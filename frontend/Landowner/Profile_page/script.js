@@ -88,14 +88,14 @@ async function fetchJobData() {
 
         // Container for displaying jobs
         const jobContainer = document.querySelector('.job-created-section');
-        jobContainer.innerHTML = '<h2>Jobs Created:</h2>';
+        jobContainer.innerHTML = '<h2>Jobs Created</h2>';
 
         // Create sections for completed and future jobs
         const completedJobsContainer = document.createElement('div');
         const futureJobsContainer = document.createElement('div');
 
-        completedJobsContainer.innerHTML = '<h3>Completed Jobs:</h3>';
-        futureJobsContainer.innerHTML = '<h3>Future Jobs:</h3>';
+        completedJobsContainer.innerHTML = '<h3>Completed Jobs</h3>';
+        futureJobsContainer.innerHTML = '<h3>Future Jobs</h3>';
 
         // Function to render jobs in a container
         function displayJobs(jobs, container) {

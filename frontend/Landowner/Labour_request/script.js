@@ -10,6 +10,51 @@ document.addEventListener('DOMContentLoaded', function () {
  
      fetchLabours(); // Fetch labour data when the page loads
      updateAuthButton(); // Call the function to update the button based on login status
+
+    // Language dropdown functionality
+    const languageBtn = document.querySelector('.language-btn');
+    const languageDropdown = document.querySelector('.language-dropdown');
+
+    languageBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        languageDropdown.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.language-dropdown-container')) {
+            languageDropdown.classList.remove('show');
+        }
+    });
+
+    // Handle language selection
+    document.querySelectorAll('.language-option').forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            const selectedLang = this.getAttribute('data-lang');
+            const languageText = this.textContent;
+            
+            // Update button text
+            languageBtn.querySelector('span').textContent = languageText;
+            
+            // Close dropdown
+            languageDropdown.classList.remove('show');
+            
+            // Store selected language
+            localStorage.setItem('selectedLanguage', selectedLang);
+            
+            // You can add translation logic here
+            changeLanguage(selectedLang);
+        });
+    });
+
+    // Add event listener for alert close button
+    const alertCloseBtn = document.querySelector('.alert-close');
+    if (alertCloseBtn) {
+        alertCloseBtn.addEventListener('click', function() {
+            document.getElementById('alert-container').classList.add('hidden');
+        });
+    }
  });
  
  function getToken() {
@@ -71,13 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
          labourCard.innerHTML = `
              <div class="circle-stars-group">
                  <div class="circle"></div>
-                 <div class="stars">
-                     <span class="star">&#9733;</span>
-                     <span class="star">&#9733;</span>
-                     <span class="star">&#9733;</span>
-                     <span class="star">&#9733;</span>
-                     <span class="star">&#9733;</span>
-                 </div>
              </div>
              <div class="labour-info">
                  <p><strong>NAME:</strong> ${labour.username}</p>
@@ -235,30 +273,45 @@ function fetchActiveAndFutureJobs(labourId) {
  // Show confirmation popup
 function showConfirmationPopup(labourId, jobId) {
     const confirmationPopup = document.getElementById('confirmation-popup');
-    const popupOverlay = document.querySelector('.popup-overlay'); // Use correct overlay for confirmation
+    const popupOverlay = document.querySelector('.popup-overlay');
 
-    confirmationPopup.classList.add('show');
-    popupOverlay.classList.add('show');
+    // Show popup and overlay
+    confirmationPopup.style.display = 'block';
+    popupOverlay.style.display = 'block';
 
-    // Add event listeners for buttons
-    document.getElementById('confirm-btn').addEventListener('click', function () {
+    // Clear existing event listeners
+    const confirmBtn = document.getElementById('confirm-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    
+    // Remove old event listeners
+    confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+    cancelBtn.replaceWith(cancelBtn.cloneNode(true));
+    
+    // Get new references after cloning
+    const newConfirmBtn = document.getElementById('confirm-btn');
+    const newCancelBtn = document.getElementById('cancel-btn');
+
+    // Add new event listeners
+    newConfirmBtn.addEventListener('click', () => {
         handleConfirm(labourId, jobId);
+        confirmationPopup.style.display = 'none';
+        popupOverlay.style.display = 'none';
     });
-    document.getElementById('cancel-btn').addEventListener('click', function () {
-        confirmationPopup.classList.remove('show');
-        popupOverlay.classList.remove('show');
+
+    newCancelBtn.addEventListener('click', () => {
+        confirmationPopup.style.display = 'none';
+        popupOverlay.style.display = 'none';
     });
 }
  
  // Send job confirmation request to the backend
  function handleConfirm(labour_id, job_id) {
-     const token = getToken();  // Get JWT token
+     const token = getToken();
      fetch('http://localhost:3000/landowner/request_confirm', {
          method: 'POST',
          headers: {
              'Content-Type': 'application/json',
-             'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
- 
+             'Authorization': `Bearer ${token}`,
          },
          body: JSON.stringify({
              job_id: job_id,
@@ -267,20 +320,17 @@ function showConfirmationPopup(labourId, jobId) {
      })
      .then(response => response.json())
      .then(data => {
-         if (data.message) {
-             alert('Job request confirmed!');
+         if (data.success || data.message) {
+             showAlert('Your job request has been confirmed successfully!', 'success');
+             const jobModal = document.getElementById('job-list-modal');
+             jobModal.classList.add('hidden');
          } else {
-             alert('Error: ' + data.error);
+             showAlert((data.error || 'Failed to confirm job request'), 'error');
          }
      })
      .catch(error => {
          console.error('Error during confirmation:', error);
-     })
-     .finally(() => {
-         const confirmationPopup = document.getElementById('confirmation-popup');
-         const popupOverlay = document.querySelector('.popup-overlay');
-         confirmationPopup.classList.remove('show');
-         popupOverlay.classList.remove('show');
+         showAlert('An error occurred while confirming the job request', 'error');
      });
  }
  
@@ -308,7 +358,7 @@ function showConfirmationPopup(labourId, jobId) {
  // Function to handle logout
  function handleLogout() {
      localStorage.removeItem('jwt'); // Remove JWT token from localStorage
-     alert('You have been logged out.');
+     showAlert('You have been logged out.', 'success');
      updateAuthButton(); // Update the button to reflect the login state
      window.location.href = 'http://localhost:3000/frontend/static/home_page/index.html'; // Redirect to login page after logout
  }
@@ -343,3 +393,91 @@ document.getElementById("logout-btn").addEventListener("click", showAuthPopup);
 
 // Example: Simulate logging in or signing up
 // For login button
+
+// Function to handle language change
+function changeLanguage(lang) {
+    // Add your translation logic here
+    console.log(`Language changed to: ${lang}`);
+    // Example: Update UI text based on selected language
+    const translations = {
+        en: {
+            title: 'LABOUR REQUEST',
+            home: 'Home',
+            about: 'About Us',
+            services: 'Services',
+            support: 'Help & Support'
+            // Add more translations as needed
+        },
+        ta: {
+            title: 'தொழிலாளர் கோரிக்கை',
+            home: 'முகப்பு',
+            about: 'எங்களை பற்றி',
+            services: 'சேவைகள்',
+            support: 'உதவி & ஆதரவு'
+            // Add more translations as needed
+        },
+        hi: {
+            title: 'श्रमिक अनुरोध',
+            home: 'होम',
+            about: 'हमारे बारे में',
+            services: 'सेवाएं',
+            support: 'सहायता और समर्थन'
+            // Add more translations as needed
+        }
+    };
+
+    // Update UI elements with translated text
+    if (translations[lang]) {
+        document.querySelector('h2').textContent = translations[lang].title;
+        // Update other elements as needed
+    }
+}
+
+function showAlert(message, type = 'success') {
+    const alertContainer = document.getElementById('alert-container');
+    const alertTitle = alertContainer.querySelector('.alert-title');
+    const alertDescription = alertContainer.querySelector('.alert-description');
+    const alertIcon = alertContainer.querySelector('.alert-icon');
+    
+    // Define icons
+    const icons = {
+        success: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>`,
+        error: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>`
+    };
+
+    // Set title and description based on type
+    if (type === 'success') {
+        alertTitle.textContent = 'Success!';
+        alertDescription.textContent = message;
+    } else {
+        alertTitle.textContent = 'Error!';
+        alertDescription.textContent = message;
+    }
+    
+    // Set icon
+    alertIcon.innerHTML = icons[type];
+    
+    // Set alert type class
+    alertContainer.className = 'alert-container';
+    alertContainer.classList.add(`alert-${type}`);
+    
+    // Show alert
+    alertContainer.classList.remove('hidden');
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        alertContainer.classList.add('hidden');
+    }, 3000);
+}
+
+// Add event listener for close button
+document.querySelector('.alert-close').addEventListener('click', () => {
+    document.getElementById('alert-container').classList.add('hidden');
+});
+
+// Usage example:
+// showAlert('Your message here');

@@ -1,252 +1,402 @@
-* {
-    box-sizing: border-box;
-}
-
-/* Variables */
 :root {
-    --border-radius: 10px;
-    --spacer: 1rem;
-    --primary-color: #406ff3;
-    --text-color: #6a778e;
-    --link-height: calc(var(--spacer) * 3.5);
-    --timing: 250ms;
-    --transition: var(--timing) ease all;
+    --primary-color: #2F855A;
+    --secondary-color: #48BB78;
+    --accent-color: #38A169;
+    --background-color: #F0FFF4;
+    --error-color: #E53E3E;
+    --text-color: #2D3748;
+    --border-color: #CBD5E0;
 }
 
-@keyframes gooeyEffect-1 {
-    0% {
-        transform: scale(1, 1);
-    }
-
-    50% {
-        transform: scale(0.5, 1.5);
-    }
-
-    100% {
-        transform: scale(1, 1);
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Navbar styling */
+/* Updated Navigation Bar Styles */
 .navbar {
     position: fixed;
-    /* Use fixed to keep it in place as you scroll */
-    top: 100px;
-    background-color: rgb(224, 224, 224);
-    /* Adjust based on the height of your header */
-    left: 2px;
-    height: auto;
-    /* Full height minus the header's height */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* Background color for visibility */
+    left: 0;
+    top: 60px;
+    height: calc(100vh - 60px);
     width: 60px;
-    /* Adjust width as needed */
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    /* Subtle shadow for depth */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 999;
+    transition: width 0.3s ease;
+    overflow-x: hidden;
+    padding-top: 80px;
 }
 
-/* Menu styling */
 .navbar__menu {
     list-style: none;
     padding: 0;
     margin: 0;
+    margin-top: 1%;
 }
 
-/* Item styling */
 .navbar__item {
-    text-align: center;
+    width: 100%;
+    display: flex;
     justify-content: center;
-    margin: 10px 0;
+    margin-bottom: 18px;
 }
 
-/* Link styling */
 .navbar__link {
-    color: #333;
-    text-decoration: none;
-    font-size: 24px;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 40px;
-    /* Fixed height for links */
-    width: 40px;
-    /* Fixed width for links */
-    position: relative;
-    transition: color 0.3s ease, background-color 0.3s ease;
-    /* Smooth transitions */
-}
-
-/* Icon styling */
-.navbar__link i {
-    display: block;
-    margin-bottom: 5px;
-}
-
-/* Span styling for hover effect */
-.navbar__link span {
-    position: absolute;
-    left: 100%;
-    transform: translateX(10px);
-    opacity: 0;
-    pointer-events: none;
-    color: #fff;
-    /* Text color */
-    background: #333;
-    padding: 10px;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    border-radius: 5px;
-    /* Rounded corners */
+    padding: 12px 0;
+    color: #000000;
+    text-decoration: none;
+    transition: all 0.5s ease;
     white-space: nowrap;
-    /* Prevent text wrapping */
+    position: relative;
+    gap: 24px;
 }
 
-/* Hover effect for link */
+/* Updated hover effect with green background */
 .navbar__link:hover {
-    color: #4adb62;
+    background: rgba(47, 133, 90, 0.2);
+    border-left: 4px solid var(--primary-color);
 }
 
-.navbar__link:hover span {
+/* Updated active state with green */
+.navbar__link.active {
+    background-color: #2F855A;
+    width: 100%;
+}
+
+.navbar__link i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+}
+
+.navbar__link span {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-20px);
+    transition: all 0.5s ease;
+    font-size: 15px;
+}
+
+.navbar:hover .navbar__link span {
     opacity: 1;
-    transform: translateX(15px);
+    visibility: visible;
+    transform: translateX(0);
 }
 
-/* Optional hover effect animation */
-.navbar__item:hover~.navbar__item:last-child:before {
-    opacity: 1;
-    animation: gooeyEffect-1 1s ease;
+/* Expanded navbar styles with increased spacing */
+.navbar:hover {
+    width: 200px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
+.navbar:hover .navbar__link {
+    justify-content: flex-start;
+    padding: 12px 20px;
+    gap: 24px;
+}
+
+.navbar:hover .navbar__link i {
+    margin-right: 16px; /* Increased space between icon and text */
+}
+
+.navbar:hover .navbar__link span {
+    display: block;
+}
+
+[data-feather] {
+    width: 24px !important;
+    height: 24px !important;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .navbar__link span {
+        display: block;
+        font-size: 12px;
+        text-align: center;
+        padding-left: 0;
+    }
+    
+    .navbar__link i {
+        min-width: auto;
+    }
+}
+
+
+/* Move content when navbar expands */
+.navbar:hover ~ .form-container {
+    margin-left: 270px;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
     .navbar {
-        position: fixed;
-        /* Navbar becomes fixed in this screen size */
-        top: 90px;
-        /* Adjust as needed based on your layout */
-        left: 2px;
-        /* Stick to the left side */
-        height: auto;
-        /* Ensure the height fits the content */
-        width: 40px;
-        /* Adjust width for smaller screens */
-        border-radius: 20;
-        /* Remove rounded corners for smaller screens */
-        z-index: 1000;
-        /* Ensure it stays above other content */
+        top: auto;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+    }
+
+    .navbar:hover {
+        width: 100%;
+    }
+
+    .navbar__menu {
+        margin: 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
     }
 
     .navbar__link {
-        font-size: 20px;
-        /* Smaller font size on smaller screens */
-        height: 35px;
-        /* Adjust height */
-        width: 35px;
-        /* Adjust width */
+        flex-direction: column;
+        padding: 8px;
+        gap: 5px;
+        color:white;
     }
 
     .navbar__link span {
         font-size: 12px;
-        /* Smaller font size for span */
-        padding: 5px;
-        /* Adjust padding */
+        opacity: 1; /* Ensure text is visible on mobile */
+    }
+
+    .form-container {
+        margin-left: 20px;
+        margin-bottom: 80px;
+    }
+
+    .navbar:hover ~ .form-container {
+        margin-left: 20px;
+    }
+
+    .navbar__link i {
+        margin-left: 0;
+    }
+
+    .navbar:hover .navbar__link i {
+        margin-left: 0;
     }
 }
 
+.navbar:hover ~ body {
+    padding-left: 250px;
+}
+
+.navbar:hover ~ .form-container {
+    margin-left: 240px;
+    max-width: 900px;
+}
 
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
-    background-image: url(http://localhost:3000/frontend/static/Images/nature.png);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
+    min-height: 100vh;
+    background: 
+        linear-gradient(120deg, rgba(47, 133, 90, 0.15) 0%, rgba(255, 255, 255, 0) 70%),
+        linear-gradient(-120deg, rgba(72, 187, 120, 0.15) 0%, rgba(255, 255, 255, 0) 70%),
+        #edf2f7;
+    position: relative;
+    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
 }
 
-
-header {
+/* Add decorative leaf-like shapes */
+body::before {
+    content: '';
     position: fixed;
     top: 0;
-    /* Align to the top of the page */
+    right: 0;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle at 70% 30%, 
+        rgba(47, 133, 90, 0.15) 0%, 
+        rgba(72, 187, 120, 0.15) 50%, 
+        transparent 70%);
+    z-index: -1;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
     left: 0;
-    /* Align to the left of the page */
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle at 30% 70%, 
+        rgba(47, 133, 90, 0.15) 0%, 
+        rgba(72, 187, 120, 0.15) 50%, 
+        transparent 70%);
+    z-index: -1;
+}
+
+/* Subtle dot pattern overlay */
+.page-wrapper {
+    position: relative;
+    min-height: 100vh;
+}
+
+.page-wrapper::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(rgba(47, 133, 90, 0.2) 1px, transparent 1px),
+        radial-gradient(rgba(47, 133, 90, 0.2) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+    opacity: 0.4;
+    z-index: -1;
+}
+
+/* Add subtle grid lines */
+.page-wrapper::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(47, 133, 90, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(47, 133, 90, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+/* Updated Header Styles */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    /* Full width */
-    background-color: rgb(224, 224, 224);
-    border-bottom: 0px solid #000000;
-    padding: 12px 0px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 2000;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 2px solid var(--primary-color); 
 }
-
-/* LabourField Heading Styles */
-header h1 {
-    font-family:Arial, Helvetica, sans-serif;
-    /* Apply the Kavoon font */
-    font-size: 2.5em;
-    /* Adjust size as needed */
-    margin: 0;
-    background: #228B22;
-    /* Gradient from #91FF56 to #666666 */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
 
 .header-container {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    max-width: 1200px;
+    align-items: center;
+    height: 100%;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
-nav {
-    margin-left: auto; /* Push nav to the right */
+/* Logo and Brand Styles */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 8px;
+    border-radius: 8px;
 }
 
-.logo {
+.logo-img {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.tagline {
+    font-size: 12px;
+    color: #666;
+}
+
+
+.header-nav-list {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.header-nav-item {
     display: flex;
     align-items: center;
 }
 
-.logo img {
-    height: 40px;
-    /* Adjust the size as needed */
-    width: 40px;
-    /* Ensure the width and height are equal for a circle */
-    border-radius: 50%;
-    /* Makes the image circular */
-    margin-right: 10px;
-    object-fit: cover;
-    /* Ensures the image scales correctly within the circle */
-    background-color: rgb(224, 224, 224);
-    border: 1px solid black;
-}
-
-.logo h1 {
-    font-size: 2em;
-    margin: 0;
-}
-
-nav a {
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     text-decoration: none;
-    color: #333;
-    margin: 0 15px;
-    font-size: 1em;
+    color: var(--text-color);
+    position: relative;
+    padding: 5px 0;
 }
 
-nav a:hover {
-    color: #4CAF50;
-    /* Or any color you prefer for hover effect */
+/* Add green color to icons */
+.nav-link i {
+    font-size: 1rem;
+    color: var(--primary-color);
+}
+
+/* Add underline transition effect */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+/* Expand underline on hover */
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Optional: Change text color on hover */
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* If you need even more precise control, you can also set explicit dimensions */
+.nav-link i[class*="fa-"] {  /* This targets Font Awesome icons */
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .container {
