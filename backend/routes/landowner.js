@@ -388,7 +388,7 @@ module.exports = router;
         const newRequest = new Requests({
             labour_id,
             job_id,
-            status: false, // Initial status is false (pending)
+            status: null,  // Initially set to null (unprocessed)
             date: new Date()
         });
 
@@ -569,7 +569,7 @@ router.post("/request_confirm", landownerMiddleware,async (req, res) => {
     const newRequest = new Requests({
       labour_id: labour._id,
       job_id: job._id,
-      status: false, // Assuming 'false' means pending
+      status: null,  // Initially set to null (unprocessed)
       date: new Date()
     });
 
@@ -628,7 +628,7 @@ router.post("/request_by_owner", landownerMiddleware, async function(req, res) {
       // Step 6: Create a new Request Record
       const newRequest = new Requests({
           labour_id: labour._id,
-          status: true, // You can set status based on your logic
+          status: null, // You can set status based on your logic
           job_id: job._id,
           date: new Date()
       });
