@@ -200,53 +200,90 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Function to dynamically display jobs in the modal (existing code)
     function displayJobs(jobs) {
         const jobListContainer = document.getElementById('job-list-container');
-        jobListContainer.innerHTML = ''; // Clear any existing job cards
+        jobListContainer.innerHTML = '';
 
         if (jobs.length === 0) {
-            // Display a "No jobs available" message if the jobs array is empty
             const noJobsMessage = document.createElement('p');
-            noJobsMessage.classList.add('no-jobs-message'); // Add a CSS class for styling
+            noJobsMessage.classList.add('no-jobs-message');
             noJobsMessage.innerText = 'No jobs available for the selected date.';
             jobListContainer.appendChild(noJobsMessage);
-            return; // Exit the function early as there are no jobs to display
+            return;
         }
-    
+
         jobs.forEach(job => {
             const jobCard = document.createElement('div');
             jobCard.classList.add('labour-card');
+            
             jobCard.innerHTML = `
-            <div class="circle-stars-group">
-                <div class="circle"></div>
-                <div class="stars">
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                </div>
-            </div>
-            <div class="labour-info">
-                <p><strong>Title:</strong> ${job.title}</p>
-                <p><strong>Description:</strong> ${job.description}</p>
-                <p><strong>Amount:</strong> ₹${job.amount}</p>
-                <p><strong>Start Date:</strong> ${new Date(job.start_date).toLocaleDateString()}</p>
-                <p><strong>End Date:</strong> ${new Date(job.end_date).toLocaleDateString()}</p>
-                <p><strong>Workers needed:</strong> ${job.worker_id.length}/${job.number_of_workers}</p>
-            </div>
-            <div class="location">
-                <p><strong>Location:</strong> ${job.taluk}, ${job.city}</p>
-                <button class="request-btn" data-job-id="${job._id}">REQUEST</button>
-            </div>
-        `;
-            jobListContainer.appendChild(jobCard);
-        });
+                <div class="labour-card-main">
+                    <div class="card-header">
+                        <div class="title-section">
+                            <div class="profile-circle"></div>
+                            <h3 class="job-title">${job.title}</h3>
+                        </div>
+                        <div class="location-badge">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${job.taluk}, ${job.city}
+                        </div>
+                    </div>
 
-        // Add click event listeners to all request buttons after rendering jobs
-        const requestButtons = document.querySelectorAll('.request-btn');
-        requestButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const jobId = this.dataset.jobId;
-                openModal(jobId); // Open modal and pass the jobId
+                    <div class="card-content">
+                        <div class="date-info">
+                            <div class="date-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span><strong>Start:</strong> ${new Date(job.start_date).toLocaleDateString()}</span>
+                            </div>
+                            <div class="date-item">
+                                <i class="fas fa-calendar-check"></i>
+                                <span><strong>End:</strong> ${new Date(job.end_date).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="request-btn" data-job-id="${job._id}">REQUEST</button>
+                            <button class="expand-btn">
+                                Details <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="labour-card-details">
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-align-left"></i>
+                            <span><strong>Description:</strong> ${job.description}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-money-bill"></i>
+                            <span><strong>Amount:</strong> ₹${job.amount}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span><strong>Workers:</strong> ${job.worker_id.length}/${job.number_of_workers}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            jobListContainer.appendChild(jobCard);
+
+            // Add click event for expansion
+            const expandBtn = jobCard.querySelector('.expand-btn');
+            expandBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                jobCard.classList.toggle('expanded');
+                const icon = expandBtn.querySelector('i');
+                icon.classList.toggle('fa-chevron-up');
+                icon.classList.toggle('fa-chevron-down');
+            });
+
+            // Add click event for request button
+            const requestBtn = jobCard.querySelector('.request-btn');
+            requestBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const jobId = e.target.dataset.jobId;
+                openModal(jobId);
             });
         });
     }
@@ -325,16 +362,21 @@ function logoutUser() {
 async function checkAuthStatus() {
     const token = getToken();
     const authBtnContainer = document.getElementById('auth-btn-container');
+    authBtnContainer.innerHTML = ''; // Clear existing content
 
     if (token) {
-        // If the user is logged in, show the Logout button
+        // If user is logged in, show the styled Logout button
         const logoutBtn = document.createElement('button');
-        logoutBtn.innerText = 'Logout';
-        logoutBtn.classList.add('logout-btn'); // You can style this in CSS
+        logoutBtn.id = 'logout-btn';
+        logoutBtn.className = 'auth-btn';
+        logoutBtn.innerHTML = `
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        `;
         logoutBtn.onclick = logoutUser;
         authBtnContainer.appendChild(logoutBtn);
     } else {
-        // If the user is not logged in, show the login/signup popup
+        // If user is not logged in, show the login/signup popup
         showAuthPopup();
     }
 }
@@ -350,3 +392,41 @@ function getToken() {
     jobListModal.classList.remove('hidden'); // Show the modal
 }
 
+// Language dropdown functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const languageBtn = document.querySelector('.language-btn');
+    const languageDropdown = document.querySelector('.language-dropdown');
+    
+    languageBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        languageDropdown.style.display = 
+            languageDropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+        languageDropdown.style.display = 'none';
+    });
+
+    // Prevent dropdown from closing when clicking inside
+    languageDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    // Handle language selection
+    const languageOptions = document.querySelectorAll('.language-option');
+    languageOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const selectedLanguage = this.textContent;
+            languageBtn.querySelector('span').textContent = selectedLanguage;
+            languageDropdown.style.display = 'none';
+        });
+    });
+});
+
+document.querySelectorAll('.labour-card-main').forEach(card => {
+    card.addEventListener('click', () => {
+        const parentCard = card.closest('.labour-card');
+        parentCard.classList.toggle('expanded');
+    });
+});
