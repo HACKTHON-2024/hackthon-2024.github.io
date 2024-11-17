@@ -717,3 +717,30 @@ button:hover {
 .logout-btn:hover {
     background-color: #0e8f0e; /* Darker blue on hover */
 }
+
+.datepicker {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: default;
+    color: #495057;
+}
+
+.datepicker:focus {
+    outline: none;
+    border-color: #ced4da;
+}
+
+/* Remove the calendar icon for readonly inputs */
+.datepicker::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+/* Disable text selection */
+.datepicker {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}

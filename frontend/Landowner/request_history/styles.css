@@ -474,21 +474,60 @@ h2 {
 }
 
 /* Date Picker Styling */
-.datepicker {
-    padding: 10px 20px;
-    border: 2px solid var(--primary-color);
-    border-radius: 8px;
-    font-size: 14px;
-    color: var(--text-color);
-    background-color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(47, 133, 90, 0.1);
+.form-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
+.datepicker {
+    background-color: #f8f9fa;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: default;
+    color: #495057;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.datepicker:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(47, 133, 90, 0.1);
+}
+
+/* Remove the calendar icon for readonly inputs */
+.datepicker::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+/* Disable text selection */
+.datepicker {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Hover effect */
 .datepicker:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(47, 133, 90, 0.2);
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+    .form-row {
+        width: 100%;
+    }
+
+    .datepicker {
+        width: 100%;
+        font-size: 13px;
+        padding: 8px 16px;
+    }
 }
 
 /* Language Button and Dropdown */
