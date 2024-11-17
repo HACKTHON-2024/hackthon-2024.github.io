@@ -142,17 +142,29 @@ function logoutUser() {
 
 // Check authentication status
 async function checkAuthStatus() {
-    const token = getToken();
-    const authBtnContainer = document.getElementById('auth-btn-container');
+    try {
+        const token = getToken();
+        const authBtnContainer = document.getElementById('auth-btn-container');
 
-    if (token) {
-        const logoutBtn = document.createElement('button');
-        logoutBtn.innerText = 'Logout';
-        logoutBtn.classList.add('logout-btn');
-        logoutBtn.onclick = logoutUser;
-        authBtnContainer.appendChild(logoutBtn);
-    } else {
-        showAuthPopup();
+        if (!authBtnContainer) {
+            console.error('Auth button container not found');
+            return;
+        }
+
+        // Clear any existing content
+        authBtnContainer.innerHTML = '';
+
+        if (token) {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.innerText = 'Logout';
+            logoutBtn.classList.add('logout-btn');
+            logoutBtn.onclick = logoutUser;
+            authBtnContainer.appendChild(logoutBtn);
+        } else {
+            showAuthPopup();
+        }
+    } catch (error) {
+        console.error('Error in checkAuthStatus:', error);
     }
 }
 

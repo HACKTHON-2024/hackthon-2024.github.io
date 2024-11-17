@@ -7,7 +7,7 @@ async function fetchRequests() {
         const token = localStorage.getItem('jwt');
       
         if (!token) {
-            window.location.href = '../../static/login_page/index.html';
+            window.location.href = '../../static/home_page/index.html';
             return;
         }
 

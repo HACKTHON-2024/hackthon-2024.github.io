@@ -65,6 +65,7 @@
   const requestSchema = new mongoose.Schema({
     labour_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Labour', required: true },
     job_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Job', required: true },
+    landowner_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Landowner', required: true },
     status: { type: String, enum: ['ACCEPTED', 'REJECTED', null], default: null },
     date: { type: Date, default: Date.now }
   });

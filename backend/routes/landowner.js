@@ -386,6 +386,7 @@ module.exports = router;
 
         // Step 4: Create a new request
         const newRequest = new Requests({
+          landowner_id,
             labour_id,
             job_id,
             status: null,  // Initially set to null (unprocessed)
@@ -567,6 +568,7 @@ router.post("/request_confirm", landownerMiddleware,async (req, res) => {
 
     // Step 3: Create a new request in the Requests collection
     const newRequest = new Requests({
+      landowner_id: user_id,
       labour_id: labour._id,
       job_id: job._id,
       status: null,  // Initially set to null (unprocessed)
@@ -594,6 +596,7 @@ router.post("/request_confirm", landownerMiddleware,async (req, res) => {
   }
 });
 
+// this endpoint /request_by_owner appears to be used when a landowner wants to directly request a specific laborer for a job using their mobile number.
 router.post("/request_by_owner", landownerMiddleware, async function(req, res) {
   const { jobId, mobileNumber } = req.body;
 
@@ -627,6 +630,7 @@ router.post("/request_by_owner", landownerMiddleware, async function(req, res) {
 
       // Step 6: Create a new Request Record
       const newRequest = new Requests({
+          landowner_id: user_id,
           labour_id: labour._id,
           status: null, // You can set status based on your logic
           job_id: job._id,
@@ -711,5 +715,31 @@ router.post('/validate-user', async (req, res) => {
   }
 });
 
+// this endpoint is used to fetch the request history of the landowner
+router.get("/request_history", landownerMiddleware, async (req, res) => {
+    try {
+        console.log("request history api called");
+        const user_id = req.user._id;
+        
+        const requests = await Requests.find({ landowner_id: user_id })
+            .populate('labour_id', 'username mobile_number address') // Populate labour details
+            .populate('job_id', 'title description amount start_date end_date number_of_workers') // Populate job details
+            .sort({ date: -1 }); // Sort by date, newest first
+
+        console.log("Fetched requests:", requests); // Debug log
+        
+        res.json(requests);
+    } catch (error) {
+        console.error("Error fetching request history:", error);
+        res.status(500).json({ 
+            success: false, 
+            message: "Error fetching request history" 
+        });
+    }
+});
+
+
+
 router.use(landownerMiddleware)
 module.exports = router;
+
