@@ -96,6 +96,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                     </div>
                 </div>
             </div>
+            <div class="job-actions">
+                <button onclick="window.location.href='/frontend/Landowner/Labour_Assigned/index.html?jobId=${job._id}'" class="details-btn">View Details</button>
+            </div>
         `;
 
         // Add click event for expansion

@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     async function fetchJobs(selectedDate) {
         try {
             const token = getToken(); // Get JWT token
+            console.log(token)
             if (!token) {
                 showAuthPopup(); // Show login/signup popup if not logged in
                 return;

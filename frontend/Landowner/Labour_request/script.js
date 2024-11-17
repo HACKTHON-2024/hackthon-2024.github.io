@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
          const labourCard = document.createElement('div');
          labourCard.classList.add('labour-card');
  
-         const skills = labour.skills?.trim() || 'No skills listed';
+         const skills = labour.job_skills?.trim() || 'No skills listed';
  
          labourCard.innerHTML = `
              <div class="circle-stars-group">
@@ -179,7 +179,7 @@ function fetchActiveAndFutureJobs(labourId) {
                 <p><strong>Status:</strong></p>
                 <div class="editable-box"><span>${job.status}</span></div>
                 <p><strong>No. of Workers:</strong></p>
-                <div class="editable-box"><span>${job.number_of_workers}</span></div>
+                <div class="editable-box"><span>${job.worker_id.length}/${job.number_of_workers}</span></div>
                 <div>
                     <button class="confirm-job-btn" data-job-id="${job._id}">Confirm</button>
                 </div>

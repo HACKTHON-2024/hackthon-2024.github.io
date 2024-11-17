@@ -1,5 +1,5 @@
 const { Landowner } = require("../db/db"); // Assuming Labour is your model
-const { jwt_scret } = require('../config');
+const { jwt_secret } = require('../config');
 const jwt=require('jsonwebtoken')
 async function landownerMiddleware(req, res, next) {
     try {
@@ -15,7 +15,7 @@ async function landownerMiddleware(req, res, next) {
         const token = authorization.split(" ")[1]; // Format: "Bearer <token>"
         
         // Verify token and extract user data
-        const decoded = jwt.verify(token, jwt_scret);
+        const decoded = jwt.verify(token, jwt_secret);
         const username = decoded.username;
         if (!username) {    
             return res.status(403).json({
