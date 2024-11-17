@@ -46,31 +46,69 @@ document.addEventListener('DOMContentLoaded', async function () {
     function createJobCard(job) {
         const jobCard = document.createElement('div');
         jobCard.classList.add('labour-card');
-
+        
         jobCard.innerHTML = `
-            <div class="circle-stars-group">
-                <div class="circle"></div>
-                <div class="stars">
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
+            <div class="labour-card-main">
+                <div class="card-header">
+                    <div class="title-section">
+                        <div class="profile-circle"></div>
+                        <h3 class="job-title">${job.title}</h3>
+                    </div>
+                    <div class="location-badge">
+                        <i class="fas fa-map-marker-alt"></i>
+                        ${job.taluk}, ${job.city}
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="date-info">
+                        <div class="date-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span><strong>Start:</strong> ${new Date(job.start_date).toLocaleDateString()}</span>
+                        </div>
+                        <div class="date-item">
+                            <i class="fas fa-calendar-check"></i>
+                            <span><strong>End:</strong> ${new Date(job.end_date).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="expand-btn">
+                            Details <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="labour-info">
-                <p><strong>Title:</strong> ${job.title}</p>
-                <p><strong>Description:</strong> ${job.description}</p>
-                <p><strong>Amount:</strong> ₹${job.amount}</p>
-                <p><strong>Start Date:</strong> ${new Date(job.start_date).toLocaleDateString()}</p>
-                <p><strong>End Date:</strong> ${new Date(job.end_date).toLocaleDateString()}</p>
-            </div>
-            <div class="location">
-                <p><strong>Location:</strong> ${job.taluk}, ${job.city}</p>
+
+            <div class="labour-card-details">
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <i class="fas fa-align-left"></i>
+                        <span><strong>Description:</strong> ${job.description}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-money-bill"></i>
+                        <span><strong>Amount:</strong> ₹${job.amount}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-users"></i>
+                        <span><strong>Workers:</strong> ${job.worker_id.length}/${job.number_of_workers}</span>
+                    </div>
+                </div>
             </div>
         `;
 
-        labourList.appendChild(jobCard);
+        // Add click event for expansion
+        const expandBtn = jobCard.querySelector('.expand-btn');
+        expandBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            jobCard.classList.toggle('expanded');
+            const icon = expandBtn.querySelector('i');
+            icon.classList.toggle('fa-chevron-up');
+            icon.classList.toggle('fa-chevron-down');
+        });
+
+        document.getElementById('job-list-container').appendChild(jobCard);
     }
 
     // Fetch and display active jobs when the page loads
@@ -157,16 +195,21 @@ function logoutUser() {
 async function checkAuthStatus() {
     const token = getToken();
     const authBtnContainer = document.getElementById('auth-btn-container');
+    authBtnContainer.innerHTML = ''; // Clear existing content
 
     if (token) {
-        // If the user is logged in, show the Logout button
+        // If user is logged in, show the styled Logout button
         const logoutBtn = document.createElement('button');
-        logoutBtn.innerText = 'Logout';
-        logoutBtn.classList.add('logout-btn'); // You can style this in CSS
+        logoutBtn.id = 'logout-btn';
+        logoutBtn.className = 'auth-btn';
+        logoutBtn.innerHTML = `
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        `;
         logoutBtn.onclick = logoutUser;
         authBtnContainer.appendChild(logoutBtn);
     } else {
-        // If the user is not logged in, show the login/signup popup
+        // If user is not logged in, show the login/signup popup
         showAuthPopup();
     }
 }
