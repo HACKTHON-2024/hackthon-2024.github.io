@@ -386,6 +386,7 @@ module.exports = router;
 
         // Step 4: Create a new request
         const newRequest = new Requests({
+          landowner_id,
             labour_id,
             job_id,
             status: null,  // Initially set to null (unprocessed)
@@ -567,6 +568,7 @@ router.post("/request_confirm", landownerMiddleware,async (req, res) => {
 
     // Step 3: Create a new request in the Requests collection
     const newRequest = new Requests({
+      landowner_id: user_id,
       labour_id: labour._id,
       job_id: job._id,
       status: null,  // Initially set to null (unprocessed)
@@ -594,6 +596,7 @@ router.post("/request_confirm", landownerMiddleware,async (req, res) => {
   }
 });
 
+// this endpoint /request_by_owner appears to be used when a landowner wants to directly request a specific laborer for a job using their mobile number.
 router.post("/request_by_owner", landownerMiddleware, async function(req, res) {
   const { jobId, mobileNumber } = req.body;
 
@@ -627,6 +630,7 @@ router.post("/request_by_owner", landownerMiddleware, async function(req, res) {
 
       // Step 6: Create a new Request Record
       const newRequest = new Requests({
+          landowner_id: user_id,
           labour_id: labour._id,
           status: null, // You can set status based on your logic
           job_id: job._id,
