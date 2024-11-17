@@ -97,7 +97,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 </div>
             </div>
             <div class="job-actions">
-                <button onclick="window.location.href='/frontend/Landowner/Labour_Assigned/index.html?jobId=${job._id}'" class="details-btn">View Details</button>
+                <button onclick="window.location.href='/frontend/Landowner/Labour_Assigned/index.html?jobId=${job._id}'" class="view-laborers-btn">
+                    <i class="fas fa-users"></i>
+                    Registered Laborers
+                </button>
             </div>
         `;
 

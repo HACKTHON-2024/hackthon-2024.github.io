@@ -15,15 +15,271 @@
     font-family: 'Poppins', sans-serif;
 }
 
-body {
-    background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3));
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    min-height: 100vh;
+/* Updated Navigation Bar Styles */
+.navbar {
+    position: fixed;
+    left: 0;
+    top: 60px;
+    height: calc(100vh - 60px);
+    width: 60px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 999;
+    transition: width 0.3s ease;
+    overflow-x: hidden;
     padding-top: 80px;
-    padding-left: 70px;
-    transition: padding-left 0.3s ease;
+}
+
+.navbar__menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 1%;
+}
+
+.navbar__item {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.navbar__link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 0;
+    color: #000000;
+    text-decoration: none;
+    transition: all 0.5s ease;
+    white-space: nowrap;
+    position: relative;
+    gap: 24px;
+}
+
+/* Updated hover effect with green background */
+.navbar__link:hover {
+    background: rgba(47, 133, 90, 0.2);
+    border-left: 4px solid var(--primary-color);
+}
+
+/* Updated active state with green */
+.navbar__link.active {
+    background-color: #2F855A;
+    width: 100%;
+}
+
+.navbar__link i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+}
+
+.navbar__link span {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-20px);
+    transition: all 0.5s ease;
+    font-size: 15px;
+}
+
+.navbar:hover .navbar__link span {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* Expanded navbar styles with increased spacing */
+.navbar:hover {
+    width: 200px;
+}
+
+.navbar:hover .navbar__link {
+    justify-content: flex-start;
+    padding: 12px 20px;
+    gap: 24px;
+}
+
+.navbar:hover .navbar__link i {
+    margin-right: 16px; /* Increased space between icon and text */
+}
+
+.navbar:hover .navbar__link span {
+    display: block;
+}
+
+[data-feather] {
+    width: 24px !important;
+    height: 24px !important;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .navbar__link span {
+        display: block;
+        font-size: 12px;
+        text-align: center;
+        padding-left: 0;
+    }
+    
+    .navbar__link i {
+        min-width: auto;
+    }
+}
+
+
+/* Move content when navbar expands */
+.navbar:hover ~ .form-container {
+    margin-left: 270px;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+    .navbar {
+        top: auto;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+    }
+
+    .navbar:hover {
+        width: 100%;
+    }
+
+    .navbar__menu {
+        margin: 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
+    }
+
+    .navbar__link {
+        flex-direction: column;
+        padding: 8px;
+        gap: 5px;
+        color:white;
+    }
+
+    .navbar__link span {
+        font-size: 12px;
+        opacity: 1; /* Ensure text is visible on mobile */
+    }
+
+    .form-container {
+        margin-left: 20px;
+        margin-bottom: 80px;
+    }
+
+    .navbar:hover ~ .form-container {
+        margin-left: 20px;
+    }
+
+    .navbar__link i {
+        margin-left: 0;
+    }
+
+    .navbar:hover .navbar__link i {
+        margin-left: 0;
+    }
+}
+
+.navbar:hover ~ body {
+    padding-left: 250px;
+}
+
+.navbar:hover ~ .form-container {
+    margin-left: 240px;
+    max-width: 900px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: 
+        linear-gradient(120deg, rgba(47, 133, 90, 0.15) 0%, rgba(255, 255, 255, 0) 70%),
+        linear-gradient(-120deg, rgba(72, 187, 120, 0.15) 0%, rgba(255, 255, 255, 0) 70%),
+        #edf2f7;
+    position: relative;
+    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Add decorative leaf-like shapes */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle at 70% 30%, 
+        rgba(47, 133, 90, 0.15) 0%, 
+        rgba(72, 187, 120, 0.15) 50%, 
+        transparent 70%);
+    z-index: -1;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle at 30% 70%, 
+        rgba(47, 133, 90, 0.15) 0%, 
+        rgba(72, 187, 120, 0.15) 50%, 
+        transparent 70%);
+    z-index: -1;
+}
+
+/* Subtle dot pattern overlay */
+.page-wrapper {
+    position: relative;
+    min-height: 100vh;
+}
+
+.page-wrapper::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(rgba(47, 133, 90, 0.2) 1px, transparent 1px),
+        radial-gradient(rgba(47, 133, 90, 0.2) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+    opacity: 0.4;
+    z-index: -1;
+}
+
+/* Add subtle grid lines */
+.page-wrapper::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(47, 133, 90, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(47, 133, 90, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.3;
+    z-index: -1;
 }
 /* Modern Header Styles */
 .site-header {
