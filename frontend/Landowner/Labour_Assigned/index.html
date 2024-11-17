@@ -21,6 +21,19 @@
 
 <body>
 
+    <div id="auth-btn-container"></div>
+
+    <div id="auth-overlay" class="auth-overlay hidden">
+        <div class="auth-popup">
+            <h2>Please Login or Sign Up</h2>
+            <p>You need to be logged in to access this page.</p>
+            <div class="auth-buttons">
+                <button id="login-btn">Login</button>
+                <button id="signup-btn">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <nav class="navbar">
             <ul class="navbar__menu">
@@ -169,17 +182,6 @@
 
     </div>
 
-    <!-- Authentication Popup -->
-    <div id="auth-overlay" class="auth-overlay hidden">
-        <div id="auth-popup" class="auth-popup">
-            <p>Please log in or sign up to continue.</p>
-            <div class="button-container">
-                <button id="login-btn">Login</button>
-                <button id="signup-btn">Sign up</button>
-            </div>
-        </div>
-    </div>
-    
     <script src="script.js"></script>
 
 </body>
