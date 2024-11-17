@@ -67,6 +67,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             <div class="location">
                 <p><strong>Location:</strong> ${job.taluk}, ${job.city}</p>
             </div>
+            <div class="job-actions">
+                <button onclick="window.location.href='../job_details/index.html?jobId=${job._id}'" class="details-btn">View Details</button>
+            </div>
         `;
 
         labourList.appendChild(jobCard);

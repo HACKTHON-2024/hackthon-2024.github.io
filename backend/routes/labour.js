@@ -384,7 +384,43 @@ router.post('/validate-user', async (req, res) => {
 });
 
 
+// Route to fetch job details along with landowner details
+router.get("/job/:jobId", async (req, res) => {
+    const { jobId } = req.params;  // Getting the jobId from the request parameters
+  
+    try {
+        // Fetch job details and populate the created_by field
+        const jobDetails = await Job.findById(jobId)
+            .populate({
+                path: 'created_by',
+                select: 'username  mobile_number address' // Select the landowner fields you want to include
+            });
 
+        if (!jobDetails) {
+            return res.status(404).json({ 
+                success: false,
+                message: "Job not found" 
+            });
+        }
+
+        // Return all job details with landowner information
+        res.status(200).json({
+            success: true,
+            data: {
+                job: jobDetails,  // This will include all job fields
+                landowner: jobDetails.created_by
+            }
+        });
+
+    } catch (error) {
+        console.error("Error fetching job details:", error);
+        res.status(500).json({ 
+            success: false,
+            message: "Error fetching job details",
+            error: error.message 
+        });
+    }
+});
 
 router.use(labourMiddleware)
 module.exports = router;
