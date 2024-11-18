@@ -64,8 +64,15 @@ router.post('/signin_by_otp', async (req, res) => {
         });
   
         if (labour) {
-            // Generate JWT token since OTP is already verified
-            const token = jwt.sign({ username: labour.username }, jwt_secret); // Token valid for 1 hour
+            // Generate JWT token with username and role
+            const token = jwt.sign(
+                { 
+                    username: labour.username,
+                    role: 'labour'  // Add role identifier
+                }, 
+                jwt_secret,
+                { expiresIn: '1h' }
+            );
             
             // Send token as response
             return res.status(200).json({ token });
@@ -100,8 +107,16 @@ router.post('/signin_by_otp', async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        // Generate JWT token
-        const token = jwt.sign({ username: labour.username }, jwt_secret, { expiresIn: '1h' });
+        // Generate JWT token with username and role
+        const token = jwt.sign(
+            { 
+                username: labour.username,
+                role: 'labour'  // Add role identifier
+            }, 
+            jwt_secret, 
+            { expiresIn: '1h' }
+        );
+        
         return res.status(200).json({ token });
     } catch (error) {
         console.error('Error during sign-in:', error);

@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     feather.replace();
 
+    // Add network status monitoring
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
+
     // Handle the form submission
     const createJobButton = document.querySelector('.create-job-btn');
     createJobButton.addEventListener('click', async function (e) {
@@ -26,6 +30,10 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
+            if (!navigator.onLine) {
+                window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+                return;
+            }
             const token = getToken();  // Get JWT token
             
             if (!token) {
@@ -55,6 +63,10 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (error) {
             alert('An error occurred while creating the job');
             console.error('Error:', error);
+            if (!navigator.onLine) {
+                window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+                return;
+            }
         }
     });
 });
@@ -116,4 +128,19 @@ function closeAuthPopup() {
 }
 function getToken() {
     return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
+}
+
+// Add this new function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // Optional: Reload the current page when coming back online
+        // Only reload if we were previously on the job listing page
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network_error')) {
+            window.location.href = '../job_listing/index.html';
+        }
+    }
 }

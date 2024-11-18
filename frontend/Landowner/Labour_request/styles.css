@@ -549,332 +549,233 @@ h2 {
 .labour-card {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
+    background: #ffffff;
+    border-radius: 12px;
     padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 15px auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    max-width: 1200px;
+    gap: 25px;
     position: relative;
-    width: 100%;
-}
-
-.labour-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12), 0 12px 20px rgba(47, 133, 90, 0.2);
-    border-color: var(--primary-color);
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 25px;
-    background: white;
-    border-bottom: 1px solid #edf2f7;
-}
-
-.title-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex: 1;
-}
-
-.profile-circle {
-    width: 50px;
-    height: 50px;
-    background: #e8f5e9;
-    border-radius: 50%;
-    border: 2px solid var(--primary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.profile-circle::after {
-    content: '👨‍🌾';
-    font-size: 20px;
-}
-
-.job-title {
-    font-size: 1.3rem;
-    color: #2d3748;
-    font-weight: 600;
-    margin: 0;
-}
-
-.location-badge {
-    background: #e8f5e9;
-    color: var(--primary-color);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid #c6f6d5;
-    white-space: nowrap;
-    min-width: 200px;
-    justify-content: center;
-}
-
-.location-badge i {
-    color: var(--primary-color);
-    font-size: 16px;
-}
-
-.card-content {
-    padding: 20px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.date-info {
-    display: flex;
-    gap: 40px;
-}
-
-.date-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #4a5568;
-    font-size: 0.95rem;
-}
-
-.date-item i {
-    color: var(--primary-color);
-    font-size: 1.1rem;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 15px;
-}
-
-.request-btn {
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.9rem;
-    box-shadow: 0 2px 8px rgba(47, 133, 90, 0.2);
-}
-
-.request-btn:hover {
-    background: #1b5e20;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(47, 133, 90, 0.3);
-}
-
-.expand-btn {
-    background: white;
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-}
-
-.expand-btn:hover {
-    background: #f0fff4;
-    transform: translateY(-2px);
-}
-
-.labour-card-details {
-    max-height: 0;
     overflow: hidden;
-    transition: all 0.3s ease-out;
-    background: #f8fafc;
-}
-
-.labour-card.expanded .labour-card-details {
-    max-height: 200px;
-    padding: 20px 25px;
-    border-top: 1px solid #edf2f7;
-}
-
-.details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.detail-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: #4a5568;
-    font-size: 0.95rem;
-    padding: 10px;
-    background: white;
-    border-radius: 8px;
-    border: 1px solid #edf2f7;
-}
-
-.detail-item i {
-    color: var(--primary-color);
-    font-size: 1.1rem;
+    min-height: 120px;
 }
 
 .labour-card::before {
     content: '';
     position: absolute;
-    top: 0;
     left: 0;
-    width: 5px;
+    top: 0;
     height: 100%;
+    width: 4px;
     background: var(--primary-color);
-    opacity: 0.8;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-    .labour-card {
-        width: 95%;
-    }
+.labour-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-@media (max-width: 768px) {
-    .container {
-        margin-left: 20px;
-        width: calc(100% - 40px);
-    }
-    
-    .labour-card {
-        width: 98%;
-        margin: 15px auto;
-    }
+.labour-card:hover::before {
+    opacity: 1;
 }
 
-/* Profile Circle Group (removed stars) */
+/* Profile Circle */
 .circle-stars-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 20px;
-    min-width: 100px;
+    flex-shrink: 0;
+    text-align: center;
 }
 
 .circle {
-    width: 80px;
-    height: 80px;
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
+    background: #e8f5e9;
+    border: 2px solid var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
-    margin-right: 20px;
-    flex-shrink: 0; /* Prevents the circle from shrinking */
-    border: 3px solid var(--primary-color); /* Added border with primary color */
-    box-shadow: 0 0 0 2px rgba(47, 133, 90, 0.1); /* Optional: adds subtle outer glow */
+    margin-bottom: 5px;
+    transition: transform 0.3s ease;
 }
 
-.circle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.circle:hover {
+    transform: scale(1.05);
 }
 
-/* Remove stars-related classes */
-.stars,
-.star {
-    display: none;
+.circle i {
+    font-size: 28px;
+    color: var(--primary-color);
 }
 
-/* Enhanced Labour Info Styling */
+/* Labour Info Section */
 .labour-info {
     flex: 1;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.8rem 2rem;
-    margin-left: -10px;
+    gap: 15px;
+    padding: 5px;
 }
 
-.labour-info p {
-    margin: 0;
-    font-size: 0.95rem;
+.info-item {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
 }
 
-.labour-info strong {
+.info-item:hover {
+    background: #e8f5e9;
+    border-color: #c6f6d5;
+    transform: translateY(-2px);
+}
+
+.info-item i {
+    font-size: 18px;
     color: var(--primary-color);
-    font-weight: 600;
-    min-width: auto;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    width: 24px;
+    text-align: center;
 }
 
-/* Add icons to labels */
-.labour-info strong::before {
-    font-family: "Font Awesome 5 Free";
-    font-size: 14px;
-}
-
-.labour-info p:nth-child(1) strong::before { content: "\f007"; } /* Title */
-.labour-info p:nth-child(2) strong::before { content: "\f15c"; } /* Description */
-.labour-info p:nth-child(3) strong::before { content: "\f156"; } /* Amount */
-.labour-info p:nth-child(4) strong::before { content: "\f271"; } /* Start Date */
-.labour-info p:nth-child(5) strong::before { content: "\f273"; } /* End Date */
-.labour-info p:nth-child(6) strong::before { content: "\f0c0"; } /* Workers */
-
-/* Location and Request Button */
-.location {
-    min-width: 220px;
+.info-content {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    gap: 1rem;
-    margin-right: 10px;
+    gap: 4px;
 }
 
-.location p {
-    color: var(--text-color);
-    font-size: 0.9rem;
+.info-item strong {
+    color: #2d3748;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.info-item span {
+    color: #4a5568;
+    font-size: 0.95rem;
+}
+
+/* Location Section */
+.location {
+    flex-shrink: 0;
+    width: 200px;
+    padding-left: 20px;
+    border-left: 2px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.location-box {
+    background: #f0fff4;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #c6f6d5;
+    transition: all 0.3s ease;
+}
+
+.location-box:hover {
+    background: #e6ffed;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(47, 133, 90, 0.1);
+}
+
+.location-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #c6f6d5;
 }
 
-.location p::before {
-    content: "\f3c5"; /* Location icon */
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
+.location-header i {
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.location-header strong {
+    font-size: 1rem;
     color: var(--primary-color);
 }
 
+.location-text {
+    font-size: 13px;
+    color: #4a5568;
+    line-height: 1.3;
+}
+
+/* Request Button */
 .request-btn {
-    background-color: var(--primary-color);
+    width: 100%;
+    padding: 10px;
+    background: var(--primary-color);
     color: white;
     border: none;
-    padding: 8px 20px;
-    border-radius: 6px;
-    font-size: 0.9rem;
+    border-radius: 10px;
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(47, 133, 90, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(47, 133, 90, 0.2);
 }
 
 .request-btn:hover {
-    background-color: #236c46;
+    background: #236c46;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(47, 133, 90, 0.3);
+    box-shadow: 0 6px 12px rgba(47, 133, 90, 0.3);
+}
+
+.request-btn:active {
+    transform: translateY(0);
+}
+
+.request-btn i {
+    font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .labour-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .labour-card {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .labour-info {
+        grid-template-columns: 1fr;
+    }
+
+    .location {
+        width: 100%;
+        padding-left: 15px;
+        border-left: none;
+        border-top: 2px solid #e2e8f0;
+        padding-top: 20px;
+    }
+
+    .circle {
+        width: 55px;
+        height: 55px;
+    }
 }
 
 /* Stars Styling */

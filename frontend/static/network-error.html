@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Internet Connection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e2030, #2a2e4d);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .error-icon {
+            font-size: 80px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .error-title {
+            font-size: 2.5em;
+            margin: 20px 0;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .error-message {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            color: #b8b9cc;
+        }
+
+        .retry-button {
+            padding: 12px 30px;
+            font-size: 1.1em;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 30px;
+        }
+
+        .retry-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        }
+
+        .game-container {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .dino {
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            position: relative;
+            animation: run 0.5s infinite;
+        }
+
+        .offline-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .offline-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s;
+        }
+
+        .offline-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        #dinoGame {
+            width: 100%;
+            height: 200px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            background: rgba(0,0,0,0.2);
+        }
+
+        #dino {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            border-radius: 3px;
+        }
+
+        .cactus {
+            width: 20px;
+            height: 40px;
+            background-color: #ff6b6b;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border-radius: 3px;
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 20px;
+        }
+
+        .game-instructions {
+            color: #b8b9cc;
+            margin: 10px 0;
+        }
+
+        @keyframes slideLeft {
+            from {
+                right: -20px;
+            }
+            to {
+                right: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="connection-status">
+        Checking connection...
+    </div>
+
+    <div class="container">
+        <div class="error-icon">🌐</div>
+        <h1 class="error-title">Oops! No Internet Connection</h1>
+        <p class="error-message">Don't worry! You can still have fun while we wait for the connection to return.</p>
+        <button class="retry-button" onclick="checkConnection()">
+            Try Again
+        </button>
+
+        <div class="game-container">
+            <h2>Chrome Dino Game 🦖</h2>
+            <p class="game-instructions">Press SPACE to jump or tap on mobile</p>
+            <div id="dinoGame">
+                <div id="dino"></div>
+                <div id="score">Score: <span>0</span></div>
+            </div>
+            <button onclick="startGame()" class="retry-button">Start Game</button>
+        </div>
+
+        <div class="offline-content">
+            <div class="offline-card">
+                <h3>Did you know? 🤔</h3>
+                <p>The first computer mouse was made of wood!</p>
+            </div>
+            <div class="offline-card">
+                <h3>Quick Tip 💡</h3>
+                <p>Try turning your router off and on again.</p>
+            </div>
+            <div class="offline-card">
+                <h3>Fun Fact 🌟</h3>
+                <p>The first website is still online after 30+ years!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkConnection() {
+            if (navigator.onLine) {
+                window.history.back();
+            } else {
+                alert('Still offline. Please check your internet connection.');
+            }
+        }
+
+        let isGameRunning = false;
+        let isJumping = false;
+        let gravity = 0.9;
+        let dinoBottom = 0;
+        let dinoVelocity = 0;
+        let score = 0;
+        let gameInterval;
+
+        const dino = document.getElementById('dino');
+        const gameArea = document.getElementById('dinoGame');
+        const scoreDisplay = document.querySelector('#score span');
+
+        function jump() {
+            if (isJumping || !isGameRunning) return;
+            
+            isJumping = true;
+            dinoVelocity = 20;
+            
+            function applyGravity() {
+                if (!isGameRunning) return;
+                
+                dinoVelocity -= gravity;
+                dinoBottom += dinoVelocity;
+                
+                if (dinoBottom <= 0) {
+                    dinoBottom = 0;
+                    dinoVelocity = 0;
+                    isJumping = false;
+                }
+                
+                dino.style.bottom = dinoBottom + 'px';
+                
+                if (isJumping) {
+                    requestAnimationFrame(applyGravity);
+                }
+            }
+            
+            requestAnimationFrame(applyGravity);
+        }
+
+        function createCactus() {
+            if (!isGameRunning) return;
+            
+            const cactus = document.createElement('div');
+            cactus.classList.add('cactus');
+            gameArea.appendChild(cactus);
+            
+            let position = gameArea.offsetWidth;
+            
+            function moveCactus() {
+                if (!isGameRunning) {
+                    cactus.remove();
+                    return;
+                }
+                
+                position -= 5;
+                cactus.style.right = (gameArea.offsetWidth - position) + 'px';
+                
+                const cactusRect = cactus.getBoundingClientRect();
+                const dinoRect = dino.getBoundingClientRect();
+                
+                // Collision detection
+                if (
+                    dinoRect.right > cactusRect.left &&
+                    dinoRect.left < cactusRect.right &&
+                    dinoRect.bottom > cactusRect.top
+                ) {
+                    gameOver();
+                    return;
+                }
+                
+                if (position < -20) {
+                    cactus.remove();
+                    score++;
+                    scoreDisplay.textContent = score;
+                    return;
+                }
+                
+                requestAnimationFrame(moveCactus);
+            }
+            
+            requestAnimationFrame(moveCactus);
+            
+            // Create next cactus
+            const randomDelay = Math.random() * 1000 + 1000;
+            if (isGameRunning) {
+                setTimeout(createCactus, randomDelay);
+            }
+        }
+
+        function gameOver() {
+            isGameRunning = false;
+            alert(`Game Over! Score: ${score}`);
+            // Remove all cactuses
+            document.querySelectorAll('.cactus').forEach(c => c.remove());
+            // Reset dino position
+            dinoBottom = 0;
+            dino.style.bottom = '0px';
+        }
+
+        function startGame() {
+            if (isGameRunning) return;
+            
+            // Reset game state
+            isGameRunning = true;
+            isJumping = false;
+            score = 0;
+            scoreDisplay.textContent = '0';
+            dinoBottom = 0;
+            dino.style.bottom = '0px';
+            
+            // Remove any existing cactuses
+            document.querySelectorAll('.cactus').forEach(c => c.remove());
+            
+            // Start spawning cactuses
+            createCactus();
+        }
+
+        // Event Listeners
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                event.preventDefault();
+                if (!isGameRunning) {
+                    startGame();
+                } else {
+                    jump();
+                }
+            }
+        });
+
+        // Mobile support
+        document.addEventListener('touchstart', (event) => {
+            event.preventDefault();
+            if (!isGameRunning) {
+                startGame();
+            } else {
+                jump();
+            }
+        });
+
+        // Update connection status
+        function updateConnectionStatus() {
+            const status = document.querySelector('.connection-status');
+            if (navigator.onLine) {
+                status.textContent = 'Online';
+                status.style.background = 'rgba(0,255,0,0.2)';
+            } else {
+                status.textContent = 'Offline';
+                status.style.background = 'rgba(255,0,0,0.2)';
+            }
+        }
+
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        updateConnectionStatus();
+    </script>
+</body>
+</html> 

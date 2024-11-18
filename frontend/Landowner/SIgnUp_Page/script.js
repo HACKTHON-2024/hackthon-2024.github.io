@@ -1,5 +1,13 @@
+// Add network status monitoring
+window.addEventListener('online', handleNetworkChange);
+window.addEventListener('offline', handleNetworkChange);
 async function onclickconfirm() {
     try {
+        
+        if (!navigator.onLine) {
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            return;
+        }
         // Create an array of required validations
         const validations = [
             { name: 'Name', result: validateName() },
@@ -31,14 +39,22 @@ async function onclickconfirm() {
                 </ul>
             `;
             
+            // Show both error message and overlay
             errorMessageElement.classList.add('show');
+            document.querySelector('.overlay').classList.add('show');
+            
+            // Scroll to error message smoothly
+            errorMessageElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
             
             // Add close button functionality
             document.getElementById('error-message-close').onclick = function() {
                 errorMessageElement.classList.remove('show');
+                document.querySelector('.overlay').classList.remove('show');
             };
             
-            // Don't throw error, just return
             return;
         }
 
@@ -180,6 +196,10 @@ async function onclickconfirm() {
             errorMessageElement.classList.remove('show');
             document.querySelector('.overlay').classList.remove('show');
         };
+        if (!navigator.onLine) {
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            return;
+        }
     }
 }
 
@@ -799,3 +819,46 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+// Add this to your existing script.js
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing code ...
+
+    // Add logout functionality
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            // Clear the JWT token from localStorage
+            localStorage.removeItem('jwt');
+            
+            // Redirect to home page
+            window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
+        });
+    }
+
+    // Check authentication status on page load
+    function checkAuth() {
+        const token = localStorage.getItem('jwt');
+        if (!token) {
+            // If no token is found, redirect to home page
+            window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
+        }
+    }
+
+    // Call checkAuth when page loads
+    checkAuth();
+});
+
+// Add this new function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // Optional: Reload the current page when coming back online
+        // Only reload if we were previously on the job listing page
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network_error')) {
+            window.location.href = '../job_listing/index.html';
+        }
+    }
+}

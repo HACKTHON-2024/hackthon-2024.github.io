@@ -346,6 +346,7 @@ body::before {
     z-index: 1000;
     border-bottom: 1px solid rgba(203, 213, 224, 0.3);
     height: 60px;
+    border-bottom: 2px solid var(--primary-color);
 }
 
 .header-container {
@@ -799,7 +800,6 @@ input[type="checkbox"] {
     transition: width 0.3s ease;
     overflow-x: hidden;
     padding-top: 80px;
-    border-right: 2px solid var(--primary-color);
 }
 
 .navbar__menu {
@@ -1695,4 +1695,194 @@ body {
     height: 100%;
     display: flex;
     align-items: center;
+}
+
+#error-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    width: 400px;
+    max-width: 90vw;
+    display: none;
+}
+
+#error-message.show {
+    display: block;
+}
+
+/* Error Message Content */
+#error-message h3 {
+    color: #E53E3E;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+#error-message ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#error-message li {
+    color: #4A5568;
+    margin-bottom: 8px;
+    font-size: 14px;
+    padding-left: 20px;
+    position: relative;
+}
+
+#error-message li::before {
+    content: "•";
+    color: #E53E3E;
+    position: absolute;
+    left: 0;
+}
+
+/* Close Button */
+#error-message-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 5px;
+    line-height: 1;
+}
+
+#error-message-close:hover {
+    color: #E53E3E;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Lighter overlay to show blur */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 999;
+    display: none;
+}
+
+.overlay.show {
+    display: block;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+#error-message.show {
+    display: block;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* Ensure body doesn't scroll when overlay is shown */
+body.overlay-active {
+    overflow: hidden;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+    #error-message {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
+/* Update overlay styling */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Lighter overlay to show blur */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 999;
+    display: none;
+}
+
+.overlay.show {
+    display: block;
+}
+
+/* Update error message styling */
+#error-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 400px;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow-y: auto;
+    display: none;
+}
+
+/* When error is shown, blur everything except the error message */
+.overlay.show ~ * {
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+}
+
+/* Exclude error message from blur */
+#error-message {
+    filter: none !important;
+}
+
+/* Ensure navbar and header get blurred */
+.navbar.blur,
+.header-container.blur {
+    filter: blur(8px); /* Increased blur effect */
+    transition: filter 0.3s ease;
+    pointer-events: none; /* Prevents interaction with blurred elements */
+}
+
+/* Animation for error message */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+#error-message.show {
+    display: block;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* Optional: Add transition for smoother blur effect */
+.navbar, .header-container, .form-container {
+    transition: filter 0.3s ease;
 }

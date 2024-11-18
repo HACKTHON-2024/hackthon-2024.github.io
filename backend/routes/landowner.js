@@ -90,8 +90,15 @@ router.post('/signin_by_otp', async (req, res) => {
       });
 
       if (landowner) {
-          // Generate JWT token since OTP is already verified
-          const token = jwt.sign({ username: landowner.username }, jwt_secret); // Token valid for 1 hour
+          // Generate JWT token with both username and role
+          const token = jwt.sign(
+              { 
+                  username: landowner.username,
+                  role: 'landowner'  // Add role to identify user type
+              }, 
+              jwt_secret, 
+              { expiresIn: '1h' }
+          );
           
           // Send token as response
           return res.status(200).json({ token });
@@ -107,33 +114,41 @@ router.post('/signin_by_otp', async (req, res) => {
 
 
 router.post('/signin', async (req, res) => {
-  const { identifier, password } = req.body;
+    const { identifier, password } = req.body;
 
-  try {
-      // Find a laborer by either email or phone number
-      const landowner = await Landowner.findOne({
-          $or: [
-              { email: identifier },
-              { mobile_number: identifier }
-          ]
-      });
+    try {
+        // Find a landowner by either email or phone number
+        const landowner = await Landowner.findOne({
+            $or: [
+                { email: identifier },
+                { mobile_number: identifier }
+            ]
+        });
 
-      if (!landowner) {
-          return res.status(401).json({ message: 'Invalid credentials' });
-      }
+        if (!landowner) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
 
-      // Check if the provided password matches the stored password
-      if (landowner.password !== password) {
-          return res.status(401).json({ message: 'Invalid credentials' });
-      }
+        // Check if the provided password matches the stored password
+        if (landowner.password !== password) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
 
-      // Generate JWT token
-      const token = jwt.sign({ username: landowner.username }, jwt_secret, { expiresIn: '1h' });
-      return res.status(200).json({ token });
-  } catch (error) {
-      console.error('Error during sign-in:', error);
-      return res.status(500).json({ message: 'Internal server error' });
-  }
+        // Generate JWT token with both username and role
+        const token = jwt.sign(
+            { 
+                username: landowner.username,
+                role: 'landowner'  // Add role to identify user type
+            }, 
+            jwt_secret, 
+            { expiresIn: '1h' }
+        );
+        
+        return res.status(200).json({ token });
+    } catch (error) {
+        console.error('Error during sign-in:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
 });
 
 

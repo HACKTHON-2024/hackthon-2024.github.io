@@ -11,9 +11,17 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const labourList = document.querySelector('.labour-list');
 
+    // Add network status monitoring
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
+
     // Function to fetch active jobs from the server
     async function fetchActiveJobs() {
         try {
+            if (!navigator.onLine) {
+                window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+                return;
+            }
             const token = getToken();  // Get JWT token
 
             const response = await fetch('http://localhost:3000/landowner/active_jobs', {
@@ -39,6 +47,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         } catch (error) {
             console.error('Error fetching active jobs:', error);
             labourList.innerHTML = `<p>Error fetching active jobs: ${error.message}</p>`;
+            if (!navigator.onLine) {
+                window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            }
         }
     }
 
@@ -197,3 +208,18 @@ function getToken() {
 document.addEventListener('DOMContentLoaded', function() {
     checkAuthStatus();
 });
+
+// Add this new function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // Optional: Reload the current page when coming back online
+        // Only reload if we were previously on the job listing page
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network_error')) {
+            window.location.href = '../job_listing/index.html';
+        }
+    }
+}

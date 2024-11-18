@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
+
+    // Add network status monitoring
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
+
     const loginContainer = document.getElementById('login-container');
     const passwordContainer = document.getElementById('password-container');
     const otpContainer = document.getElementById('otp-container');
@@ -13,8 +18,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let isEmail = false; // This will store whether the input is email or mobile number
 
+    if (!navigator.onLine) {
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        return;
+    }
+
     // Event listener for Continue button
     continueButton.addEventListener('click', function () {
+        if (!navigator.onLine) {
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            return;
+        }
         const identifier = document.getElementById('email-input').value;
 
         // Simple validation
@@ -228,3 +242,18 @@ function showMessage(type, title, message) {
 
 // Error message
 // showMessage('error', 'Error!', 'Invalid credentials. Please try again.');
+
+// Add this new function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // Optional: Reload the current page when coming back online
+        // Only reload if we were previously on the job listing page
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network_error')) {
+            window.location.href = '../job_listing/index.html';
+        }
+    }
+}

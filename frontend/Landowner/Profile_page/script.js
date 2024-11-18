@@ -1,11 +1,17 @@
 // Feather icons replacement for any icons you might use
 feather.replace();
 
+// Add this at the beginning of your script, right after feather.replace();
+let isAuthenticated = false;
+
 // When DOM is loaded, check auth status and fetch profile/job data
 document.addEventListener('DOMContentLoaded', async function () {
     await checkAuthStatus();
     await fetchProfileData();
     await fetchJobData();
+    // Add network status monitoring
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
 });
 
 // Format Date utility
@@ -20,6 +26,10 @@ function formatDate(dateString) {
 // Fetch and display profile data
 async function fetchProfileData() {
     try {
+        if (!navigator.onLine) {
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            return;
+        }
         const token = getToken();
         console.log('Token:', token);
 
@@ -53,6 +63,10 @@ async function fetchProfileData() {
         document.getElementById('talukDisplay').innerText = data.taluk;
     } catch (error) {
         console.error('Error fetching profile data:', error);
+        if (!navigator.onLine) {
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            return;
+        }
     }
 }
 
@@ -165,65 +179,33 @@ function toggleJobDetails(jobSummaryElement) {
 
 // Show authentication popup with overlay
 function showAuthPopup() {
-    // Create the overlay
-    const overlay = document.createElement('div');
-    overlay.classList.add('auth-overlay'); // Styled in CSS
+    const overlay = document.getElementById('auth-overlay');
+    const popup = document.getElementById('auth-popup');
+    
+    if (overlay && popup) {
+        overlay.style.display = 'block';
+        popup.style.display = 'block';
+    }
 
-    // Create the popup
-    const popup = document.createElement('div');
-    popup.classList.add('auth-popup'); // Styled in CSS
-
-    // Message above buttons
-    const authMessage = document.createElement('p');
-    authMessage.innerText = 'Need to sign in or sign up?';
-    popup.appendChild(authMessage);
-
-    // Create container for the buttons
-    const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container'); // Styled in CSS for flexbox layout
-
-    // Create login button
-    const loginBtn = document.createElement('button');
-    loginBtn.innerText = 'Login';
-    loginBtn.onclick = function () {
-        window.location.href = '../signin/index.html'; // Redirect to login page
-        removeAuthPopup(); // Remove popup on navigation
-    };
-
-    // Create signup button
-    const signupBtn = document.createElement('button');
-    signupBtn.innerText = 'Sign Up';
-    signupBtn.onclick = function () {
-        window.location.href = '../SignUp_Page/index.html'; // Redirect to signup page
-        removeAuthPopup(); // Remove popup on navigation
-    };
-
-    // Append buttons to the container
-    buttonContainer.appendChild(loginBtn);
-    buttonContainer.appendChild(signupBtn);
-
-    // Add the button container to the popup
-    popup.appendChild(buttonContainer);
-
-    // Append the overlay and popup to the body
-    document.body.appendChild(overlay);
-    document.body.appendChild(popup);
-
-    // Close popup when clicking outside or pressing Escape
-    overlay.addEventListener('click', removeAuthPopup);
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
+    // Add event listener to close popup when clicking outside
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
             removeAuthPopup();
+            // Redirect to home page or another appropriate page
+            window.location.href = '../../static/home_page/index.html';
         }
     });
 }
 
 // Remove the authentication popup and overlay
 function removeAuthPopup() {
-    const overlay = document.querySelector('.auth-overlay');
-    const popup = document.querySelector('.auth-popup');
-    if (overlay) overlay.remove();
-    if (popup) popup.remove();
+    const overlay = document.getElementById('auth-overlay');
+    const popup = document.getElementById('auth-popup');
+    
+    if (overlay && popup) {
+        overlay.style.display = 'none';
+        popup.style.display = 'none';
+    }
 }
 
 // Logout user
@@ -241,22 +223,45 @@ function logoutUser() {
 // Check authentication status and show popup or logout button
 async function checkAuthStatus() {
     const token = getToken();
-    const authBtnContainer = document.getElementById('auth-btn-container');
+    isAuthenticated = !!token; // Convert token to boolean
 
-    if (token) {
-        // If the user is logged in, show the Logout button
+    if (!isAuthenticated) {
+        showAuthPopup();
+        // Hide the main content
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.job-created-section').style.display = 'none';
+    } else {
+        // Show the main content
+        document.querySelector('.container').style.display = 'block';
+        document.querySelector('.job-created-section').style.display = 'block';
+        
+        // Add logout button
+        const authBtnContainer = document.getElementById('auth-btn-container');
         const logoutBtn = document.createElement('button');
         logoutBtn.className = 'logout-btn';
         logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i>Logout';
         logoutBtn.onclick = logoutUser;
+        authBtnContainer.innerHTML = ''; // Clear existing content
         authBtnContainer.appendChild(logoutBtn);
-    } else {
-        // If the user is not logged in, show the login/signup popup
-        showAuthPopup();
     }
 }
 
 // Get JWT token from localStorage
 function getToken() {
     return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
+}
+
+// Add this new function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // Optional: Reload the current page when coming back online
+        // Only reload if we were previously on the job listing page
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network_error')) {
+            window.location.href = '../job_listing/index.html';
+        }
+    }
 }

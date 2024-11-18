@@ -1,3 +1,74 @@
+document.addEventListener('DOMContentLoaded', async function() {
+    await checkAuthStatus();
+    showWelcomeMessage();
+    // ... rest of your DOMContentLoaded code ...
+
+    // Add network status monitoring
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
+});
+
+// Move these functions outside of any event listener
+function logoutUser() {
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('hasVisitedJobListing');
+    localStorage.removeItem('username');
+    removeAuthPopup();
+    window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
+}
+
+function removeAuthPopup() {
+    const overlay = document.querySelector('.auth-overlay');
+    const popup = document.querySelector('.auth-popup');
+    if (overlay) overlay.remove();
+    if (popup) popup.remove();
+}
+
+async function checkAuthStatus() {
+    const token = getToken();
+    
+    if (!token) {
+        sessionStorage.removeItem('currentSessionVisited');
+        showAuthPopup();
+        return false;
+    }
+    
+    document.querySelector('.container').style.display = 'block';
+    const authBtnContainer = document.getElementById('auth-btn-container');
+    if (authBtnContainer) {
+        const logoutBtn = document.createElement('button');
+        logoutBtn.className = 'auth-btn';
+        logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i><span>Logout</span>';
+        logoutBtn.onclick = logoutUser;
+        authBtnContainer.innerHTML = '';
+        authBtnContainer.appendChild(logoutBtn);
+    }
+
+    showWelcomeMessage();
+    return true;
+}
+
+// Update the showAuthPopup function
+function showAuthPopup() {
+    const overlay = document.getElementById('auth-overlay');
+    const popup = document.getElementById('auth-popup');
+    
+    if (!overlay || !popup) {
+        console.error('Auth overlay or popup elements not found');
+        return;
+    }
+
+    overlay.style.display = 'block';
+    popup.style.display = 'block';
+
+    // Close popup when clicking overlay
+    overlay.onclick = function(e) {
+        if (e.target === overlay) {
+            window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
+        }
+    };
+}
+
 document.addEventListener('DOMContentLoaded', async function () {
     // Fetch jobs for the current date when the page loads
     const datepicker = document.getElementById('datepicker');
@@ -19,6 +90,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Function to fetch jobs from the server based on the selected date
     async function fetchJobs(selectedDate) {
         try {
+            if (!navigator.onLine) {
+                window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+                return;
+            }
+
             const token = getToken(); // Get JWT token
             console.log(token)
             if (!token) {
@@ -57,6 +133,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         } catch (error) {
             console.error('Error fetching jobs:', error);
+            if (!navigator.onLine) {
+                window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            }
         }
     }
 
@@ -348,14 +427,16 @@ function removeAuthPopup() {
 
 // Logout user
 function logoutUser() {
-    // Clear the JWT token from localStorage
+    // Clear all relevant localStorage items
     localStorage.removeItem('jwt');
+    localStorage.removeItem('hasVisitedJobListing'); // Clear the visit flag on logout
+    localStorage.removeItem('username');
 
     // Remove the popup and overlay (if they exist)
     removeAuthPopup();
 
-    // Redirect to the desired page after logging out
-    window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html'; // Change to your logout redirect page
+    // Redirect to the home page
+    window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
 }
 
 // Check authentication status and show popup or logout button
@@ -430,3 +511,87 @@ document.querySelectorAll('.labour-card-main').forEach(card => {
         parentCard.classList.toggle('expanded');
     });
 });
+
+// Add this function at the global scope
+function parseJwt(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+    } catch (error) {
+        console.error('Error parsing JWT:', error);
+        return {};
+    }
+}
+
+// Update showWelcomeMessage to handle errors more gracefully
+function showWelcomeMessage() {
+    const hasVisited = sessionStorage.getItem('currentSessionVisited');
+    const jwt = localStorage.getItem('jwt');
+    
+    let username = '';
+    if (jwt) {
+        try {
+            const decodedToken = parseJwt(jwt);
+            username = decodedToken.username || '';
+        } catch (error) {
+            console.error('Error decoding token:', error);
+        }
+    }
+
+    if (!hasVisited && jwt) {
+        const welcomePopup = document.createElement('div');
+        welcomePopup.className = 'welcome-popup';
+        welcomePopup.innerHTML = `
+            <div class="welcome-content">
+                <h2>Welcome${username ? ', ' + username : ''}! 👋</h2>
+                <p>Here you can find all available job listings.</p>
+                <div class="welcome-features">
+                    <div class="feature">
+                        <i class="fas fa-search"></i>
+                        <span>Browse Jobs</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Find Local Work</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-handshake"></i>
+                        <span>Connect with Workers</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(welcomePopup);
+
+        // Set the flag in sessionStorage instead of localStorage
+        sessionStorage.setItem('currentSessionVisited', 'true');
+
+        // Remove popup after 5 seconds
+        setTimeout(() => {
+            welcomePopup.style.opacity = '0';
+            setTimeout(() => {
+                welcomePopup.remove();
+            }, 500);
+        }, 5000);
+    }
+}
+
+// Add this new function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // Optional: Reload the current page when coming back online
+        // Only reload if we were previously on the job listing page
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network_error')) {
+            window.location.href = '../job_listing/index.html';
+        }
+    }
+}

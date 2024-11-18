@@ -1,3 +1,32 @@
+// Add network status monitoring
+window.addEventListener('online', handleNetworkChange);
+window.addEventListener('offline', handleNetworkChange);
+
+// Initial network check
+checkNetworkStatus();
+
+// Function to check network status initially
+function checkNetworkStatus() {
+    if (!navigator.onLine) {
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    }
+}
+
+// Function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // Optional: Reload the current page when coming back online
+        // Only reload if we were previously on the job listing page
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network_error')) {
+            window.location.href = '../job_listing/index.html';
+        }
+    }
+}
+
 // Get the modals
 var modal = document.getElementById("loginModal");
 var alertt = document.getElementById("alert");
@@ -19,19 +48,39 @@ var isLogin = true;
 // Check if user is logged in (replace 'userToken' with your key in localStorage or sessionStorage)
 var userLoggedIn = localStorage.getItem('jwt') !== null; // Assuming a token is saved on login
 
-// Function to show/hide login and signup buttons based on login status
-function updateAuthButtons() {
-    if (userLoggedIn) {
-        modal.style.display = "none"; // Hide login button
-        modal.style.display = "none"; // Hide signup button
-    } else {
-        loginBtn.style.display = "block"; // Show login button
-        signupBtn.style.display = "block"; // Show signup button
+// Function to decode JWT token
+function parseJwt(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error("Error parsing JWT:", e);
+        return null;
     }
 }
 
-// Run the function to check on page load
-updateAuthButtons();
+// Modify the checkAuthAndRedirect function
+function checkAuthAndRedirect() {
+    const jwt = localStorage.getItem('jwt');
+    
+    if (jwt) {
+        // Hide login/signup buttons
+        const loginBtn = document.getElementById("loginBtn");
+        const signupBtn = document.getElementById("signupBtn");
+        if (loginBtn) loginBtn.style.display = "none";
+        if (signupBtn) signupBtn.style.display = "none";
+    }
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    checkAuthAndRedirect();
+});
 
 // When the user clicks the "Log In" button, open the modal and set flag to login
 loginBtn.onclick = function() {
@@ -45,20 +94,92 @@ signupBtn.onclick = function() {
     modal.style.display = "block";
 }
 
-// When the user clicks on service buttons, open the alert popup
-active.onclick = function() {
-    isLogin = false;
-    alertt.style.display = "block";
+// Get service buttons
+const activeJobsBtn = document.getElementById("active");
+const jobListingsBtn = document.getElementById("list");
+const labourRequestBtn = document.getElementById("request");
+
+// Function to handle service button clicks
+function handleServiceRedirect(userType) {
+    if (!userType) {
+        alertt.style.display = "block";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+    }
+
+    const baseUrl = 'http://localhost:5500/frontend';
+    let redirectUrl;
+
+    if (userType === 'labour') {
+        redirectUrl = `${baseUrl}/Labours/LandOwner_Jobs/index.html`;
+    } else if (userType === 'landowner') {
+        redirectUrl = `${baseUrl}/Landowner/Job_Listing/index.html`;
+    }
+
+    if (redirectUrl) {
+        window.location.href = redirectUrl;
+    }
 }
 
-list.onclick = function() {
-    isLogin = false;
-    alertt.style.display = "block";
+// Event listeners for service buttons
+if (activeJobsBtn) {
+    activeJobsBtn.onclick = function() {
+        const jwt = localStorage.getItem('jwt');
+        const userType = localStorage.getItem('userType');
+        
+        if (!jwt) {
+            alertt.style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        // Specific handling for Active Jobs
+        if (userType === 'labour') {
+            window.location.href = 'http://localhost:5500/frontend/Labours/Active_Jobs/index.html';
+        } else if (userType === 'landowner') {
+            window.location.href = 'http://localhost:5500/frontend/Landowner/active_job/index.html';
+        }
+    }
 }
 
-request.onclick = function() {
-    isLogin = false;
-    alertt.style.display = "block";
+if (jobListingsBtn) {
+    jobListingsBtn.onclick = function() {
+        const jwt = localStorage.getItem('jwt');
+        const userType = localStorage.getItem('userType');
+        
+        if (!jwt) {
+            alertt.style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        // Specific handling for Job Listings
+        if (userType === 'labour') {
+            window.location.href = 'http://localhost:5500/frontend/Labours/LandOwner_Jobs/index.html';
+        } else if (userType === 'landowner') {
+            window.location.href = 'http://localhost:5500/frontend/Landowner/job_listing/index.html';
+        }
+    }
+}
+
+if (labourRequestBtn) {
+    labourRequestBtn.onclick = function() {
+        const jwt = localStorage.getItem('jwt');
+        const userType = localStorage.getItem('userType');
+        
+        if (!jwt) {
+            alertt.style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        // Specific handling for Labour Request
+        if (userType === 'labour') {
+            window.location.href = 'http://localhost:5500/frontend/Labours/Labour_Request/index.html';
+        } else if (userType === 'landowner') {
+            window.location.href = 'http://localhost:5500/frontend/Landowner/Labour_Request/index.html';
+        }
+    }
 }
 
 // When the user clicks on "OK" in the alert popup, close the alert popup
@@ -85,19 +206,23 @@ window.onclick = function(event) {
     }
 }
 
-// Redirect based on the button click and flag status
+// Modify the landownerBtn and labourBtn click handlers
 landownerBtn.onclick = function() {
     if (isLogin) {
-        window.location.href = "http://localhost:5500/frontend/Landowner/signin/index.html"; // Replace with actual login path
+        localStorage.setItem('userType', 'landowner'); // Set user type
+        window.location.href = "http://localhost:5500/frontend/Landowner/signin/index.html";
     } else {
-        window.location.href = "http://localhost:5500/frontend/Landowner/SignUp_Page/index.html"; // Replace with actual signup path
+        localStorage.setItem('userType', 'landowner'); // Set user type
+        window.location.href = "http://localhost:5500/frontend/Landowner/SignUp_Page/index.html";
     }
 }
 
 labourBtn.onclick = function() {
     if (isLogin) {
-        window.location.href = "http://localhost:5500/frontend/Labours/Login_Page/index.html"; // Replace with actual login path
+        localStorage.setItem('userType', 'labour'); // Set user type
+        window.location.href = "http://localhost:5500/frontend/Labours/Login_Page/index.html";
     } else {
-        window.location.href = "http://localhost:5500/frontend/Labours/SignUp_Page/index.html"; // Replace with actual signup path
+        localStorage.setItem('userType', 'labour'); // Set user type
+        window.location.href = "http://localhost:5500/frontend/Labours/SignUp_Page/index.html";
     }
 }

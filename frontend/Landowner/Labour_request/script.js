@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Add network status monitoring
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
+
     updateAuthButton(); // Initialize auth button
     
     const datepicker = document.getElementById('datepicker');
@@ -12,6 +16,11 @@ document.addEventListener('DOMContentLoaded', function () {
  
      fetchLabours(); // Fetch labour data when the page loads
      updateAuthButton(); // Call the function to update the button based on login status
+    
+     if (!navigator.onLine) {
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        return;
+    }
 
     // Language dropdown functionality
     const languageBtn = document.querySelector('.language-btn');
@@ -102,43 +111,66 @@ document.addEventListener('DOMContentLoaded', function () {
  // Dynamically display labours
  function displayLabours(labours) {
      const labourList = document.getElementById('labour-list');
-     labourList.innerHTML = ''; // Clear existing labour cards
- 
+     labourList.innerHTML = '';
+
      if (labours.length === 0) {
-         labourList.innerHTML = '<p>No labourers available</p>';
+         labourList.innerHTML = '<p class="no-results">No labourers available</p>';
          return;
      }
- 
+
      labours.forEach(labour => {
          const labourCard = document.createElement('div');
          labourCard.classList.add('labour-card');
- 
+
          const skills = labour.job_skills?.trim() || 'No skills listed';
- 
+
          labourCard.innerHTML = `
              <div class="circle-stars-group">
-                 <div class="circle"></div>
+                 <div class="circle">
+                     <i class="fas fa-user-circle"></i>
+                 </div>
              </div>
              <div class="labour-info">
-                 <p><strong>NAME:</strong> ${labour.username}</p>
-                 <p><strong>GENDER:</strong> ${labour.gender}</p>
-                 <p><strong>SKILL:</strong> ${skills}</p>
+                 <div class="info-item">
+                     <i class="fas fa-user-tag"></i>
+                     <div class="info-content">
+                         <strong>Name</strong>
+                         <span>${labour.username}</span>
+                     </div>
+                 </div>
+                 <div class="info-item">
+                     <i class="fas fa-venus-mars"></i>
+                     <div class="info-content">
+                         <strong>Gender</strong>
+                         <span>${labour.gender}</span>
+                     </div>
+                 </div>
+                 <div class="info-item">
+                     <i class="fas fa-tools"></i>
+                     <div class="info-content">
+                         <strong>Skills</strong>
+                         <span>${skills}</span>
+                     </div>
+                 </div>
              </div>
              <div class="location">
-                 <p><strong>Location:</strong> ${labour.address} ${labour.city}, ${labour.taluk}</p>
-                 <button class="request-btn" data-labour-id="${labour._id}">REQUEST</button>
+                 <div class="location-box">
+                     <div class="location-header">
+                         <i class="fas fa-map-marker-alt"></i>
+                         <strong>Location</strong>
+                     </div>
+                     <div class="location-text">
+                         ${labour.taluk || 'Location not specified'}
+                     </div>
+                 </div>
+                 <button class="request-btn" onclick="showJobModal('${labour._id}')">
+                     <i class="fas fa-handshake"></i>
+                     Request Labour
+                 </button>
              </div>
          `;
- 
+
          labourList.appendChild(labourCard);
-     });
- 
-     // Add event listeners for "REQUEST" buttons
-     document.querySelectorAll('.request-btn').forEach(button => {
-         button.addEventListener('click', function () {
-             selectedLabourId = this.getAttribute('data-labour-id');
-             showJobModal(selectedLabourId);
-         });
      });
  }
  
@@ -466,7 +498,7 @@ function changeLanguage(lang) {
             // Add more translations as needed
         },
         hi: {
-            title: 'श्रमिक अनुरोध',
+            title: 'श्रमि�� अनुरोध',
             home: 'होम',
             about: 'हमारे बारे में',
             services: 'सेवाएं',
@@ -530,3 +562,18 @@ document.querySelector('.alert-close').addEventListener('click', () => {
 
 // Usage example:
 // showAlert('Your message here');
+
+// Add this new function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // Optional: Reload the current page when coming back online
+        // Only reload if we were previously on the job listing page
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network_error')) {
+            window.location.href = '../job_listing/index.html';
+        }
+    }
+}

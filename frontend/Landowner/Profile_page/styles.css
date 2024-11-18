@@ -497,6 +497,7 @@ body::before {
     padding-bottom: 12px;
     position: relative;
     clear: both;
+    margin-top: -2%;
 }
 
 .form h2::after {
@@ -831,6 +832,7 @@ body::before {
     margin-top: 130px;
     position: relative;
     padding-top: 15%;
+    margin-left: 5.5%;
 }
 
 /* Updated Profile Header Section */
@@ -841,7 +843,6 @@ body::before {
     padding: 30px;
     margin-bottom: 30px;
     box-shadow: 0 4px 15px rgba(47, 133, 90, 0.1);
-    border: 2px solid var(--primary-color);
     text-align: center;
     margin-top: 60px; /* Add space for the image */
 }
@@ -853,12 +854,30 @@ body::before {
     border: 4px solid var(--primary-color);
     padding: 3px;
     background: white;
-    box-shadow: 0 4px 15px rgba(47, 133, 90, 0.2);
+    box-shadow: 0 4px 15px rgba(104, 25, 25, 0);
     position: absolute;
     top: -75px; /* Half the height to overlap */
     left: 50%;
     transform: translateX(-50%);
     transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.profile-header img:hover {
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 8px 25px rgba(47, 133, 90, 0.3);
+    border-width: 5px;
+    border-color: var(--secondary-color);
+}
+
+/* Optional: Add a subtle rotation animation */
+@keyframes subtle-rotate {
+    0% { transform: translateX(-50%) rotate(0deg); }
+    100% { transform: translateX(-50%) rotate(360deg); }
+}
+
+.profile-header img:active {
+    animation: subtle-rotate 1s ease;
 }
 
 /* Updated Stats Section */
@@ -1067,4 +1086,57 @@ body::before {
 
 .logout-btn i {
     font-size: 16px;
+}
+
+/* Auth Popup Styles */
+.auth-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.auth-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    text-align: center;
+    min-width: 300px;
+}
+
+.auth-popup p {
+    margin-bottom: 20px;
+    color: #2D3748;
+    font-size: 16px;
+}
+
+.auth-popup .button-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.auth-popup button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.auth-popup button:hover {
+    background: #236b43;
 }

@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Add network status monitoring
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
+
     console.log('DOM Content Loaded');
     const container = document.querySelector('.request-list');
+    if (!navigator.onLine) {
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        return;
+    }
     if (!container) {
         console.error('Request list container not found in DOM');
     } else {
@@ -11,6 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadRequestHistory() {
     try {
+        if (!navigator.onLine) {
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            return;
+        }
         console.log('Starting to load request history...');
         
         const token = localStorage.getItem('jwt');
@@ -58,6 +70,10 @@ async function loadRequestHistory() {
             window.location.href = '/login';
         } else {
             showError('Failed to load request history. Please try again later.');
+        }
+        if (!navigator.onLine) {
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            return;
         }
     }
 }
@@ -221,5 +237,20 @@ function redirectToLabourAssigned(jobId) {
         window.location.href = `/frontend/Landowner/Labour_Assigned/index.html?id=${jobId}`;
     } else {
         console.error('Job ID is undefined');
+    }
+}
+
+// Add this new function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // Optional: Reload the current page when coming back online
+        // Only reload if we were previously on the job listing page
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network_error')) {
+            window.location.href = '../job_listing/index.html';
+        }
     }
 }
