@@ -22,11 +22,12 @@
     top: 60px;
     height: calc(100vh - 60px);
     width: 60px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(8px);
-    z-index: 15;
+    z-index: 999;
     transition: width 0.3s ease;
     overflow-x: hidden;
+    padding-top: 80px;
 }
 
 .navbar__menu {
@@ -333,78 +334,16 @@ body::before {
     z-index: -1;
 }
 
-/* Updated Header Styles */
-.site-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    background: white;
-    z-index: 20;
-    border-bottom: 2px solid #2F855A;
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    height: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-/* Logo Container */
-.logo-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo-img {
-    width: 35px;
-    height: 35px;
-    border: 2px solid #2F855A;
-    border-radius: 50%;
-    padding: 2px;
-}
-
-.logo-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.brand-name {
-    font-size: 18px;
-    font-weight: bold;
-    color: #2F855A;
-}
-
-.tagline {
-    font-size: 12px;
-    color: #666;
-}
-
-/* Navigation Group */
-.nav-group {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.main-nav ul {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    list-style: none;
+/* Auth Button Styles */
+#auth-btn-container {
+    position: static;
     margin: 0;
-    padding: 0;
 }
 
-.nav-link {
+.auth-btn {
     display: flex;
     align-items: center;
+    gap: 8px;
     gap: 5px;
     text-decoration: none;
     color: #4a5568;
@@ -447,18 +386,21 @@ body::before {
 
 /* Logout Button */
 .auth-btn, .logout-btn {
-    background-color: #2F855A;
+    background-color: #2E8B57;  /* Changed to match the green theme */
     color: white;
     border: none;
     padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
 }
 
 .auth-btn:hover, .logout-btn:hover {
-    background-color: #246B48;
+    background-color: #236b43;
 }
 
 /* Responsive adjustments */
@@ -540,7 +482,10 @@ body::before {
     background: white;
     padding: 35px;
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 25px rgba(47, 133, 90, 0.15);
+    margin-top: 180px;
+    position: relative;
+    padding-top: 160px;
 }
 
 .form h2 {
@@ -548,17 +493,29 @@ body::before {
     font-size: 28px;
     font-weight: 600;
     text-align: center;
-    margin-bottom: 35px;
+    margin: 40px 0 35px 0;
     padding-bottom: 12px;
-    border-bottom: 2px solid #2F855A;
+    position: relative;
+    clear: both;
+}
+
+.form h2::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    border-radius: 2px;
 }
 
 /* Form row box layout */
 .form-row-box {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
-    margin-bottom: 30px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 30px;
 }
 
 /* Individual box styling */
@@ -566,51 +523,39 @@ body::before {
     background: #f8fafb;
     border: 1px solid #E2E8F0;
     border-radius: 12px;
-    padding: 20px;
+    padding: 15px;
     transition: all 0.3s ease;
     border: 2px solid var(--primary-color);
 }
 
 .box:hover {
-    box-shadow: 0 4px 12px rgba(47, 133, 90, 0.1);
+    box-shadow: 0 4px 12px var(--primary-color);
     transform: translateY(-2px);
 }
 
 /* Form row styling */
 .form-row {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+    margin-bottom: 0;
 }
 
-/* Label styling */
 .form-row label {
-    color: #2F855A;
-    font-weight: 600;
-    font-size: 16px;
-    min-width: 140px;
-    position: relative;
+    font-size: 14px;
+    color: #4A5568;
+    margin-bottom: 4px;
 }
 
-/* Display value styling */
-.form-row span {
-    color: #2D3748;
-    font-size: 16px;
-    padding: 8px 12px;
-    background: white;
-    border: 1px solid #E2E8F0;
-    border-radius: 8px;
-    flex: 1;
-    min-height: 40px;
-    display: flex;
-    align-items: center;
+.form-row span,
+.form-row input {
+    min-height: 35px;
+    padding: 6px 10px;
+    font-size: 14px;
 }
 
 /* Input field styling */
 .form-row input {
     flex: 1;
     padding: 8px 12px;
-    border: 1px solid #2F855A;
+    border: 2px solid var(--primary-color);
     border-radius: 8px;
     font-size: 16px;
     color: #2D3748;
@@ -668,24 +613,29 @@ body::before {
 .form-row label[for*="taluk"]::before { content: "\f64f"; }
 
 /* Responsive adjustments */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
+    .form-row-box {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
     .form-row-box {
         grid-template-columns: 1fr;
     }
     
-    .form-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
+    .profile-header {
+        top: -60px;
     }
     
-    .form-row label {
-        min-width: 100%;
+    .profile-header img {
+        width: 120px;
+        height: 120px;
+        top: -60px;
     }
     
-    .form-row span,
-    .form-row input {
-        width: 100%;
+    .stats {
+        margin-top: 70px;
     }
 }
 
@@ -869,4 +819,252 @@ body::before {
         margin-left: 0;
         width: 100%;
     }
+}
+
+/* Updated Form Container Styling */
+.form {
+    width: 89%;
+    background: rgb(255, 255, 255);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(47, 133, 90, 0.15);
+    margin-top: 130px;
+    position: relative;
+    padding-top: 15%;
+}
+
+/* Updated Profile Header Section */
+.profile-header {
+    position: relative;
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(47, 133, 90, 0.1);
+    border: 2px solid var(--primary-color);
+    text-align: center;
+    margin-top: 60px; /* Add space for the image */
+}
+
+.profile-header img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid var(--primary-color);
+    padding: 3px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(47, 133, 90, 0.2);
+    position: absolute;
+    top: -75px; /* Half the height to overlap */
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.3s ease;
+}
+
+/* Updated Stats Section */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 15px rgba(47, 133, 90, 0.1);
+    border: 2px solid var(--primary-color);
+}
+
+.stats div {
+    flex: 1;
+    text-align: center;
+    padding: 15px 25px;
+    margin: 0 10px;
+    border-radius: 12px;
+    background: rgba(47, 133, 90, 0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats div strong,
+.stats div span#no-of-posts {
+    font-size: 28px;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    font-weight: 600;
+    display: block;
+}
+
+.stats div span:not(#no-of-posts) {
+    color: var(--text-color);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Hover effect for stats boxes */
+.stats div:hover {
+    transform: translateY(-3px);
+    background: rgba(47, 133, 90, 0.1);
+}
+
+/* Form Container Adjustment */
+.form {
+    margin-top: 2%; /* Increase top margin to accommodate centered profile image */
+    padding-top: 30px; /* Reduce top padding since we moved the image up */
+}
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    border-bottom: none;
+}
+
+/* Logo and Brand Styles */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 8px;
+    border-radius: 8px;
+}
+
+.logo-img {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.tagline {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Navigation and Auth Button Group */
+.nav-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.main-nav ul {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #333;
+    text-decoration: none;
+    font-size: 13px;
+    padding: 5px;
+    position: relative;
+    padding: 5px 0;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link i {
+    font-size: 16px;
+    color: var(--primary-color);
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* Auth Button Styling */
+.auth-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.auth-btn:hover {
+    background-color: #236c46;
+}
+
+.auth-btn i {
+    font-size: 16px;
+}
+
+.logout-btn {
+    background-color: #2E8B57;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+    height: fit-content;
+}
+
+.logout-btn:hover {
+    background-color: #236b43;
+}
+
+.logout-btn i {
+    font-size: 16px;
 }

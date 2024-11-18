@@ -78,6 +78,12 @@
                         <span>Create Job</span>
                     </a>
                 </li>
+                <li class="navbar__item">
+                    <a href="../request_history/index.html" class="navbar__link active" style="font-size: 15px;">
+                        <i data-feather="clock"></i>
+                        <span>Request History</span>
+                    </a>
+                </li>
             </ul>
         </nav>
 
@@ -126,6 +132,15 @@
                 </div>
             </div>
         </header>
+    </div>
+    <!-- Replace the existing auth popup HTML with this -->
+    <div class="auth-overlay" id="auth-overlay"></div>
+    <div class="auth-popup" id="auth-popup">
+        <p>You need to log in to access this feature.</p>
+        <div class="button-container">
+            <button onclick="window.location.href='../signin/index.html'">Login</button>
+            <button onclick="window.location.href='../SignUp_Page/index.html'">Sign Up</button>
+        </div>
     </div>
     
     <script src="script.js"></script>

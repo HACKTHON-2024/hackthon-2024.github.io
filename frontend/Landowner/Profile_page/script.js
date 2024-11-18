@@ -37,7 +37,6 @@ async function fetchProfileData() {
         const number_of_jobs_posted = data.job_history ? data.job_history.length : 0;
 
         document.getElementById('no-of-posts').innerText = number_of_jobs_posted;
-        document.getElementById('nameDisplay1').innerText = data.username;
         document.getElementById('nameDisplay2').innerText = data.username;
         document.getElementById('genderDisplay').innerText = data.gender;
         document.getElementById('DOBDisplay').innerText = data.DOB;
@@ -247,8 +246,8 @@ async function checkAuthStatus() {
     if (token) {
         // If the user is logged in, show the Logout button
         const logoutBtn = document.createElement('button');
-        logoutBtn.innerText = 'Logout';
-        logoutBtn.classList.add('logout-btn'); // You can style this in CSS
+        logoutBtn.className = 'logout-btn';
+        logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i>Logout';
         logoutBtn.onclick = logoutUser;
         authBtnContainer.appendChild(logoutBtn);
     } else {

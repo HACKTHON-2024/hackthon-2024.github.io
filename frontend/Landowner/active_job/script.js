@@ -124,83 +124,51 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 // Show authentication popup with overlay
 function showAuthPopup() {
-    // Create the overlay
-    const overlay = document.createElement('div');
-    overlay.classList.add('auth-overlay'); // Styled in CSS
-
-    // Create the popup
-    const popup = document.createElement('div');
-    popup.classList.add('auth-popup'); // Styled in CSS
-
-    // Message above buttons
-    const authMessage = document.createElement('p');
-    authMessage.innerText = 'Need to sign in or sign up?';
-    popup.appendChild(authMessage);
-
-    // Create container for the buttons
-    const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container'); // Styled in CSS for flexbox layout
-
-    // Create login button
-    const loginBtn = document.createElement('button');
-    loginBtn.innerText = 'Login';
-    loginBtn.onclick = function () {
-        window.location.href = '../signin/index.html'; // Redirect to login page
-        removeAuthPopup(); // Remove popup on navigation
-    };
-
-    // Create signup button
-    const signupBtn = document.createElement('button');
-    signupBtn.innerText = 'Sign Up';
-    signupBtn.onclick = function () {
-        window.location.href = '../SIgnUp_Page/index.html'; // Redirect to signup page
-        removeAuthPopup(); // Remove popup on navigation
-    };
-
-    // Append buttons to the container
-    buttonContainer.appendChild(loginBtn);
-    buttonContainer.appendChild(signupBtn);
-
-    // Add the button container to the popup
-    popup.appendChild(buttonContainer);
-
-    // Append the overlay and popup to the body
-    document.body.appendChild(overlay);
-    document.body.appendChild(popup);
-
-    // Close popup when clicking outside or pressing Escape
-    overlay.addEventListener('click', removeAuthPopup);
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            removeAuthPopup();
-        }
-    });
+    const overlay = document.getElementById('auth-overlay');
+    const popup = document.getElementById('auth-popup');
+    
+    if (overlay && popup) {
+        overlay.classList.add('show');
+        popup.classList.add('show');
+    }
 }
 
-// Remove the authentication popup and overlay
-function removeAuthPopup() {
-    const overlay = document.querySelector('.auth-overlay');
-    const popup = document.querySelector('.auth-popup');
-    if (overlay) overlay.remove();
-    if (popup) popup.remove();
+function hideAuthPopup() {
+    const overlay = document.getElementById('auth-overlay');
+    const popup = document.getElementById('auth-popup');
+    
+    if (overlay && popup) {
+        overlay.classList.remove('show');
+        popup.classList.remove('show');
+    }
 }
 
-// Logout user
+// Add click handler to close popup when clicking overlay
+document.getElementById('auth-overlay')?.addEventListener('click', hideAuthPopup);
+
+// Update the logout functionality
 function logoutUser() {
-    // Clear the JWT token from localStorage
-    localStorage.removeItem('jwt');
-
-    // Remove the popup and overlay (if they exist)
-    removeAuthPopup();
-
-    // Redirect to the desired page after logging out
-    window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html'; // Change to your logout redirect page
+    try {
+        // Clear the JWT token from localStorage
+        localStorage.removeItem('jwt');
+        
+        // Redirect to the home page
+        window.location.href = '/frontend/static/home_page/index.html';
+    } catch (error) {
+        console.error('Error during logout:', error);
+    }
 }
 
-// Check authentication status and show popup or logout button
+// Update the checkAuthStatus function
 async function checkAuthStatus() {
     const token = getToken();
     const authBtnContainer = document.getElementById('auth-btn-container');
+    
+    if (!authBtnContainer) {
+        console.error('Auth button container not found');
+        return;
+    }
+    
     authBtnContainer.innerHTML = ''; // Clear existing content
 
     if (token) {
@@ -212,7 +180,7 @@ async function checkAuthStatus() {
             <i class="fas fa-sign-out-alt"></i>
             <span>Logout</span>
         `;
-        logoutBtn.onclick = logoutUser;
+        logoutBtn.addEventListener('click', logoutUser); // Add event listener directly
         authBtnContainer.appendChild(logoutBtn);
     } else {
         // If user is not logged in, show the login/signup popup
@@ -222,10 +190,10 @@ async function checkAuthStatus() {
 
 // Get JWT token from localStorage
 function getToken() {
-    return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
+    return localStorage.getItem('jwt');
 }
 
-// Fetch jobs on page load and check authentication
+// Make sure to call checkAuthStatus when the page loads
 document.addEventListener('DOMContentLoaded', function() {
     checkAuthStatus();
 });

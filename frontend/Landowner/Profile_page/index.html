@@ -91,29 +91,32 @@
                                 <span>Help & Support</span>
                             </a>
                         </li>
+                        <li id="auth-btn-container">
+                            <!-- Logout button will be inserted here by JavaScript -->
+                        </li>
                     </ul>
                 </nav>
-                <div id="auth-btn-container">
-                    <!-- Logout button will be inserted here by JavaScript -->
-                </div>
             </div>
+        </div>
+        <div id="auth-btn-container" class="auth-btn-container">
+            <!-- Button will be dynamically added here by JavaScript -->
         </div>
     </header>
 
-    <!-- Profile Section -->
+    <!-- Updated Form Section -->
     <div class="container">
-        <div class="profile">
-            <img src="http://localhost:3000/frontend/static/Images/image2973-5y8c.svg" alt="Profile Picture">
-            <h2 id="nameDisplay1">  </h2>
-            <div class="stats">
-                <div ><strong><span id="no-of-posts"></span></strong><br>Posts</div>
-                <div ><strong>2</strong><br>Notifications</div>
-                <div><strong>10</strong><br>Views</div>
-            </div>
-        </div>
-
-        <!-- Form Section -->
         <div class="form">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <img src="http://localhost:3000/frontend/static/Images/image2973-5y8c.svg" alt="Profile Picture">
+                    
+                <div class="stats">
+                    <div><strong><span id="no-of-posts"></span></strong>Posts</div>
+                    <div><strong>2</strong>Notifications</div>
+                    <div><strong>10</strong>Views</div>
+                </div>
+            </div>
+
             <h2>Profile Information</h2>
             <form id="profileForm">
                 <div class="form-row-box">
@@ -221,6 +224,14 @@
                 <button type="button" id="editButton" onclick="toggleEdit()">Edit</button>
                 <button type="button" id="saveButton" onclick="saveChanges()" style="display:none;">Save</button>
             </form>
+        </div>
+    </div>
+    <div class="auth-overlay" id="auth-overlay"></div>
+    <div class="auth-popup" id="auth-popup">
+        <p>You need to log in to access this feature.</p>
+        <div class="button-container">
+            <button onclick="window.location.href='../signin/index.html'">Login</button>
+            <button onclick="window.location.href='../SignUp_Page/index.html'">Sign Up</button>
         </div>
     </div>
 

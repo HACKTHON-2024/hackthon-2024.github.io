@@ -192,23 +192,16 @@
         </div>
 
         <!-- Authentication popup -->
-        <div id="auth-popup" class="popup hidden">
-            <div class="popup-content">
-                <p>You need to log in to access this feature.</p>
-                <div class="button-container">
-                    <button id="login-btn">Login</button>
-                    <button id="signup-btn">Sign up</button>
-                </div>
+        <div class="auth-overlay" id="auth-overlay"></div>
+        <div class="auth-popup" id="auth-popup">
+            <p>You need to log in to access this feature.</p>
+            <div class="button-container">
+                <button onclick="window.location.href='../signin/index.html'">Login</button>
+                <button onclick="window.location.href='../SignUp_Page/index.html'">Sign Up</button>
             </div>
         </div>
 
-
-        <!-- Popup Overlay for auth popup -->
-        <div class="auth-popup-overlay hidden"></div>
-
-
     </div>
-    
     <script src="script.js"></script>
     
 

@@ -799,3 +799,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+// Add this to your existing script.js
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing code ...
+
+    // Add logout functionality
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            // Clear the JWT token from localStorage
+            localStorage.removeItem('jwt');
+            
+            // Redirect to home page
+            window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
+        });
+    }
+
+    // Check authentication status on page load
+    function checkAuth() {
+        const token = localStorage.getItem('jwt');
+        if (!token) {
+            // If no token is found, redirect to home page
+            window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
+        }
+    }
+
+    // Call checkAuth when page loads
+    checkAuth();
+});

@@ -15,8 +15,10 @@
 </head>
 <body>
     <div class="page-wrapper">
+        <!-- Replace the existing header with this -->
         <header class="site-header">
             <div class="header-container">
+                <!-- Logo Section (Left Side) -->
                 <div class="logo-container">
                     <img src="http://localhost:3000/frontend/static/Images/logo.png" alt="Logo" class="logo-img">
                     <div class="logo-text">
@@ -24,35 +26,25 @@
                         <span class="tagline">Connecting Farms & Labor</span>
                     </div>
                 </div>
-                
-                <nav class="main-nav">
-                    <ul>
-                        <li>
-                            <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
-                                <i class="fas fa-home"></i>
-                                <span>Home</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
-                                <i class="fas fa-info-circle"></i>
-                                <span>About Us</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
-                                <i class="fas fa-tractor"></i>
-                                <span>Services</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
-                                <i class="fas fa-headset"></i>
-                                <span>Help & Support</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+
+                <!-- Right Side Navigation -->
+                <div class="right-nav">
+                    <nav class="main-nav">
+                        <ul>
+                            <li><a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">Home</a></li>
+                            <li><a href="#" class="nav-link">About Us</a></li>
+                            <li><a href="#" class="nav-link">Services</a></li>
+                            <li><a href="#" class="nav-link">Help & Support</a></li>
+                        </ul>
+                    </nav>
+                    
+                    <div id="auth-btn-container">
+                        <button id="logout-btn" class="auth-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -258,6 +250,12 @@
                 <a href="../Create_Job/index.html" class="navbar__link">
                     <i data-feather="plus-circle"></i>
                     <span>Create Job</span>
+                </a>
+            </li>
+            <li class="navbar__item">
+                <a href="../request_history/index.html" class="navbar__link active" style="font-size: 15px;">
+                    <i data-feather="clock"></i>
+                    <span>Request History</span>
                 </a>
             </li>
         </ul>
