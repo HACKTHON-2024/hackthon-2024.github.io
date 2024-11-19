@@ -30,6 +30,8 @@ async function fetchProfileData() {
         if (!navigator.onLine) {
             window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
             return;
+        }else {
+            checkServerStatus();
         }
         const token = getToken();
         console.log('Token:', token);
@@ -67,6 +69,8 @@ async function fetchProfileData() {
         if (!navigator.onLine) {
             window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
             return;
+        }else {
+            checkServerStatus();
         }
     }
 }
@@ -289,20 +293,42 @@ document.addEventListener('DOMContentLoaded', function() {
     overlay.addEventListener('click', hideModal);
 });
 
-// Add this new function to handle network changes
+// Function to handle network changes
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
         window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
     } else {
-        // Optional: Reload the current page when coming back online
-        // Only reload if we were previously on the job listing page
         const currentPath = window.location.pathname;
-        if (currentPath.includes('network_error')) {
-            window.location.href = '../job_listing/index.html';
+        if (currentPath.includes('network-error') || currentPath.includes('server-error')) {
+            checkServerStatus().then(isServerRunning => {
+                if (isServerRunning) {
+                    window.history.back();
+                }
+            });
         }
     }
 }
+
+// Function to check if server is running
+async function checkServerStatus() {
+    try {
+        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+            signal: AbortSignal.timeout(5000)
+        });
+        return true;
+    } catch (error) {
+        if (!window.location.pathname.includes('server-error.html')) {
+            window.location.href = 'http://localhost:5500/frontend/static/server-error.html';
+        }
+        return false;
+    }
+}
+
 
 // Toggle edit mode
 function toggleEdit() {
