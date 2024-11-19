@@ -209,6 +209,49 @@
 
     </div>
     <script src="script.js"></script>
+
+    <button class="floating-info">
+        <i class="fas fa-info-circle"></i>
+        <span>Page Info</span>
+    </button>
+
+    <div class="info-overlay"></div>
+    <div class="info-modal">
+        <div class="modal-content">
+            <h3>👥 Available Labour Dashboard</h3>
+            <div class="feature-list">
+                <p>🔍 View all available labourers in your area</p>
+                <p>📋 Check labourer profiles and their skills</p>
+                <p>📍 View labourer locations</p>
+                <p>💼 Send job requests to selected labourers</p>
+                <p>✅ Track request status and responses</p>
+            </div>
+            <button class="close-modal">Got it!</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoButton = document.querySelector('.floating-info');
+            const infoModal = document.querySelector('.info-modal');
+            const overlay = document.querySelector('.info-overlay');
+            const closeButton = document.querySelector('.close-modal');
+
+            function showModal() {
+                infoModal.classList.add('active');
+                overlay.classList.add('active');
+            }
+
+            function hideModal() {
+                infoModal.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+
+            infoButton.addEventListener('click', showModal);
+            closeButton.addEventListener('click', hideModal);
+            overlay.addEventListener('click', hideModal);
+        });
+    </script>
     
 
 </body>

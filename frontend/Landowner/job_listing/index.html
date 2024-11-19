@@ -198,8 +198,48 @@
 
     <script src="script.js"></script>
 
+    <button class="floating-info">
+        <i class="fas fa-info-circle"></i>
+        <span>Page Info</span>
+    </button>
 
+    <div class="info-overlay"></div>
+    <!-- Replace the existing info-modal div with this -->
+    <div class="info-modal">
+        <div class="modal-content">
+            <h3>📱 Offline Labour Assignment Dashboard</h3>
+            <div class="feature-list">
+                <p>👥 Assign jobs to labourers without phones</p>
+                <p>📋 Manage offline labour registrations</p>
+                <p>📅 Track job assignments and schedules</p>
+                <p>💼 Streamline labour management for non-digital workers</p>
+            </div>
+            <button class="close-modal">Got it!</button>
+        </div>
+    </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoButton = document.querySelector('.floating-info');
+            const infoModal = document.querySelector('.info-modal');
+            const overlay = document.querySelector('.info-overlay');
+            const closeButton = document.querySelector('.close-modal');
+
+            function showModal() {
+                infoModal.classList.add('active');
+                overlay.classList.add('active');
+            }
+
+            function hideModal() {
+                infoModal.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+
+            infoButton.addEventListener('click', showModal);
+            closeButton.addEventListener('click', hideModal);
+            overlay.addEventListener('click', hideModal);
+        });
+    </script>
 
 
 </body>

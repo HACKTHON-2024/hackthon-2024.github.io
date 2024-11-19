@@ -17,10 +17,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 // Format Date utility
 function formatDate(dateString) {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-    const year = String(date.getFullYear()).slice(-4); // Full year
-    return `${day}/${month}/${year}`;
+    return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
 }
 
 // Fetch and display profile data
@@ -49,7 +50,7 @@ async function fetchProfileData() {
         document.getElementById('no-of-posts').innerText = number_of_jobs_posted;
         document.getElementById('nameDisplay2').innerText = data.username;
         document.getElementById('genderDisplay').innerText = data.gender;
-        document.getElementById('DOBDisplay').innerText = data.DOB;
+        document.getElementById('DOBDisplay').innerText = formatDate(data.DOB);
         document.getElementById('phoneDisplay').innerText = data.mobile_number;
         document.getElementById('alt-phoneDisplay').innerText = data.alternate_mobile_number;
         document.getElementById('aadhaarDisplay').innerText = data.aadhaar_ID;
@@ -265,3 +266,121 @@ function handleNetworkChange(event) {
         }
     }
 }
+
+// Add this at the beginning of your DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', function() {
+    const infoButton = document.querySelector('.floating-info');
+    const infoModal = document.querySelector('.info-modal');
+    const overlay = document.querySelector('.info-overlay');
+    const closeButton = document.querySelector('.close-modal');
+
+    function showModal() {
+        infoModal.classList.add('active');
+        overlay.classList.add('active');
+    }
+
+    function hideModal() {
+        infoModal.classList.remove('active');
+        overlay.classList.remove('active');
+    }
+
+    infoButton.addEventListener('click', showModal);
+    closeButton.addEventListener('click', hideModal);
+    overlay.addEventListener('click', hideModal);
+});
+
+// Add this new function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // Optional: Reload the current page when coming back online
+        // Only reload if we were previously on the job listing page
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network_error')) {
+            window.location.href = '../job_listing/index.html';
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Create and append the tour button
+    const tourButton = document.createElement('button');
+    tourButton.id = 'startTour';
+    tourButton.className = 'tour-button';
+    tourButton.innerHTML = `
+        <i class="fas fa-info-circle"></i>
+        <span>Take a Tour</span>
+    `;
+    document.body.appendChild(tourButton);
+
+    // Initialize Shepherd Tour
+    const tour = new Shepherd.Tour({
+        useModalOverlay: true,
+        defaultStepOptions: {
+            classes: 'shadow-md bg-purple-dark',
+            scrollTo: true,
+            cancelIcon: {
+                enabled: true
+            }
+        }
+    });
+
+    // Add tour steps
+    tour.addStep({
+        id: 'welcome',
+        text: 'Welcome! Let us show you how to use this page.',
+        attachTo: {
+            element: '.page-controls',
+            on: 'bottom'
+        },
+        buttons: [{
+            text: 'Next',
+            action: tour.next
+        }]
+    });
+
+    tour.addStep({
+        id: 'job-cards',
+        text: 'Here you can see all your active jobs.',
+        attachTo: {
+            element: '.labour-card',
+            on: 'bottom'
+        },
+        buttons: [
+            {
+                text: 'Back',
+                action: tour.back
+            },
+            {
+                text: 'Next',
+                action: tour.next
+            }
+        ]
+    });
+
+    tour.addStep({
+        id: 'navigation',
+        text: 'Use this navigation bar to move between different sections.',
+        attachTo: {
+            element: '.navbar',
+            on: 'right'
+        },
+        buttons: [
+            {
+                text: 'Back',
+                action: tour.back
+            },
+            {
+                text: 'Finish',
+                action: tour.complete
+            }
+        ]
+    });
+
+    // Add click event to start tour
+    tourButton.addEventListener('click', () => {
+        tour.start();
+    });
+});

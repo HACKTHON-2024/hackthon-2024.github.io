@@ -190,6 +190,50 @@
 
     <script src="script.js"></script>
 
+    <button class="floating-info">
+        <i class="fas fa-info-circle"></i>
+        <span>Page Info</span>
+    </button>
+
+    <div class="info-overlay"></div>
+    <div class="info-modal">
+        <div class="modal-content">
+            <h3>👥 Labour Assignment Details</h3>
+            <div class="feature-list">
+                <p>👨‍🌾 View details of labourers assigned to your job</p>
+                <p>📝 Access job title and description</p>
+                <p>📅 Check job duration (start and end dates)</p>
+                <p>📍 View job location information</p>
+                <p>💰 See payment details for the job</p>
+                <p>👥 Track number of workers assigned</p>
+            </div>
+            <button class="close-modal">Got it!</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoButton = document.querySelector('.floating-info');
+            const infoModal = document.querySelector('.info-modal');
+            const overlay = document.querySelector('.info-overlay');
+            const closeButton = document.querySelector('.close-modal');
+
+            function showModal() {
+                infoModal.classList.add('active');
+                overlay.classList.add('active');
+            }
+
+            function hideModal() {
+                infoModal.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+
+            infoButton.addEventListener('click', showModal);
+            closeButton.addEventListener('click', hideModal);
+            overlay.addEventListener('click', hideModal);
+        });
+    </script>
+
 </body>
 
 </html>

@@ -96,6 +96,7 @@
 /* Expanded navbar styles with increased spacing */
 .navbar:hover {
     width: 200px;
+    z-index: 1000;
 }
 
 .navbar:hover .navbar__link {
@@ -429,9 +430,11 @@ body::before {
     flex-direction: column;
     align-items: center;
     padding-top: 80px;
-    margin-left: 80px;
-    width: calc(100% - 100px);
+    margin-left: 80px !important;
+    width: calc(100% - 100px) !important;
     max-width: 1600px;
+    position: relative;
+    transition: none !important;
 }
 
 /* Profile section */
@@ -832,7 +835,8 @@ body::before {
     margin-top: 130px;
     position: relative;
     padding-top: 15%;
-    margin-left: 5.5%;
+    margin-left: 5.5% !important;
+    transition: none !important;
 }
 
 /* Updated Profile Header Section */
@@ -1139,4 +1143,179 @@ body::before {
 
 .auth-popup button:hover {
     background: #236b43;
+}
+
+
+.floating-info {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #2f855a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(47, 133, 90, 0.2);
+    overflow: hidden;
+}
+
+.floating-info i {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.floating-info span {
+    position: absolute;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.floating-info:hover {
+    width: 135px;
+    border-radius: 25px;
+}
+
+.floating-info:hover i {
+    transform: translateX(-35px);
+}
+
+.floating-info:hover span {
+    opacity: 1;
+    transform: translateX(15px);
+}
+
+/* Modal and Overlay */
+.info-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+}
+
+.info-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    z-index: 1002;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+}
+
+.info-overlay.active,
+.info-modal.active {
+    display: block;
+}
+
+.modal-content h3 {
+    color: #2f855a;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.feature-list {
+    margin-bottom: 20px;
+}
+
+.feature-list p {
+    margin: 12px 0;
+    color: #4a5568;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.close-modal {
+    background-color: #2f855a;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.close-modal:hover {
+    background-color: #236c46;
+}
+
+@media (max-width: 768px) {
+    .floating-info {
+        bottom: 80px;
+    }
+    
+    .info-modal {
+        width: 85%;
+        padding: 20px;
+    }
+}
+
+/* Update z-index hierarchy */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    z-index: 1000; /* Higher than regular content */
+}
+
+/* Language dropdown container */
+.language-dropdown-container {
+    position: relative;
+    z-index: 999; /* Lower than header and popups */
+}
+
+/* Info popup and overlay */
+.info-overlay {
+    position: fixed;
+    /* ... existing styles ... */
+    z-index: 1500; /* Higher than header and dropdowns */
+}
+
+.info-modal {
+    /* ... existing styles ... */
+    z-index: 1501; /* Higher than overlay */
+}
+
+/* Page controls - contains language button */
+.page-controls {
+    position: relative;
+    z-index: 998; /* Lower than header */
+}
+
+/* Language dropdown */
+.language-dropdown {
+    /* ... existing styles ... */
+    z-index: 999; /* Same as container */
+}
+
+/* Ensure header stays fixed */
+.header-container {
+    position: relative;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
 }
