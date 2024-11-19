@@ -692,20 +692,80 @@ body::before {
     border-radius: 10px;
 }
 
-/* Job header with individual borders */
+/* Job header with improved alignment */
 .job-header {
     display: grid;
-    grid-template-columns: 2fr 1.5fr 1.5fr 30px;
+    grid-template-columns: minmax(300px, 1fr) 1fr 1fr 10px;
     gap: 20px;
     align-items: center;
 }
 
-/* Individual container for each job header item */
-.job-header-item {
-    border: 1px solid #E2E8F0;
-    border-radius: 8px;
-    padding: 12px 15px;
-    background: #f8fafb;
+/* Job title (first column) */
+.job-header p:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Start Date (second column) */
+.job-header p:nth-child(2) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* End Date (third column) */
+.job-header p:nth-child(3) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: right;
+}
+
+/* Arrow (fourth column) */
+.job-header .arrow {
+    justify-self: end;
+}
+
+/* Labels consistency */
+.job-header p strong {
+    min-width: 85px; /* Adjust this value to ensure labels are aligned */
+    display: inline-block;
+}
+
+/* Job title container */
+.job-header p:first-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* "Job Title:" label */
+.job-header p:first-child strong {
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+/* Job title text */
+.job-header p:first-child span {
+    flex: 1;
+}
+
+/* Job summary container */
+.job-summary {
+    padding: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    background: white;
+}
+
+/* Job container spacing */
+.job-container {
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 /* Job title and labels */
@@ -752,9 +812,6 @@ body::before {
     font-size: 16px;
     text-align: center;
     padding: 15px;
-    background: #f8fafb;
-    border-radius: 8px;
-    border: 1px dashed #E2E8F0;
 }
 
 /* View Details button */

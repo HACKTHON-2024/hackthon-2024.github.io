@@ -303,3 +303,85 @@ function handleNetworkChange(event) {
         }
     }
 }
+
+// Toggle edit mode
+function toggleEdit() {
+    const spans = document.querySelectorAll('.form-row span');
+    const inputs = document.querySelectorAll('.form-row input');
+    const editButton = document.getElementById('editButton');
+    const saveButton = document.getElementById('saveButton');
+
+    spans.forEach(span => span.style.display = 'none');
+    inputs.forEach(input => {
+        input.style.display = 'block';
+        // Set input value to current display value
+        const spanId = input.id.replace('Input', 'Display');
+        input.value = document.getElementById(spanId).innerText;
+    });
+
+    editButton.style.display = 'none';
+    saveButton.style.display = 'block';
+}
+
+// Save changes to database
+async function saveChanges() {
+    try {
+        const token = getToken();
+        const updatedData = {
+            username: document.getElementById('nameInput2').value,
+            gender: document.getElementById('genderInput').value,
+            DOB: document.getElementById('DOBInput').value,
+            mobile_number: document.getElementById('phoneInput').value,
+            alternate_mobile_number: document.getElementById('alt-phoneInput').value,
+            aadhaar_ID: document.getElementById('aadhaarInput').value,
+            email: document.getElementById('emailInput').value,
+            address: document.getElementById('addressInput').value,
+            land_location: document.getElementById('land_locationInput').value,
+            land_size: document.getElementById('land_sizeInput').value,
+            land_type: document.getElementById('land_typeInput').value,
+            state: document.getElementById('stateInput').value,
+            city: document.getElementById('cityInput').value,
+            taluk: document.getElementById('talukInput').value
+        };
+
+        const response = await fetch('http://localhost:3000/landowner/update_profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update profile');
+        }
+
+        // Update display values
+        Object.keys(updatedData).forEach(key => {
+            const displayId = key === 'username' ? 'nameDisplay2' : `${key}Display`;
+            const displayElement = document.getElementById(displayId);
+            if (displayElement) {
+                displayElement.innerText = updatedData[key];
+            }
+        });
+
+        // Toggle back to display mode
+        const spans = document.querySelectorAll('.form-row span');
+        const inputs = document.querySelectorAll('.form-row input');
+        const editButton = document.getElementById('editButton');
+        const saveButton = document.getElementById('saveButton');
+
+        spans.forEach(span => span.style.display = 'block');
+        inputs.forEach(input => input.style.display = 'none');
+        editButton.style.display = 'block';
+        saveButton.style.display = 'none';
+
+        // Show success message
+        alert('Profile updated successfully!');
+
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        alert('Failed to update profile. Please try again.');
+    }
+}

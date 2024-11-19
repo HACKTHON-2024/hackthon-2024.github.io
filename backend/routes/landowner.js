@@ -492,7 +492,7 @@ router.get("/view_requests", landownerMiddleware, async function(req, res) {
 });
 
   
-  router.post("/update_profile", landownerMiddleware, async function (req, res) {
+  router.put("/update_profile", landownerMiddleware, async function (req, res) {
       try {
 
         const createpayload = req.body;
