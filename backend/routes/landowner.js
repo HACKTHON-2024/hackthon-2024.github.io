@@ -737,7 +737,7 @@ router.get("/request_history", landownerMiddleware, async (req, res) => {
         const user_id = req.user._id;
         
         const requests = await Requests.find({ landowner_id: user_id })
-            .populate('labour_id', 'username mobile_number address') // Populate labour details
+            .populate('labour_id', 'username ') // Populate labour details
             .populate('job_id', 'title description amount start_date end_date number_of_workers') // Populate job details
             .sort({ date: -1 }); // Sort by date, newest first
 
