@@ -162,7 +162,7 @@ async function fetchJobData() {
 }
 // Function to navigate to job details page with job ID
 function viewJobDetails(jobId) {
- window.location.href = `/frontend/labour/job_details/index.html?jobId=${jobId}`;
+ window.location.href = `http://localhost:5500/frontend/Labours/job_details/index.html?jobId=${jobId}`;
 }
 
 

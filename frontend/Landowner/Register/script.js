@@ -1,9 +1,7 @@
-// Add network status monitoring
 window.addEventListener('online', handleNetworkChange);
 window.addEventListener('offline', handleNetworkChange);
 async function onclickconfirm() {
     try {
-        
         if (!navigator.onLine) {
             window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
             return;
@@ -11,6 +9,32 @@ async function onclickconfirm() {
             checkServerStatus();
         }
         // Create an array of required validations
+        // First check if all required elements exist
+        const requiredElements = {
+            'name': 'Full Name',
+            'gender': 'Gender',
+            'dob': 'Date of Birth',
+            'aadhaar': 'Aadhaar Number',
+            'mobile': 'Mobile Number',
+            'email': 'Email',
+            'address': 'Address',
+            'state': 'State',
+            'city': 'City',
+            'taluk': 'Taluk',
+            'password': 'Password',
+            'confirm-password': 'Confirm Password',
+            'skills': 'Job Skills'
+        };
+
+        // Check if all elements exist in the DOM
+        for (const [elementId, fieldName] of Object.entries(requiredElements)) {
+            const element = document.getElementById(elementId);
+            if (!element) {
+                throw new Error(`Form element not found: ${fieldName} (ID: ${elementId})`);
+            }
+        }
+
+        // Proceed with form validation
         const validations = [
             { name: 'Name', result: validateName() },
             { name: 'Gender', result: validateGender() },
@@ -18,11 +42,10 @@ async function onclickconfirm() {
             { name: 'Aadhaar', result: validateAadhaar() },
             { name: 'Mobile', result: validateMobile() },
             { name: 'Email', result: validateEmail() },
-            { name: 'Land Size', result: validateLandSize() },
             { name: 'Location', result: validateLocation() },
-            { name: 'Land Type', result: validateLandType() },
             { name: 'Password', result: validatePassword() },
-            { name: 'Confirm Password', result: validateConfirmPassword() }
+            { name: 'Confirm Password', result: validateConfirmPassword() },
+            { name: 'Alternate Mobile', result: validateAlternateMobile() }
         ];
 
         // Check if any validations failed
@@ -83,19 +106,25 @@ async function onclickconfirm() {
             DOB: document.getElementById('dob').value,
             aadhaar_ID: document.getElementById('aadhaar').value.trim(),
             mobile_number: document.getElementById('mobile').value.trim(),
-            alternate_mobile_number: document.getElementById('alternate-phone')?.value.trim() || '',
             email: document.getElementById('email').value.trim(),
             address: document.getElementById('address').value.trim(),
-            land_location: document.getElementById('land-location').value.trim(),
-            land_size: document.getElementById('land-size').value.trim(),
             state: document.getElementById('state').value,
             city: document.getElementById('city').value,
             taluk: document.getElementById('taluk').value,
-            land_type: document.getElementById('land-type').value,
-            password: document.getElementById('password').value
+            password: document.getElementById('password').value,
+            job_skills: document.getElementById('skills').value.trim()
         };
 
-        const response = await fetch('http://localhost:3000/landowner/signup', {
+        // Only add alternate_mobile_number if it has a value
+        const altMobile = document.getElementById('alternate-phone')?.value?.trim();
+        if (altMobile) {
+            formData.alternate_mobile_number = altMobile;
+        }
+
+        // Log the form data for debugging
+        console.log('Form Data:', formData);
+
+        const response = await fetch('http://localhost:3000/labour/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -104,7 +133,7 @@ async function onclickconfirm() {
         });
 
         const result = await response.json();
-
+        console.log(result);
         if (!response.ok) {
             const errorMessageElement = document.getElementById('error-message');
             errorMessageElement.innerHTML = `
@@ -180,7 +209,7 @@ async function onclickconfirm() {
 
         // Redirect after 2 seconds
         setTimeout(() => {
-            window.location.href = '../login/index.html';
+            window.location.href = 'http://localhost:5500/frontend/Labours/labour_register/';
         }, 2000);
 
     } catch (error) {
@@ -434,70 +463,8 @@ function validateEmail() {
     }
 }
 
-function validateLandSize() {
-    const landSize = document.getElementById('land-size');
-    const errorElement = document.getElementById('land-size-error');
-    
-    if (!landSize || !landSize.value) {
-        showError(landSize, 'land-size-error', 'Land size is required');
-        return false;
-    }
-    
-    const size = parseFloat(landSize.value);
-    if (isNaN(size) || size <= 0) {
-        showError(landSize, 'land-size-error', 'Please enter a valid land size greater than 0');
-        return false;
-    }
-    
-    clearError(landSize, 'land-size-error');
-    return true;
-}
 
-function validateLocation() {
-    const state = document.getElementById('state');
-    const city = document.getElementById('city');
-    const taluk = document.getElementById('taluk');
-    let isValid = true;
-    
-    // Validate State
-    if (!state || !state.value) {
-        showError(state, 'state-error', 'Please select a state');
-        isValid = false;
-    } else {
-        clearError(state, 'state-error');
-    }
-    
-    // Validate City
-    if (!city || !city.value) {
-        showError(city, 'city-error', 'Please select a city');
-        isValid = false;
-    } else {
-        clearError(city, 'city-error');
-    }
-    
-    // Validate Taluk
-    if (!taluk || !taluk.value) {
-        showError(taluk, 'taluk-error', 'Please select a taluk');
-        isValid = false;
-    } else {
-        clearError(taluk, 'taluk-error');
-    }
-    
-    return isValid;
-}
 
-function validateLandType() {
-    const landType = document.getElementById('land-type');
-    const errorElement = document.getElementById('land-type-error');
-    
-    if (!landType || !landType.value) {
-        showError(landType, 'land-type-error', 'Please select a land type');
-        return false;
-    }
-    
-    clearError(landType, 'land-type-error');
-    return true;
-}
 
 function validatePassword() {
     const password = document.getElementById('password');
@@ -770,8 +737,6 @@ document.addEventListener('DOMContentLoaded', function() {
         'aadhaar': { validate: validateAadhaar, errorId: 'aadhaar-error' },
         'mobile': { validate: validateMobile, errorId: 'mobile-error' },
         'email': { validate: validateEmail, errorId: 'email-error' },
-        'land-size': { validate: validateLandSize, errorId: 'land-size-error' },
-        'land-type': { validate: validateLandType, errorId: 'land-type-error' },
         'password': { validate: validatePassword, errorId: 'password-error' },
         'confirm-password': { validate: validateConfirmPassword, errorId: 'confirm-password-error' }
     };
@@ -905,7 +870,7 @@ function handleNetworkChange(event) {
 // Function to check if server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+        const response = await fetch('http://localhost:3000/', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -919,4 +884,39 @@ async function checkServerStatus() {
         }
         return false;
     }
+}
+
+// Add this function to your script.js
+function validateLocation() {
+    const state = document.getElementById('state');
+    const city = document.getElementById('city');
+    const taluk = document.getElementById('taluk');
+    
+    let isValid = true;
+    
+    // Validate State
+    if (!state.value) {
+        showError(state, 'state-error', 'Please select a state');
+        isValid = false;
+    } else {
+        clearError(state, 'state-error');
+    }
+    
+    // Validate City
+    if (state.value && !city.value) {
+        showError(city, 'city-error', 'Please select a city');
+        isValid = false;
+    } else {
+        clearError(city, 'city-error');
+    }
+    
+    // Validate Taluk
+    if (city.value && !taluk.value) {
+        showError(taluk, 'taluk-error', 'Please select a taluk');
+        isValid = false;
+    } else {
+        clearError(taluk, 'taluk-error');
+    }
+    
+    return isValid;
 }

@@ -570,57 +570,159 @@ body::before {
 /* Worker Container */
 .worker-container {
     background: white;
-    border: 2px solid rgba(47, 133, 90, 0.3);
+    border: none;
     border-radius: 12px;
     margin-bottom: 20px;
     overflow: hidden;
-    transition: transform 0.2s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 12px rgba(50, 189, 119, 0.1);
 }
 
 .worker-container:hover {
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(47, 133, 90, 0.15);
 }
 
-/* Worker Summary */
+/* Professional Worker Summary Styles - Matching Site Theme */
 .worker-summary {
-    background: rgba(47, 133, 90, 0.1);
-    padding: 20px;
+    background: linear-gradient(135deg, #2F855A 0%, #38A169 100%);
+    padding: 18px 25px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.worker-summary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+    z-index: 1;
 }
 
 .worker-summary:hover {
-    background: rgba(47, 133, 90, 0.1);
+    background: linear-gradient(135deg, #276749 0%, #2F855A 100%);
 }
 
 .worker-summary p {
     margin: 0;
-    color: var(--primary-color);
-    font-size: 16px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    z-index: 2;
+    letter-spacing: 0.2px;
 }
 
-/* Worker Details */
+.worker-summary i {
+    font-size: 18px;
+    margin-right: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.worker-summary .arrow {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+
+/* Enhanced Worker Details Styles */
 .worker-details {
     padding: 20px;
-    background: white;
+    background: #F0FFF4; /* Light green background */
+    border-top: 1px solid rgba(47, 133, 90, 0.1);
 }
 
 .worker-details p {
-    margin: 12px 0;
-    padding: 12px 15px;
-    background: rgba(47, 133, 90, 0.08);
+    margin: 10px 0;
+    padding: 12px 16px;
+    background: white;
+    border: 1px solid rgba(47, 133, 90, 0.2);
     border-radius: 8px;
-    font-size: 15px;
-    color: #333;
-    transition: background-color 0.3s;
+    font-size: 14px;
+    color: #276749; /* Darker green for text */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s ease;
 }
 
 .worker-details p:hover {
-    background: rgba(47, 133, 90, 0.1);
+    background: #F0FFF4;
+    transform: translateX(3px);
+    border-color: #38A169;
+}
+
+.worker-details i {
+    color: #38A169; /* Accent green for icons */
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+    background: rgba(56, 161, 105, 0.1);
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.worker-details strong {
+    color: #2F855A; /* Primary green for labels */
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+/* Individual field styling */
+.worker-details p:nth-child(1) i { /* Gender icon */
+    background: rgba(56, 161, 105, 0.1);
+}
+
+.worker-details p:nth-child(2) i { /* Mobile icon */
+    background: rgba(56, 161, 105, 0.1);
+}
+
+.worker-details p:nth-child(3) i { /* Skills icon */
+    background: rgba(56, 161, 105, 0.1);
+}
+
+.worker-details p:nth-child(4) i { /* Location icon */
+    background: rgba(56, 161, 105, 0.1);
+}
+
+/* Job Created Section Header */
+.job-created-section h3 {
+    color: #2F855A;
+    font-size: 24px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* No workers message styling */
+.no-workers {
+    color: #2F855A;
+    text-align: center;
+    padding: 20px;
+    background: #F0FFF4;
+    border-radius: 8px;
+    border: 1px dashed rgba(47, 133, 90, 0.3);
 }
 
 /* Responsive Design */
@@ -1147,4 +1249,129 @@ button:hover {
     z-index: 1000;
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
+}
+
+/* Enhanced Worker Container Styles */
+.worker-container {
+    background: white;
+    border: none;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(47, 133, 90, 0.1);
+}
+
+.worker-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(47, 133, 90, 0.2);
+}
+
+/* Professional Worker Summary Styles - Matching Site Theme */
+.worker-summary {
+    background: linear-gradient(135deg, #2F855A 0%, #38A169 100%);
+    padding: 18px 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.worker-summary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+    z-index: 1;
+}
+
+.worker-summary:hover {
+    background: linear-gradient(135deg, #276749 0%, #2F855A 100%);
+}
+
+.worker-summary p {
+    margin: 0;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    letter-spacing: 0.2px;
+}
+
+.worker-summary i {
+    font-size: 18px;
+    margin-right: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.worker-summary .arrow {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+
+/* Enhanced Worker Details Styles */
+.worker-details {
+    padding: 20px;
+    background: white;
+    border-top: 1px solid rgba(47, 133, 90, 0.1);
+}
+
+.worker-details p {
+    margin: 10px 0;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s ease;
+}
+
+.worker-details p:hover {
+    background: #f1f5f9;
+    transform: translateX(3px);
+}
+
+.worker-details i {
+    color: var(--primary-color);  /* Matching the header color */
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.worker-details strong {
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+/* Job Created Section Header */
+.job-created-section h3 {
+    color: #2F855A;
+    font-size: 24px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 600;
 }
