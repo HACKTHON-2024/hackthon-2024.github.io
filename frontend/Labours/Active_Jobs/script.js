@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
             const token = getToken();  // Get JWT token
 
-            const response = await fetch('http://localhost:3000/landowner/active_jobs', {
+            const response = await fetch('http://localhost:3000/labour/active_jobs', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 </div>
             </div>
             <div class="job-actions">
-                <button onclick="window.location.href='/frontend/Landowner/Labour_Assigned/index.html?jobId=${job._id}'" class="view-laborers-btn">
+                <button onclick="window.location.href='/frontend/Labours/job_details/index.html?jobId=${job._id}'" class="view-laborers-btn">
                     <i class="fas fa-users"></i>
                     Registered Laborers
                 </button>
@@ -272,7 +272,7 @@ function handleNetworkChange(event) {
 async function checkServerStatus() {
     try {
         const token = getToken();
-        const response = await fetch('http://localhost:3000/landowner/active_jobs', {
+        const response = await fetch('http://localhost:3000/labour/active_jobs', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
