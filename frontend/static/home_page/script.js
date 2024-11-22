@@ -17,14 +17,13 @@ function checkNetworkStatus() {
 // Function to handle network changes
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
-        // Redirect to network error page when offline
         window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
     } else {
         const currentPath = window.location.pathname;
         if (currentPath.includes('network-error') || currentPath.includes('server-error')) {
             checkServerStatus().then(isServerRunning => {
                 if (isServerRunning) {
-                    window.history.back();
+                    window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
                 }
             });
         }
@@ -93,13 +92,17 @@ function parseJwt(token) {
 // Modify the checkAuthAndRedirect function
 function checkAuthAndRedirect() {
     const jwt = localStorage.getItem('jwt');
+    const loginBtn = document.getElementById("loginBtn");
+    const signupBtn = document.getElementById("signupBtn");
     
     if (jwt) {
-        // Hide login/signup buttons
-        const loginBtn = document.getElementById("loginBtn");
-        const signupBtn = document.getElementById("signupBtn");
+        // User is logged in - hide login/signup buttons
         if (loginBtn) loginBtn.style.display = "none";
         if (signupBtn) signupBtn.style.display = "none";
+    } else {
+        // User is not logged in - show login/signup buttons
+        if (loginBtn) loginBtn.style.display = "block";
+        if (signupBtn) signupBtn.style.display = "block";
     }
 }
 

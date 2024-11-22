@@ -104,7 +104,7 @@
     </style>
 </head>
 <body>
-    <div class="status-badge">
+    <div class="status-badge" id="statusBadge">
         Server Status: Offline
     </div>
 
@@ -135,9 +135,44 @@
     </div>
 
     <script>
-        function retryConnection() {
-            window.location.reload();
+        // Function to update server status
+        async function checkServerStatus() {
+            try {
+                const response = await fetch('http://localhost:3000/', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    signal: AbortSignal.timeout(5000)
+                });
+                
+                const statusBadge = document.getElementById('statusBadge');
+                statusBadge.textContent = 'Server Status: Online';
+                statusBadge.style.background = 'rgba(75, 181, 67, 0.2)'; // Green background for online
+                
+                // Redirect to home page after a brief delay to show the online status
+                setTimeout(() => {
+                    window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
+                }, 1000);
+                
+                return true;
+            } catch (error) {
+                const statusBadge = document.getElementById('statusBadge');
+                statusBadge.textContent = 'Server Status: Offline';
+                statusBadge.style.background = 'rgba(255,87,87,0.2)'; // Red background for offline
+                return false;
+            }
         }
+
+        function retryConnection() {
+            checkServerStatus();
+        }
+
+        // Check server status every 5 seconds
+        setInterval(checkServerStatus, 5000);
+
+        // Initial check when page loads
+        checkServerStatus();
     </script>
 </body>
 </html> 
