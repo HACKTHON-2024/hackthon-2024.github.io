@@ -1,77 +1,97 @@
-        feather.replace();
+// Feather icons replacement for any icons you might use
+feather.replace();
 
-        document.addEventListener('DOMContentLoaded', async function () {
-            await fetchProfileData();
-            await fetchJobData();
-        });
-       
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-            const year = String(date.getFullYear()).slice(-4); // Full year
-            return `${day}/${month}/${year}`;
-        }
+// Add this at the beginning of your script, right after feather.replace();
+let isAuthenticated = false;
 
-        async function fetchProfileData() {
-            try {
-                const token = getToken();  // Get JWT token
-            
-                if (!token) {
-                    showAuthPopup(); // Show login/signup popup if not logged in
-                    return;
-                }
-                const response = await fetch('http://localhost:3000/labour/view_profile', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
-                        'Content-Type': 'application/json'
-                    }
-                });
-                const data = await response.json();
-                console.log(data)
-                const dob = new Date(data.DOB);
-                const formattedDOB = dob.toISOString().split('T')[0];
-                console.log(data)
-                // Check if job_history exists and calculate its length
-                const number_of_jobs_posted = data.job_history ? data.job_history.length : 0;
+// When DOM is loaded, check auth status and fetch profile/job data
+document.addEventListener('DOMContentLoaded', async function () {
+    await checkAuthStatus();
+    await fetchProfileData();
+    await fetchJobData();
+    // Add network status monitoring
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
+});
 
-                // Display the number of jobs posted
-                document.getElementById('no-of-posts').innerText = number_of_jobs_posted;
-                document.getElementById('nameDisplay1').innerText = data.username;
-                document.getElementById('nameDisplay2').innerText = data.username;
-                document.getElementById('genderDisplay').innerText = data.gender;
-                document.getElementById('DOBDisplay').innerText = formattedDOB;
-                document.getElementById('phoneDisplay').innerText = data.mobile_number;
-                document.getElementById('alt-phoneDisplay').innerText = data.alternate_mobile_number;
-                document.getElementById('aadhaarDisplay').innerText = data.aadhaar_ID;
-                document.getElementById('emailDisplay').innerText = data.email;
-                document.getElementById('addressDisplay').innerText = data.address;
-                document.getElementById('stateDisplay').innerText = data.state;
-                document.getElementById('cityDisplay').innerText = data.city;
-                document.getElementById('talukDisplay').innerText = data.taluk;
-                
-            } catch (error) {
-                console.error('Error fetching profile data:', error);
-            }
-        }
+// Format Date utility
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+}
 
-      // Fetch job data and display dynamically, separating completed and future jobs
-async function fetchJobData() {
+// Fetch and display profile data
+async function fetchProfileData() {
     try {
-        const token = getToken(); // Get JWT token
-
-        if (!token) {
-            showAuthPopup(); // Show login/signup popup if not logged in
+        if (!navigator.onLine) {
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
             return;
+        }else {
+            checkServerStatus();
         }
+        const token = getToken();
+        console.log('Token:', token);
 
-        const response = await fetch('http://localhost:3000/labour/get_job_history', {
+        const response = await fetch('http://localhost:3000/landowner/view_profile', {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`, // Add JWT to Authorization header
+                'authorization': `Bearer ${token}`, // Add JWT to Authorization header
                 'Content-Type': 'application/json',
-            }
+            },
+        });
+
+        const data = await response.json();
+        console.log('Profile Data:', data);
+
+        const number_of_jobs_posted = data.job_history ? data.job_history.length : 0;
+
+        document.getElementById('no-of-posts').innerText = number_of_jobs_posted;
+        document.getElementById('nameDisplay2').innerText = data.username;
+        document.getElementById('genderDisplay').innerText = data.gender;
+        document.getElementById('DOBDisplay').innerText = formatDate(data.DOB);
+        document.getElementById('phoneDisplay').innerText = data.mobile_number;
+        document.getElementById('alt-phoneDisplay').innerText = data.alternate_mobile_number;
+        document.getElementById('aadhaarDisplay').innerText = data.aadhaar_ID;
+        document.getElementById('emailDisplay').innerText = data.email;
+        document.getElementById('addressDisplay').innerText = data.address;
+        document.getElementById('land_locationDisplay').innerText = data.land_location;
+        document.getElementById('land_sizeDisplay').innerText = data.land_size;
+        document.getElementById('land_typeDisplay').innerText = data.land_type;
+        document.getElementById('stateDisplay').innerText = data.state;
+        document.getElementById('cityDisplay').innerText = data.city;
+        document.getElementById('talukDisplay').innerText = data.taluk;
+    } catch (error) {
+        console.error('Error fetching profile data:', error);
+        if (!navigator.onLine) {
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            return;
+        }else {
+            checkServerStatus();
+        }
+    }
+}
+
+// Fetch job history and display dynamically
+// Utility function to format date
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+}
+
+// Fetch job history and display dynamically, separating completed and future jobs
+async function fetchJobData() {
+    try {
+        const token = getToken();
+        const response = await fetch('http://localhost:3000/landowner/get_job_history', {
+            method: 'GET',
+            headers: {
+                'authorization': `Bearer ${token}`, // Add JWT to Authorization header
+                'Content-Type': 'application/json',
+            },
         });
 
         const jobs = await response.json();
@@ -86,14 +106,14 @@ async function fetchJobData() {
 
         // Container for displaying jobs
         const jobContainer = document.querySelector('.job-created-section');
-        jobContainer.innerHTML = '<h2>Jobs History:</h2>';
+        jobContainer.innerHTML = '<h2>Jobs Created</h2>';
 
         // Create sections for completed and future jobs
         const completedJobsContainer = document.createElement('div');
         const futureJobsContainer = document.createElement('div');
 
-        completedJobsContainer.innerHTML = '<h3>Completed Jobs:</h3>';
-        futureJobsContainer.innerHTML = '<h3>Future Jobs:</h3>';
+        completedJobsContainer.innerHTML = '<h3>Completed Jobs</h3>';
+        futureJobsContainer.innerHTML = '<h3>Future Jobs</h3>';
 
         // Function to render jobs in a container
         function displayJobs(jobs, container) {
@@ -107,186 +127,90 @@ async function fetchJobData() {
                 jobElement.classList.add('job-container');
 
                 jobElement.innerHTML = `
-                    <div class="job-summary" onclick="toggleJobDetails(this)">
-                        <div class="job-header">
-                            <p><strong>Job Title:</strong> ${job.title}</p>
-                            <p><strong>Start Date:</strong> ${formatDate(job.start_date)}</p>
-                            <p><strong>End Date:</strong> ${formatDate(job.end_date)}</p>
-                            <span class="arrow">▼</span>
-                        </div>
+                <div class="job-summary" onclick="toggleJobDetails(this)">
+                    <div class="job-header">
+                        <p><strong>Job Title:</strong> ${job.title}</p>
+                        <p><strong>Start Date:</strong> ${formatDate(job.start_date)}</p>
+                        <p><strong>End Date:</strong> ${formatDate(job.end_date)}</p>
+                        <span class="arrow">▼</span>
                     </div>
-                    <div class="job-details" style="display: none;">
-                        <p><strong>Job Description:</strong></p>
-                        <div class="editable-box"><span>${job.description}</span></div>
-                        <p><strong>Job Location:</strong></p>
-                        <div class="editable-box"><span>${job.location}</span></div>
-                        <p><strong>Amount:</strong></p>
-                        <div class="editable-box"><span>${job.amount}</span></div>
-                        <p><strong>Workers needed:</strong></p>
-                        <div class="editable-box"><span>${job.worker_id.length}/${job.number_of_workers}</span></div>
-                    </div>
-                `;
-                container.appendChild(jobElement);
-            });
-        }
+                </div>
+                <div class="job-details" style="display: none;">
+                    <p><strong>Job Description:</strong> ${job.description}</p>
+                    <p><strong>Job Location:</strong> ${job.location}</p>
+                    <p><strong>Amount:</strong> ${job.amount}</p>
+                    <p><strong>Status:</strong> ${job.status}</p>
+                    <p><strong>Workers needed:</strong> ${job.worker_id.length}/${job.number_of_workers}</p>
+                    <!-- Details Button -->
+                    <button class="details-button" onclick="viewJobDetails('${job._id}')">View Details</button>
+                </div>
+            `;
+            container.appendChild(jobElement);
+        });
+    }
 
-        // Display completed and future jobs in their respective containers
-        displayJobs(completedJobs, completedJobsContainer);
-        displayJobs(futureJobs, futureJobsContainer);
+     // Display completed and future jobs
+     displayJobs(completedJobs, completedJobsContainer);
+     displayJobs(futureJobs, futureJobsContainer);
 
-        // Append the completed and future job containers to the main job container
-        jobContainer.appendChild(completedJobsContainer);
-        jobContainer.appendChild(futureJobsContainer);
-    } catch (error) {
-        console.error('Error fetching job data:', error);
+     // Append completed and future job containers to main job container
+     jobContainer.appendChild(completedJobsContainer);
+     jobContainer.appendChild(futureJobsContainer);
+
+ } catch (error) {
+     console.error('Error fetching job data:', error);
+ }
+}
+
+// Function to navigate to job details page with job ID
+function viewJobDetails(jobId) {
+ window.location.href = `/frontend/Landowner/Labour_Assigned/index.html?jobId=${jobId}`;
+}
+
+
+// Toggle job details visibility
+function toggleJobDetails(jobSummaryElement) {
+    const jobDetails = jobSummaryElement.nextElementSibling;
+    const arrow = jobSummaryElement.querySelector('.arrow');
+
+    if (jobDetails.style.display === 'none') {
+        jobDetails.style.display = 'block';
+        arrow.textContent = '▲';
+    } else {
+        jobDetails.style.display = 'none';
+        arrow.textContent = '▼';
     }
 }
-        // This function toggles between view mode and edit mode
-        function toggleEdit() {
-            const isEditing = document.getElementById('editButton').style.display === 'none';
-            document.querySelectorAll('span[id]').forEach(span => {
-                const inputId = span.id.replace('Display', 'Input');
-                const inputField = document.getElementById(inputId);
-                if (inputField) {
-                    if (isEditing) {
-                        span.innerText = inputField.value.trim();
-                        inputField.style.display = 'none';
-                        span.style.display = 'block';
-                    } else {
-                        // Populate the input field with current value
-                        inputField.value = span.innerText.trim();
-                        inputField.style.display = 'block';
-                        span.style.display = 'none';
-                    }
-                }
-            });
-            document.getElementById('editButton').style.display = isEditing ? 'block' : 'none';
-            document.getElementById('saveButton').style.display = isEditing ? 'none' : 'block';
-        }
-        
-
-        async function saveChanges() {
-            // Collect data from input fields
-            
-
-            const profileData = {
-                username: document.getElementById('nameInput2').value,
-                gender: document.getElementById('genderInput').value,
-                DOB: document.getElementById('DOBInput').value,
-                mobile_number: document.getElementById('phoneInput').value,
-                alternate_mobile_number: document.getElementById('alt-phoneInput').value,
-                aadhaar_ID: document.getElementById('aadhaarInput').value,
-                email: document.getElementById('emailInput').value,
-                address: document.getElementById('addressInput').value,
-                land_location: document.getElementById('land_locationInput').value,
-                land_size: document.getElementById('land_sizeInput').value,
-                land_type: document.getElementById('land_typeInput').value,
-                state: document.getElementById('stateInput').value,
-                city: document.getElementById('cityInput').value,
-                taluk: document.getElementById('talukInput').value
-            };
-            console.log(profileData)
-            try {
-                const token = getToken();  // Get JWT token
-                // Send the updated data to the server
-                const response = await fetch('http://localhost:3000/labour/update_profile', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
-
-                    },
-                    body: JSON.stringify(profileData),
-                });
-                if (response.ok) {
-                    alert('Profile updated successfully');
-                    toggleEdit();
-                } else {
-                    // Read and log the error response from the server
-                    const errorData = await response.json();
-                    console.error('Failed to update profile data:', errorData);
-                    alert('Error updating profile: ' + (errorData.message || 'Unknown error'));
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while updating the profile.');
-            }
-        }
-        // Toggle display of job details
-        function toggleJobDetails(jobSummaryElement) {
-            const jobDetails = jobSummaryElement.nextElementSibling;
-            const arrow = jobSummaryElement.querySelector('.arrow');
-
-            if (jobDetails.style.display === 'none') {
-                jobDetails.style.display = 'block';
-                arrow.textContent = '▲';
-            } else {
-                jobDetails.style.display = 'none';
-                arrow.textContent = '▼';
-            }
-        }
 
 // Show authentication popup with overlay
 function showAuthPopup() {
-    // Create the overlay
-    const overlay = document.createElement('div');
-    overlay.classList.add('auth-overlay'); // Styled in CSS
+    const overlay = document.getElementById('auth-overlay');
+    const popup = document.getElementById('auth-popup');
+    
+    if (overlay && popup) {
+        overlay.style.display = 'block';
+        popup.style.display = 'block';
+    }
 
-    // Create the popup
-    const popup = document.createElement('div');
-    popup.classList.add('auth-popup'); // Styled in CSS
-
-    // Message above buttons
-    const authMessage = document.createElement('p');
-    authMessage.innerText = 'Need to sign in or sign up?';
-    popup.appendChild(authMessage);
-
-    // Create container for the buttons
-    const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container'); // Styled in CSS for flexbox layout
-
-    // Create login button
-    const loginBtn = document.createElement('button');
-    loginBtn.innerText = 'Login';
-    loginBtn.onclick = function () {
-        window.location.href = '../Login_Page/index.html'; // Redirect to login page
-        removeAuthPopup(); // Remove popup on navigation
-    };
-
-    // Create signup button
-    const signupBtn = document.createElement('button');
-    signupBtn.innerText = 'Sign Up';
-    signupBtn.onclick = function () {
-        window.location.href = '../SIgnUp_Page/index.html'; // Redirect to signup page
-        removeAuthPopup(); // Remove popup on navigation
-    };
-
-    // Append buttons to the container
-    buttonContainer.appendChild(loginBtn);
-    buttonContainer.appendChild(signupBtn);
-
-    // Add the button container to the popup
-    popup.appendChild(buttonContainer);
-
-    // Append the overlay and popup to the body
-    document.body.appendChild(overlay);
-    document.body.appendChild(popup);
-
-    // Close popup when clicking outside or pressing Escape
-    overlay.addEventListener('click', removeAuthPopup);
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
+    // Add event listener to close popup when clicking outside
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
             removeAuthPopup();
+            // Redirect to home page or another appropriate page
+            window.location.href = '../../static/home_page/index.html';
         }
     });
 }
 
 // Remove the authentication popup and overlay
 function removeAuthPopup() {
-    const overlay = document.querySelector('.auth-overlay');
-    const popup = document.querySelector('.auth-popup');
-    if (overlay) overlay.remove();
-    if (popup) popup.remove();
+    const overlay = document.getElementById('auth-overlay');
+    const popup = document.getElementById('auth-popup');
+    
+    if (overlay && popup) {
+        overlay.style.display = 'none';
+        popup.style.display = 'none';
+    }
 }
 
 // Logout user
@@ -304,18 +228,26 @@ function logoutUser() {
 // Check authentication status and show popup or logout button
 async function checkAuthStatus() {
     const token = getToken();
-    const authBtnContainer = document.getElementById('auth-btn-container');
+    isAuthenticated = !!token; // Convert token to boolean
 
-    if (token) {
-        // If the user is logged in, show the Logout button
-        const logoutBtn = document.createElement('button');
-        logoutBtn.innerText = 'Logout';
-        logoutBtn.classList.add('logout-btn'); // You can style this in CSS
-        logoutBtn.onclick = logoutUser;
-        authBtnContainer.appendChild(logoutBtn);
-    } else {
-        // If the user is not logged in, show the login/signup popup
+    if (!isAuthenticated) {
         showAuthPopup();
+        // Hide the main content
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.job-created-section').style.display = 'none';
+    } else {
+        // Show the main content
+        document.querySelector('.container').style.display = 'block';
+        document.querySelector('.job-created-section').style.display = 'block';
+        
+        // Add logout button
+        const authBtnContainer = document.getElementById('auth-btn-container');
+        const logoutBtn = document.createElement('button');
+        logoutBtn.className = 'logout-btn';
+        logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i>Logout';
+        logoutBtn.onclick = logoutUser;
+        authBtnContainer.innerHTML = ''; // Clear existing content
+        authBtnContainer.appendChild(logoutBtn);
     }
 }
 
@@ -324,7 +256,158 @@ function getToken() {
     return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
 }
 
-// Fetch jobs on page load and check authentication
+// Add this new function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // Optional: Reload the current page when coming back online
+        // Only reload if we were previously on the job listing page
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network_error')) {
+            window.location.href = '../job_listing/index.html';
+        }
+    }
+}
+
+// Add this at the beginning of your DOMContentLoaded event listener
 document.addEventListener('DOMContentLoaded', function() {
-    checkAuthStatus();
+    const infoButton = document.querySelector('.floating-info');
+    const infoModal = document.querySelector('.info-modal');
+    const overlay = document.querySelector('.info-overlay');
+    const closeButton = document.querySelector('.close-modal');
+
+    function showModal() {
+        infoModal.classList.add('active');
+        overlay.classList.add('active');
+    }
+
+    function hideModal() {
+        infoModal.classList.remove('active');
+        overlay.classList.remove('active');
+    }
+
+    infoButton.addEventListener('click', showModal);
+    closeButton.addEventListener('click', hideModal);
+    overlay.addEventListener('click', hideModal);
 });
+
+// Function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network-error') || currentPath.includes('server-error')) {
+            checkServerStatus().then(isServerRunning => {
+                if (isServerRunning) {
+                    window.history.back();
+                }
+            });
+        }
+    }
+}
+
+// Function to check if server is running
+async function checkServerStatus() {
+    try {
+        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+            signal: AbortSignal.timeout(5000)
+        });
+        return true;
+    } catch (error) {
+        if (!window.location.pathname.includes('server-error.html')) {
+            window.location.href = 'http://localhost:5500/frontend/static/server-error.html';
+        }
+        return false;
+    }
+}
+
+
+// Toggle edit mode
+function toggleEdit() {
+    const spans = document.querySelectorAll('.form-row span');
+    const inputs = document.querySelectorAll('.form-row input');
+    const editButton = document.getElementById('editButton');
+    const saveButton = document.getElementById('saveButton');
+
+    spans.forEach(span => span.style.display = 'none');
+    inputs.forEach(input => {
+        input.style.display = 'block';
+        // Set input value to current display value
+        const spanId = input.id.replace('Input', 'Display');
+        input.value = document.getElementById(spanId).innerText;
+    });
+
+    editButton.style.display = 'none';
+    saveButton.style.display = 'block';
+}
+
+// Save changes to database
+async function saveChanges() {
+    try {
+        const token = getToken();
+        const updatedData = {
+            username: document.getElementById('nameInput2').value,
+            gender: document.getElementById('genderInput').value,
+            DOB: document.getElementById('DOBInput').value,
+            mobile_number: document.getElementById('phoneInput').value,
+            alternate_mobile_number: document.getElementById('alt-phoneInput').value,
+            aadhaar_ID: document.getElementById('aadhaarInput').value,
+            email: document.getElementById('emailInput').value,
+            address: document.getElementById('addressInput').value,
+            land_location: document.getElementById('land_locationInput').value,
+            land_size: document.getElementById('land_sizeInput').value,
+            land_type: document.getElementById('land_typeInput').value,
+            state: document.getElementById('stateInput').value,
+            city: document.getElementById('cityInput').value,
+            taluk: document.getElementById('talukInput').value
+        };
+
+        const response = await fetch('http://localhost:3000/landowner/update_profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update profile');
+        }
+
+        // Update display values
+        Object.keys(updatedData).forEach(key => {
+            const displayId = key === 'username' ? 'nameDisplay2' : `${key}Display`;
+            const displayElement = document.getElementById(displayId);
+            if (displayElement) {
+                displayElement.innerText = updatedData[key];
+            }
+        });
+
+        // Toggle back to display mode
+        const spans = document.querySelectorAll('.form-row span');
+        const inputs = document.querySelectorAll('.form-row input');
+        const editButton = document.getElementById('editButton');
+        const saveButton = document.getElementById('saveButton');
+
+        spans.forEach(span => span.style.display = 'block');
+        inputs.forEach(input => input.style.display = 'none');
+        editButton.style.display = 'block';
+        saveButton.style.display = 'none';
+
+        // Show success message
+        alert('Profile updated successfully!');
+
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        alert('Failed to update profile. Please try again.');
+    }
+}
