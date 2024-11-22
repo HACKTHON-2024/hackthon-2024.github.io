@@ -1,4 +1,3 @@
-// Add network status monitoring
 window.addEventListener('online', handleNetworkChange);
 window.addEventListener('offline', handleNetworkChange);
 async function onclickconfirm() {
@@ -18,6 +17,7 @@ async function onclickconfirm() {
             { name: 'Aadhaar', result: validateAadhaar() },
             { name: 'Mobile', result: validateMobile() },
             { name: 'Email', result: validateEmail() },
+            { name: 'Location', result: validateLocation() },
             { name: 'Password', result: validatePassword() },
             { name: 'Confirm Password', result: validateConfirmPassword() }
         ];
@@ -89,7 +89,7 @@ async function onclickconfirm() {
             password: document.getElementById('password').value
         };
 
-        const response = await fetch('http://localhost:3000/landowner/signup', {
+        const response = await fetch('http://localhost:3000/labour/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ async function onclickconfirm() {
         });
 
         const result = await response.json();
-
+        console.log(result);
         if (!response.ok) {
             const errorMessageElement = document.getElementById('error-message');
             errorMessageElement.innerHTML = `
@@ -702,8 +702,6 @@ document.addEventListener('DOMContentLoaded', function() {
         'aadhaar': { validate: validateAadhaar, errorId: 'aadhaar-error' },
         'mobile': { validate: validateMobile, errorId: 'mobile-error' },
         'email': { validate: validateEmail, errorId: 'email-error' },
-        'land-size': { validate: validateLandSize, errorId: 'land-size-error' },
-        'land-type': { validate: validateLandType, errorId: 'land-type-error' },
         'password': { validate: validatePassword, errorId: 'password-error' },
         'confirm-password': { validate: validateConfirmPassword, errorId: 'confirm-password-error' }
     };
@@ -837,7 +835,7 @@ function handleNetworkChange(event) {
 // Function to check if server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+        const response = await fetch('http://localhost:3000/', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -851,4 +849,39 @@ async function checkServerStatus() {
         }
         return false;
     }
+}
+
+// Add this function to your script.js
+function validateLocation() {
+    const state = document.getElementById('state');
+    const city = document.getElementById('city');
+    const taluk = document.getElementById('taluk');
+    
+    let isValid = true;
+    
+    // Validate State
+    if (!state.value) {
+        showError(state, 'state-error', 'Please select a state');
+        isValid = false;
+    } else {
+        clearError(state, 'state-error');
+    }
+    
+    // Validate City
+    if (state.value && !city.value) {
+        showError(city, 'city-error', 'Please select a city');
+        isValid = false;
+    } else {
+        clearError(city, 'city-error');
+    }
+    
+    // Validate Taluk
+    if (city.value && !taluk.value) {
+        showError(taluk, 'taluk-error', 'Please select a taluk');
+        isValid = false;
+    } else {
+        clearError(taluk, 'taluk-error');
+    }
+    
+    return isValid;
 }
