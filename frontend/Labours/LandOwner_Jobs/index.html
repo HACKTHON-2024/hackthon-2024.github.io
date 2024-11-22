@@ -135,38 +135,48 @@
 
         
         <!-- Job list modal -->
-        <div id="job-list-modal" class="job-modal hidden">
-            <!-- Close button -->
+         <!-- Job list modal -->
+         <div id="job-list-modal" class="job-modal hidden">
             <button id="close-job-modal" class="close-btn"></button>
-            
             <div class="job-container">
                 <!-- OLA Login Form -->
                 <div class="ola-login-form">
-                    <!-- Input Fields for Mobile Number -->
+                    <!-- Back Button and Logo -->
+                    <div class="header">
+                        <button class="back-btn">&larr;</button>
+                    </div>
+
+                    <!-- Personally Enroll Button -->
+                    <div class="personally-enroll-container">
+                        <button class="personally-enroll-btn" id="self-registration-btn">Self Registration</button>
+                        <div class="or-separator" id="or-separator">OR</div> <!-- Divider to display "OR" between the button and the phone number input -->
+                    </div>
+            
+                    <!-- Input Fields -->
                     <div class="login-inputs">
                         <!-- Login Title -->
-                        <p class="login-title" style="font-size: x-large;">Enter your mobile number</p>
-                        <p class="sub-text">A 4-digit OTP will be sent via SMS</p>
-
-                        <!-- Mobile number input with country code -->
+                        <p class="login-title" style="font-size:x-large;">Enter others mobile number</p>
+                        <p class="sub-text">A 4-digit OTP will be sent on SMS</p>
                         <div class="input-container">
+                            <!-- Flag Icon and Country Code -->
                             <div class="country-code">
                                 <img src="india-flag.png" alt="India Flag" class="flag-icon"> <!-- Replace with your flag image -->
                                 <span>+91</span>
                             </div>
-                            <input type="tel" id="mobile-number" placeholder="Enter your phone number" class="phone-number-input" required pattern="[6-9]{1}[0-9]{9}" maxlength="10">
+                            <input type="tel" placeholder="Enter your phone number" class="phone-number-input">
                         </div>
-
-                        <!-- Next button to send OTP -->
                         <button class="next-btn">Next</button>
                     </div>
-
                     <!-- OTP Section: Initially Hidden -->
                     <div class="otp-section hidden">
                         <p class="otp-title">Enter OTP</p>
                         <p class="otp-subtext">We have sent a 4-digit OTP to your phone number</p>
-                        <div>
-                            <input type="text" id="otp-input" maxlength="4" placeholder="Enter OTP" class="otp-input" disabled>
+                        <div class="otp-inputs">
+                            <!-- Individual OTP input fields for better UX -->
+                            <input type="text" maxlength="1" class="otp-input">
+                            <input type="text" maxlength="1" class="otp-input">
+                            <input type="text" maxlength="1" class="otp-input">
+                            <input type="text" maxlength="1" class="otp-input">
                         </div>
                         <button class="verify-btn">Verify</button>
                     </div>
