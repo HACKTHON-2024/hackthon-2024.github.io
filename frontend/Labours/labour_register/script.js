@@ -2,7 +2,6 @@ window.addEventListener('online', handleNetworkChange);
 window.addEventListener('offline', handleNetworkChange);
 async function onclickconfirm() {
     try {
-        
         if (!navigator.onLine) {
             window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
             return;
@@ -10,6 +9,32 @@ async function onclickconfirm() {
             checkServerStatus();
         }
         // Create an array of required validations
+        // First check if all required elements exist
+        const requiredElements = {
+            'name': 'Full Name',
+            'gender': 'Gender',
+            'dob': 'Date of Birth',
+            'aadhaar': 'Aadhaar Number',
+            'mobile': 'Mobile Number',
+            'email': 'Email',
+            'address': 'Address',
+            'state': 'State',
+            'city': 'City',
+            'taluk': 'Taluk',
+            'password': 'Password',
+            'confirm-password': 'Confirm Password',
+            'skills': 'Job Skills'
+        };
+
+        // Check if all elements exist in the DOM
+        for (const [elementId, fieldName] of Object.entries(requiredElements)) {
+            const element = document.getElementById(elementId);
+            if (!element) {
+                throw new Error(`Form element not found: ${fieldName} (ID: ${elementId})`);
+            }
+        }
+
+        // Proceed with form validation
         const validations = [
             { name: 'Name', result: validateName() },
             { name: 'Gender', result: validateGender() },
@@ -19,7 +44,8 @@ async function onclickconfirm() {
             { name: 'Email', result: validateEmail() },
             { name: 'Location', result: validateLocation() },
             { name: 'Password', result: validatePassword() },
-            { name: 'Confirm Password', result: validateConfirmPassword() }
+            { name: 'Confirm Password', result: validateConfirmPassword() },
+            { name: 'Alternate Mobile', result: validateAlternateMobile() }
         ];
 
         // Check if any validations failed
@@ -80,14 +106,23 @@ async function onclickconfirm() {
             DOB: document.getElementById('dob').value,
             aadhaar_ID: document.getElementById('aadhaar').value.trim(),
             mobile_number: document.getElementById('mobile').value.trim(),
-            alternate_mobile_number: document.getElementById('alternate-phone')?.value.trim() || '',
             email: document.getElementById('email').value.trim(),
             address: document.getElementById('address').value.trim(),
             state: document.getElementById('state').value,
             city: document.getElementById('city').value,
             taluk: document.getElementById('taluk').value,
-            password: document.getElementById('password').value
+            password: document.getElementById('password').value,
+            job_skills: document.getElementById('skills').value.trim()
         };
+
+        // Only add alternate_mobile_number if it has a value
+        const altMobile = document.getElementById('alternate-phone')?.value?.trim();
+        if (altMobile) {
+            formData.alternate_mobile_number = altMobile;
+        }
+
+        // Log the form data for debugging
+        console.log('Form Data:', formData);
 
         const response = await fetch('http://localhost:3000/labour/signup', {
             method: 'POST',
@@ -174,7 +209,7 @@ async function onclickconfirm() {
 
         // Redirect after 2 seconds
         setTimeout(() => {
-            window.location.href = '../login/index.html';
+            window.location.href = 'http://localhost:5500/frontend/Labours/labour_register/';
         }, 2000);
 
     } catch (error) {
