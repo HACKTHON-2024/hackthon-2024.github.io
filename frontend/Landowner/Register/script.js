@@ -842,10 +842,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check authentication status on page load
     function checkAuth() {
         const token = localStorage.getItem('jwt');
-        if (!token) {
-            // If no token is found, redirect to home page
-            window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
-        }
     }
 
     // Call checkAuth when page loads
