@@ -36,7 +36,7 @@ async function fetchProfileData() {
         const token = getToken();
         console.log('Token:', token);
 
-        const response = await fetch('http://localhost:3000/landowner/view_profile', {
+        const response = await fetch('http://localhost:3000/labour/view_profile', {
             method: 'GET',
             headers: {
                 'authorization': `Bearer ${token}`, // Add JWT to Authorization header
@@ -49,7 +49,7 @@ async function fetchProfileData() {
 
         const number_of_jobs_posted = data.job_history ? data.job_history.length : 0;
 
-        document.getElementById('no-of-posts').innerText = number_of_jobs_posted;
+        
         document.getElementById('nameDisplay2').innerText = data.username;
         document.getElementById('genderDisplay').innerText = data.gender;
         document.getElementById('DOBDisplay').innerText = formatDate(data.DOB);
@@ -58,9 +58,6 @@ async function fetchProfileData() {
         document.getElementById('aadhaarDisplay').innerText = data.aadhaar_ID;
         document.getElementById('emailDisplay').innerText = data.email;
         document.getElementById('addressDisplay').innerText = data.address;
-        document.getElementById('land_locationDisplay').innerText = data.land_location;
-        document.getElementById('land_sizeDisplay').innerText = data.land_size;
-        document.getElementById('land_typeDisplay').innerText = data.land_type;
         document.getElementById('stateDisplay').innerText = data.state;
         document.getElementById('cityDisplay').innerText = data.city;
         document.getElementById('talukDisplay').innerText = data.taluk;
@@ -86,7 +83,7 @@ function formatDate(dateString) {
 async function fetchJobData() {
     try {
         const token = getToken();
-        const response = await fetch('http://localhost:3000/landowner/get_job_history', {
+        const response = await fetch('http://localhost:3000/labour/get_job_history', {
             method: 'GET',
             headers: {
                 'authorization': `Bearer ${token}`, // Add JWT to Authorization header
@@ -103,6 +100,8 @@ async function fetchJobData() {
         // Separate jobs into completed and future
         const completedJobs = jobs.filter(job => new Date(job.end_date) < currentDate);
         const futureJobs = jobs.filter(job => new Date(job.start_date) > currentDate);
+        console.log('Completed Jobs:', completedJobs);
+        console.log('Future Jobs:', futureJobs);
 
         // Container for displaying jobs
         const jobContainer = document.querySelector('.job-created-section');
@@ -161,10 +160,9 @@ async function fetchJobData() {
      console.error('Error fetching job data:', error);
  }
 }
-
 // Function to navigate to job details page with job ID
 function viewJobDetails(jobId) {
- window.location.href = `/frontend/Landowner/Labour_Assigned/index.html?jobId=${jobId}`;
+ window.location.href = `/frontend/labour/job_details/index.html?jobId=${jobId}`;
 }
 
 
@@ -313,7 +311,7 @@ function handleNetworkChange(event) {
 // Function to check if server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+        const response = await fetch('http://localhost:3000', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -370,7 +368,7 @@ async function saveChanges() {
             taluk: document.getElementById('talukInput').value
         };
 
-        const response = await fetch('http://localhost:3000/landowner/update_profile', {
+        const response = await fetch('http://localhost:3000/labour/update_profile', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -411,3 +409,4 @@ async function saveChanges() {
         alert('Failed to update profile. Please try again.');
     }
 }
+
