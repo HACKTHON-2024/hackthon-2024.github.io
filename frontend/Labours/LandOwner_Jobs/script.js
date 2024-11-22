@@ -130,15 +130,30 @@ function displayJobs(jobs) {
 // Modal handling functions
 function openModal(jobId) {
     selectedJobId = jobId;
-    document.getElementById('job-list-modal').classList.remove('hidden');
+    const modal = document.getElementById('job-list-modal');
+    modal.classList.remove('hidden');
+    
+    // Add overlay
+    const overlay = document.createElement('div');
+    overlay.classList.add('modal-overlay');
+    document.body.appendChild(overlay);
+    
     // Reset form state
     showPhoneNumberSection();
     document.querySelector('.phone-number-input').value = '';
     document.querySelectorAll('.otp-input').forEach(input => input.value = '');
+
+    // Close modal when clicking overlay
+    overlay.addEventListener('click', () => {
+        closeModal();
+        overlay.remove();
+    });
 }
 
 function closeModal() {
     document.getElementById('job-list-modal').classList.add('hidden');
+    const overlay = document.querySelector('.modal-overlay');
+    if (overlay) overlay.remove();
     selectedJobId = null;
 }
 
@@ -246,28 +261,79 @@ async function handleSelfRegistration() {
 function createJobCard(job) {
     const jobCard = document.createElement('div');
     jobCard.classList.add('labour-card');
+    
+    const defaultProfileImage = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+    
     jobCard.innerHTML = `
-        <div class="circle-stars-group">
-            <div class="circle"></div>
-            <div class="stars">
-                ${Array(5).fill('&#9733;').map(star => `<span class="star">${star}</span>`).join('')}
+        <div class="card-header">
+            <div class="profile-section">
+                <div class="profile-header">
+                    <div class="profile-image">
+                        <img src="${defaultProfileImage}" alt="Profile" onerror="this.src='${defaultProfileImage}'">
+                    </div>
+                    <div class="user-name">${job.title}</div>
+                </div>
+                <div class="dates-section">
+                    <div class="date-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Start: ${new Date(job.start_date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="date-item">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>End: ${new Date(job.end_date).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="location-section">
+                <div class="location-badge">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>${job.taluk}, ${job.city}</span>
+                </div>
             </div>
         </div>
-        <div class="labour-info">
-            <p><strong>Title:</strong> ${job.title}</p>
-            <p><strong>Description:</strong> ${job.description}</p>
-            <p><strong>Amount:</strong> ₹${job.amount}</p>
-            <p><strong>Start Date:</strong> ${new Date(job.start_date).toLocaleDateString()}</p>
-            <p><strong>End Date:</strong> ${new Date(job.end_date).toLocaleDateString()}</p>
-            <p><strong>Workers needed:</strong> ${job.worker_id.length}/${job.number_of_workers}</p>
+        
+        <div class="card-details">
+            <div class="details-grid">
+                <div class="detail-item">
+                    <i class="fas fa-tasks"></i>
+                    <span><strong>Description:</strong> ${job.description}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-rupee-sign"></i>
+                    <span><strong>Amount:</strong> ₹${job.amount}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-users"></i>
+                    <span><strong>Workers:</strong> ${job.worker_id.length}/${job.number_of_workers}</span>
+                </div>
+            </div>
         </div>
-        <div class="location">
-            <p><strong>Location:</strong> ${job.taluk}, ${job.city}</p>
-            <button class="request-btn" data-job-id="${job._id}">REQUEST</button>
+
+        <div class="card-actions">
+            <button class="details-btn">
+                <i class="fas fa-chevron-down"></i>
+                <span>Details</span>
+            </button>
+            <button class="request-btn" data-job-id="${job._id}">Request</button>
         </div>
     `;
 
+    // Add click handler for details button
+    const detailsBtn = jobCard.querySelector('.details-btn');
+    const cardDetails = jobCard.querySelector('.card-details');
+    const chevronIcon = detailsBtn.querySelector('i');
+    
+    detailsBtn.addEventListener('click', () => {
+        cardDetails.classList.toggle('expanded');
+        chevronIcon.style.transform = cardDetails.classList.contains('expanded') 
+            ? 'rotate(180deg)' 
+            : 'rotate(0)';
+    });
+
+    // Add click handler for request button
     jobCard.querySelector('.request-btn').addEventListener('click', () => openModal(job._id));
+
     return jobCard;
 }
 
@@ -351,19 +417,27 @@ function logoutUser() {
 // Check authentication status and show popup or logout button
 async function checkAuthStatus() {
     const token = getToken();
-    const authBtnContainer = document.getElementById('auth-btn-container');
-
-    if (token) {
-        // If the user is logged in, show the Logout button
-        const logoutBtn = document.createElement('button');
-        logoutBtn.innerText = 'Logout';
-        logoutBtn.classList.add('logout-btn'); // You can style this in CSS
-        logoutBtn.onclick = logoutUser;
-        authBtnContainer.appendChild(logoutBtn);
-    } else {
-        // If the user is not logged in, show the login/signup popup
+    
+    if (!token) {
         showAuthPopup();
+        return false;
     }
+    
+    // Get the container and clear any existing content
+    const authBtnContainer = document.getElementById('auth-btn-container');
+    if (authBtnContainer) {
+        authBtnContainer.innerHTML = ''; // Clear existing content
+        
+        // Create the logout button with icon and text
+        const logoutBtn = document.createElement('button');
+        logoutBtn.className = 'auth-btn';
+        logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i><span>Logout</span>';
+        logoutBtn.onclick = logoutUser;
+        
+        authBtnContainer.appendChild(logoutBtn);
+    }
+
+    return true;
 }
 
 // Get JWT token from localStorage
