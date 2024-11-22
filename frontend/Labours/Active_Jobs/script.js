@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             <div class="job-actions">
                 <button onclick="window.location.href='/frontend/Labours/job_details/index.html?jobId=${job._id}'" class="view-laborers-btn">
                     <i class="fas fa-users"></i>
-                    Registered Laborers
+                    Owner details
                 </button>
             </div>
         `;
