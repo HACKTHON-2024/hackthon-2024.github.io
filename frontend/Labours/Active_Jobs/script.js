@@ -1,17 +1,32 @@
 document.addEventListener('DOMContentLoaded', async function () {
+
+    const datepicker = document.getElementById('datepicker');
+
+    // Set the default value of the date picker to today's date
+    const today = new Date().toISOString().split('T')[0];
+    datepicker.value = today; // Set the default date picker value to today
+
+    // Make the date picker read-only to prevent users from changing the date
+    datepicker.setAttribute('readonly', true);
+
     const labourList = document.querySelector('.labour-list');
 
-    // Fetch active jobs from the server
+    // Add network status monitoring
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
+
+    // Function to fetch active jobs from the server
     async function fetchActiveJobs() {
         try {
-            const token = getToken();  // Get JWT token
-            
-            if (!token) {
-                showAuthPopup(); // Show login/signup popup if not logged in
+            if (!navigator.onLine) {
+                window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
                 return;
+            }else {
+                checkServerStatus();
             }
-               
-            const response = await fetch('http://localhost:3000/labour/active_jobs', {
+            const token = getToken();  // Get JWT token
+
+            const response = await fetch('http://localhost:3000/landowner/active_jobs', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
@@ -20,15 +35,11 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
 
             if (!response.ok) {
-                // Check if the error is a 404, and redirect to the 404 page
-                if (response.status === 404) {
-                    window.location.href = '../404/index.html';  // Adjust path to your 404 page
-                }
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const activeJobs = await response.json();
-          
+
             // Check if activeJobs is an array and display them
             if (Array.isArray(activeJobs) && activeJobs.length > 0) {
                 activeJobs.forEach(createJobCard);
@@ -38,6 +49,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         } catch (error) {
             console.error('Error fetching active jobs:', error);
             labourList.innerHTML = `<p>Error fetching active jobs: ${error.message}</p>`;
+            if (!navigator.onLine) {
+                window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            }else {
+                checkServerStatus();
+            }
         }
     }
 
@@ -45,141 +61,230 @@ document.addEventListener('DOMContentLoaded', async function () {
     function createJobCard(job) {
         const jobCard = document.createElement('div');
         jobCard.classList.add('labour-card');
-
+        
         jobCard.innerHTML = `
-            <div class="circle-stars-group">
-                <div class="circle"></div>
-                <div class="stars">
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
+            <div class="labour-card-main">
+                <div class="card-header">
+                    <div class="title-section">
+                        <div class="profile-circle"></div>
+                        <h3 class="job-title">${job.title}</h3>
+                    </div>
+                    <div class="location-badge">
+                        <i class="fas fa-map-marker-alt"></i>
+                        ${job.taluk}, ${job.city}
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="date-info">
+                        <div class="date-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span><strong>Start:</strong> ${new Date(job.start_date).toLocaleDateString()}</span>
+                        </div>
+                        <div class="date-item">
+                            <i class="fas fa-calendar-check"></i>
+                            <span><strong>End:</strong> ${new Date(job.end_date).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="expand-btn">
+                            Details <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="labour-info">
-                <p><strong>Title:</strong> ${job.title}</p>
-                <p><strong>Description:</strong> ${job.description}</p>
-                <p><strong>Amount:</strong> ₹${job.amount}</p>
-                <p><strong>Start Date:</strong> ${new Date(job.start_date).toLocaleDateString()}</p>
-                <p><strong>End Date:</strong> ${new Date(job.end_date).toLocaleDateString()}</p>
-            </div>
-            <div class="location">
-                <p><strong>Location:</strong> ${job.taluk}, ${job.city}</p>
+
+            <div class="labour-card-details">
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <i class="fas fa-align-left"></i>
+                        <span><strong>Description:</strong> ${job.description}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-money-bill"></i>
+                        <span><strong>Amount:</strong> ₹${job.amount}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-users"></i>
+                        <span><strong>Workers:</strong> ${job.worker_id.length}/${job.number_of_workers}</span>
+                    </div>
+                </div>
             </div>
             <div class="job-actions">
-                <button onclick="window.location.href='../job_details/index.html?jobId=${job._id}'" class="details-btn">View Details</button>
+                <button onclick="window.location.href='/frontend/Landowner/Labour_Assigned/index.html?jobId=${job._id}'" class="view-laborers-btn">
+                    <i class="fas fa-users"></i>
+                    Registered Laborers
+                </button>
             </div>
         `;
 
-        labourList.appendChild(jobCard);
+        // Add click event for expansion
+        const expandBtn = jobCard.querySelector('.expand-btn');
+        expandBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            jobCard.classList.toggle('expanded');
+            const icon = expandBtn.querySelector('i');
+            icon.classList.toggle('fa-chevron-up');
+            icon.classList.toggle('fa-chevron-down');
+        });
+
+        document.getElementById('job-list-container').appendChild(jobCard);
     }
 
     // Fetch and display active jobs when the page loads
     fetchActiveJobs();
-});
 
+    // Add this at the beginning of your DOMContentLoaded event listener
+    document.addEventListener('DOMContentLoaded', function() {
+        const infoButton = document.querySelector('.floating-info');
+        const infoModal = document.querySelector('.info-modal');
+        const overlay = document.querySelector('.info-overlay');
+        const closeButton = document.querySelector('.close-modal');
+
+        function showModal() {
+            infoModal.classList.add('active');
+            overlay.classList.add('active');
+        }
+
+        function hideModal() {
+            infoModal.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        infoButton.addEventListener('click', showModal);
+        closeButton.addEventListener('click', hideModal);
+        overlay.addEventListener('click', hideModal);
+    });
+
+    // Add this new function to handle network changes
+    function handleNetworkChange(event) {
+        if (!navigator.onLine) {
+            // Redirect to network error page when offline
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        } else {
+            // Optional: Reload the current page when coming back online
+            // Only reload if we were previously on the job listing page
+            const currentPath = window.location.pathname;
+            if (currentPath.includes('network_error')) {
+                window.location.href = '../job_listing/index.html';
+            }
+        }
+    }
+
+});
 
 
 // Show authentication popup with overlay
 function showAuthPopup() {
-    // Create the overlay
-    const overlay = document.createElement('div');
-    overlay.classList.add('auth-overlay'); // Styled in CSS
-
-    // Create the popup
-    const popup = document.createElement('div');
-    popup.classList.add('auth-popup'); // Styled in CSS
-
-    // Message above buttons
-    const authMessage = document.createElement('p');
-    authMessage.innerText = 'Need to sign in or sign up?';
-    popup.appendChild(authMessage);
-
-    // Create container for the buttons
-    const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container'); // Styled in CSS for flexbox layout
-
-    // Create login button
-    const loginBtn = document.createElement('button');
-    loginBtn.innerText = 'Login';
-    loginBtn.onclick = function () {
-        window.location.href = 'http://localhost:5500/frontend/Labours/Login_Page/index.html'; // Redirect to login page
-        removeAuthPopup(); // Remove popup on navigation
-    };
-
-    // Create signup button
-    const signupBtn = document.createElement('button');
-    signupBtn.innerText = 'Sign Up';
-    signupBtn.onclick = function () {
-        window.location.href = 'http://localhost:5500/frontend/Labours/SignUp_Page/index.html'; // Redirect to signup page
-        removeAuthPopup(); // Remove popup on navigation
-    };
-
-    // Append buttons to the container
-    buttonContainer.appendChild(loginBtn);
-    buttonContainer.appendChild(signupBtn);
-
-    // Add the button container to the popup
-    popup.appendChild(buttonContainer);
-
-    // Append the overlay and popup to the body
-    document.body.appendChild(overlay);
-    document.body.appendChild(popup);
-
-    // Close popup when clicking outside or pressing Escape
-    overlay.addEventListener('click', removeAuthPopup);
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            removeAuthPopup();
-        }
-    });
+    const overlay = document.getElementById('auth-overlay');
+    const popup = document.getElementById('auth-popup');
+    
+    if (overlay && popup) {
+        overlay.classList.add('show');
+        popup.classList.add('show');
+    }
 }
 
-// Remove the authentication popup and overlay
-function removeAuthPopup() {
-    const overlay = document.querySelector('.auth-overlay');
-    const popup = document.querySelector('.auth-popup');
-    if (overlay) overlay.remove();
-    if (popup) popup.remove();
+function hideAuthPopup() {
+    const overlay = document.getElementById('auth-overlay');
+    const popup = document.getElementById('auth-popup');
+    
+    if (overlay && popup) {
+        overlay.classList.remove('show');
+        popup.classList.remove('show');
+    }
 }
 
-// Logout user
+// Add click handler to close popup when clicking overlay
+document.getElementById('auth-overlay')?.addEventListener('click', hideAuthPopup);
+
+// Update the logout functionality
 function logoutUser() {
-    // Clear the JWT token from localStorage
-    localStorage.removeItem('jwt');
-
-    // Remove the popup and overlay (if they exist)
-    removeAuthPopup();
-
-    // Redirect to the desired page after logging out
-    window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html'; // Change to your logout redirect page
+    try {
+        // Clear the JWT token from localStorage
+        localStorage.removeItem('jwt');
+        
+        // Redirect to the home page
+        window.location.href = '/frontend/static/home_page/index.html';
+    } catch (error) {
+        console.error('Error during logout:', error);
+    }
 }
 
-// Check authentication status and show popup or logout button
+// Update the checkAuthStatus function
 async function checkAuthStatus() {
     const token = getToken();
     const authBtnContainer = document.getElementById('auth-btn-container');
+    
+    if (!authBtnContainer) {
+        console.error('Auth button container not found');
+        return;
+    }
+    
+    authBtnContainer.innerHTML = ''; // Clear existing content
 
     if (token) {
-        // If the user is logged in, show the Logout button
+        // If user is logged in, show the styled Logout button
         const logoutBtn = document.createElement('button');
-        logoutBtn.innerText = 'Logout';
-        logoutBtn.classList.add('logout-btn'); // You can style this in CSS
-        logoutBtn.onclick = logoutUser;
+        logoutBtn.id = 'logout-btn';
+        logoutBtn.className = 'auth-btn';
+        logoutBtn.innerHTML = `
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        `;
+        logoutBtn.addEventListener('click', logoutUser); // Add event listener directly
         authBtnContainer.appendChild(logoutBtn);
     } else {
-        // If the user is not logged in, show the login/signup popup
+        // If user is not logged in, show the login/signup popup
         showAuthPopup();
     }
 }
 
 // Get JWT token from localStorage
 function getToken() {
-    return localStorage.getItem('jwt');  // Retrieve JWT token from localStorage
+    return localStorage.getItem('jwt');
 }
 
-// Fetch jobs on page load and check authentication
+// Make sure to call checkAuthStatus when the page loads
 document.addEventListener('DOMContentLoaded', function() {
     checkAuthStatus();
 });
+
+// Function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('network-error') || currentPath.includes('server-error')) {
+            checkServerStatus().then(isServerRunning => {
+                if (isServerRunning) {
+                    window.history.back();
+                }
+            });
+        }
+    }
+}
+
+// Function to check if server is running
+async function checkServerStatus() {
+    try {
+        const token = getToken();
+        const response = await fetch('http://localhost:3000/landowner/active_jobs', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+            },
+            signal: AbortSignal.timeout(5000)
+        });
+        return true;
+    } catch (error) {
+        if (!window.location.pathname.includes('server-error.html')) {
+            window.location.href = 'http://localhost:5500/frontend/static/server-error.html';
+        }
+        return false;
+    }
+}
