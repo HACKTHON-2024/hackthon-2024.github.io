@@ -1,3 +1,13 @@
+:root {
+    --primary-color: #2F855A;
+    --secondary-color: #48BB78;
+    --accent-color: #38A169;
+    --background-color: #F0FFF4;
+    --error-color: #E53E3E;
+    --text-color: #2D3748;
+    --border-color: #CBD5E0;
+}
+
 body {
     background-color: #000; /* Sets the background color to black */
     margin: 0; /* Removes default margin */
@@ -12,7 +22,8 @@ html {
     /* Ensures that the background color covers the entire page height */
 }
 
-header {
+/* Remove or comment out the old header styles */
+/* header {
     position: fixed;
     top: 0;
     left: 0;
@@ -21,74 +32,62 @@ header {
     border-bottom: 0px solid #000000;
     padding: 12px 0px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 100; /* Ensure the header stays above the hero section */
-}
+    z-index: 100;
+} */
 
-/* LabourField Heading Styles */
-header h1 {
-    font-family:Arial, Helvetica, sans-serif;
-    /* Apply the Kavoon font */
-    font-size: 2.5em;
-    /* Adjust size as needed */
-    margin: 0;
-    background: #228B22;
-    /* Gradient from #91FF56 to #666666 */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+/* Update the site-header styles */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px; /* Increased height for better spacing */
+    background: rgb(224, 224, 224);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
 
 .header-container {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    max-width: 1200px;
+    align-items: center;
+    height: 100%;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 30px; /* Increased padding for better spacing */
 }
-.logo {
+
+/* Update logo container styles */
+.logo-container {
     display: flex;
     align-items: center;
+    gap: 12px; /* Increased gap */
+    padding: 5px 10px;
+    border-radius: 8px;
 }
 
-.logo img {
-    height: 40px;
-    /* Adjust the size as needed */
-    width: 40px;
-    /* Ensure the width and height are equal for a circle */
+.logo-img {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--primary-color);
     border-radius: 50%;
-    /* Makes the image circular */
-    margin-right: 10px;
-    object-fit: cover;
-    /* Ensures the image scales correctly within the circle */
-    background-color: rgb(224, 224, 224);
-    border: 1px solid black;
 }
 
-.logo h1 {
-    font-size: 2em;
-    margin: 0;
+.logo-text {
+    display: flex;
+    flex-direction: column;
 }
-.nav-links {
-    z-index: 1000;
-}
-.nav-links a {
-    margin: 0 15px;
-    color: #333;
-    text-decoration: none;
+
+.brand-name {
+    font-size: 18px;
     font-weight: bold;
-}
-nav a {
-    text-decoration: none;
-    color: #333;
-    margin: 0 15px;
-    font-size: 1em;
+    color: var(--primary-color);
 }
 
-nav a:hover {
-    color: #4CAF50;
-    /* Or any color you prefer for hover effect */
+.tagline {
+    font-size: 12px;
+    color: #666;
 }
 
 
@@ -556,4 +555,642 @@ button#continue-btn:hover {
 .logout-link:hover {
     background-color: #4CAF50;
     color: white !important;
+}
+body {
+    background-color: #000; /* Sets the background color to black */
+    margin: 0; /* Removes default margin */
+    padding: 0; /* Removes default padding */
+    color: rgb(0, 0, 0); /* Optional: Set text color to white for contrast */
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 60px; /* Adjust based on the height of your fixed navbar */
+    height: 100%;
+    /* Ensures that the background color covers the entire page height */
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgb(224, 224, 224);
+    border-bottom: 0px solid #000000;
+    padding: 12px 0px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100; /* Ensure the header stays above the hero section */
+}
+
+/* LabourField Heading Styles */
+header h1 {
+    font-family:Arial, Helvetica, sans-serif;
+    /* Apply the Kavoon font */
+    font-size: 2.5em;
+    /* Adjust size as needed */
+    margin: 0;
+    background: #228B22;
+    /* Gradient from #91FF56 to #666666 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    border-bottom: none;
+}
+
+/* Logo and Brand Styles */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 8px;
+    border-radius: 8px;
+}
+
+.logo-img {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.tagline {
+    font-size: 12px;
+    color: #666;
+}
+
+
+.hero {
+    position: relative;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 0 20px;
+    margin-top: 80px; /* To prevent overlap with the fixed header */
+    z-index: 1; /* Ensures the content appears on top */
+}
+
+/* Background image with transparency */
+.hero::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    background-image: url('http://localhost:3000/frontend/static/Images/background.jpg'); /* Replace with your image */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    z-index: -1; /* Ensures the image stays behind all content */
+}
+
+.hero h1 {
+    color: #ffffff;
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.cta-buttons a {
+    padding: 15px 30px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.cta-buttons a:hover {
+    background-color: #45a049;
+}
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 50px 20px;
+    background-color: #f9f9f9;
+    position: relative; /* Ensures it can layer above the background */
+    z-index: 2; /* Ensures it stays above the background image */
+    margin-bottom: -10%;
+    margin-top: -0.5%;
+}
+.feature-box {
+    text-align: center;
+    max-width: 300px;
+}
+.feature-box img {
+    width: 80px;
+    margin-bottom: 20px;
+}
+.footer {
+    padding: 20px;
+    text-align: center;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    margin-top: 50px;
+}
+.footer a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+/*Services css starts here*/
+
+#service {
+    text-align: center;
+    margin-top: 10%;
+    color: #fff;
+}
+
+.services-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.service-box {
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.service-box:hover {
+    transform: scale(1.05);
+    background-color: #25912a;
+}
+
+.services-section {
+    padding: 50px 0;
+    background-color: #333;
+    margin-bottom: -4%;
+}
+
+/*Team Members container css starts here*/
+
+/* Common things in all sections */
+#team_section {
+	font-family: 'Open Sans', sans-serif;
+	color: #2E3D49;
+	position: relative;
+}
+.diffSection {
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+}
+.diffSection .content {
+	margin: 10px;
+	text-align: center;
+	padding: 10px 100px;
+	font-size: 1.1em;
+}
+
+/* TEAM SECTION */
+.totalcard {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch; /* Ensures cards stretch to the same height */
+	justify-content: center;
+	margin-bottom: 50px;
+}
+.totalcard .card {
+	margin: 50px;
+	width: 300px;
+	border-radius: 10px;
+	background: #fff;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between; /* Distribute card content evenly */
+	box-shadow: inset 0 0 10px rgba(0,0,0,0.4), 0 0 10px rgba(0,0,0,0.3);
+}
+
+/* Card border styles */
+.card:nth-child(1) {
+	border-top: 5px solid rgb(76, 0, 255);
+}
+.card:nth-child(2) {
+	border-top: 5px solid green;
+}
+.card:nth-child(3) {
+	border-top: 5px solid red;
+}
+
+/* Hover effects */
+.card:nth-child(1):hover {
+    box-shadow: inset 0px 0px 10px rgb(76, 0, 255,0.5), 1px 1px 30px rgb(76, 0, 255,0.5);
+}
+.card:nth-child(2):hover {
+	box-shadow: inset 0px 0px 10px rgba(0,255,0,0.5), 1px 1px 30px rgba(0,255,0,0.5);
+}
+.card:nth-child(3):hover {
+	box-shadow: inset 0px 0px 10px rgb(255,0,0,0.5), 1px 1px 30px rgb(255,0,0,0.5);
+}
+
+/* Uniform card image styling */
+.totalcard .card img {
+	width: 100px;
+	height: 100px;
+	margin-top: 5px;
+	cursor: pointer;
+	border-radius: 50px;
+	transition-duration: 0.8s;
+}
+.totalcard .card img:hover {
+	transform: scale(2.5);
+	border-radius: 10%;
+	box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* Card content */
+#detail {
+	padding: 20px;
+	flex-grow: 1; /* Ensures this section grows to fill available space */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+#detail p {
+	font-size: 15px;
+	line-height: 25px;
+	font-variant: small-caps;
+	text-align: center;
+	margin: 25px 0;
+}
+
+/* Button styling */
+#detail button {
+	outline: none;
+	border-radius: 10px;
+	border-style: none;
+	border: 1px solid black;
+	padding: 9px 25px;
+	cursor: pointer;
+	transition-duration: 0.4s;
+	margin-top: 10px;
+}
+#detail a {
+	text-decoration: none;
+}
+
+/* Card title */
+.card-title {
+	font-size: 17px;
+	color: #343A40;
+	padding: 20px;
+	font-weight: 700;
+	text-align: center;
+}
+
+/* Help & Support Section */
+.help-support-section {
+    background-color: #000000;
+    padding: 2px 0px;
+    text-align: center;
+}
+
+.help-support-section h2 {
+    font-size: 2em;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.help-support-section p {
+    margin-bottom: 30px;
+    font-size: 1.2em;
+    color: #d3d3d3;
+}
+
+/* Support Form Styling */
+.support-form {
+    max-width: 80%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.support-form .form-group {
+    margin-bottom: 20px;
+}
+
+.support-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.support-form input[type="text"],
+.support-form input[type="email"],
+.support-form textarea {
+    width: 98%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.support-form textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.submit-btn:hover {
+    background-color: #45a049;
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.4); /* Black background with transparency */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+}
+
+.modal-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.modal-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.modal-btn:hover {
+    background-color: #45a049;
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.container {
+    background-color: white;
+    padding: 40px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.option {
+    position: relative;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+label.btn {
+    background-color: #e6e6e6;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 120px;
+    display: block;
+    text-align: center;
+}
+
+input[type="radio"]:checked + label.btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+button#continue-btn {
+    padding: 12px 25px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button#continue-btn:hover {
+    background-color: #45a049;
+}
+
+/* Welcome Container Styles */
+.welcome-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #f5f5f5;
+    padding: 8px 15px;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.welcome-message {
+    color: #333;
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+.logout-link {
+    color: #4CAF50 !important;
+    font-size: 0.9em;
+    text-decoration: none;
+    padding: 4px 10px;
+    border: 1px solid #4CAF50;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.logout-link:hover {
+    background-color: #4CAF50;
+    color: white !important;
+}
+
+/* Update navigation styles */
+nav {
+    display: flex; /* Ensure the nav items are in a row */
+    align-items: center;
+    gap: 25px; /* Decreased gap between nav items from 35px to 25px */
+}
+
+nav a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary-color); /* Set text color to black */
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 12px; /* Adjusted padding for better hover effect */
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Added background color transition */
+}
+
+/* Add hover line effect */
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+nav a:hover {
+    color: #2F855A; /* Change text color to green */
+}
+
+/* Add hover line effect */
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #2F855A; /* Green underline */
+    transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+    width: 100%; /* Underline expands on hover */
+}
+
+/* Ensure the main navigation container is displayed as flex */
+.main-nav ul {
+    display: flex; /* Ensure the nav items are in a row */
+    align-items: center;
+    gap: 25px; /* Decreased gap between nav items from 35px to 25px */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+    .header-container {
+        padding: 0 15px;
+    }
+
+    nav {
+        gap: 15px; /* Adjusted for mobile */
+    }
+
+    nav a {
+        font-size: 12px;
+    }
 }

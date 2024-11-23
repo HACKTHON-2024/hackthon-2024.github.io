@@ -209,7 +209,7 @@ async function onclickconfirm() {
 
         // Redirect after 2 seconds
         setTimeout(() => {
-            window.location.href = 'http://localhost:5500/frontend/Labours/labour_register/';
+            window.location.href = 'http://localhost:5500/frontend/Labours/labour_register/index.html';
         }, 2000);
 
     } catch (error) {

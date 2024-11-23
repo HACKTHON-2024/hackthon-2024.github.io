@@ -11,18 +11,48 @@
 </head>
 <body>
     <!-- Header -->
-    <header>
+    <header class="site-header">
         <div class="header-container">
-            <div class="logo">
-                <img src="http://localhost:3000/frontend/static/Images/logo.png" alt="Logo">
-                <h1>LabourField</h1>
+            <!-- Logo Section (Left Side) -->
+            <div class="logo-container">
+                <img src="http://localhost:3000/frontend/static/Images/logo.png" alt="Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="brand-name">LabourField</span>
+                    <span class="tagline">Connecting Farms & Labor</span>
+                </div>
             </div>
-            <nav class="nav-links">
-                <a href="../home_page/index.html">Home</a>
-                <a href="#team_section">About Us</a>
-                <a href="#features">Services</a>
-                <a href="#help-support" style="scroll-padding-top: 0;">Help & Support</a>
-            </nav>
+
+            <!-- Right Side Navigation -->
+            <div class="right-nav">
+                <nav class="main-nav">
+                    <ul>
+                        <li>
+                            <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
+                                <i class="fas fa-home"></i>
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#team_section" class="nav-link">
+                                <i class="fas fa-info-circle"></i>
+                                <span>About Us</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#features" class="nav-link">
+                                <i class="fas fa-tractor"></i>
+                                <span>Services</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#help-support" class="nav-link">
+                                <i class="fas fa-headset"></i>
+                                <span>Help & Support</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </header>
 
@@ -54,7 +84,7 @@
 <div id="alert" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>Need to Signin or Login</h2>
+        <h2>Need to SignUp or Login</h2>
         <div class="modal-buttons">
             <button id="ok" class="modal-btn">Ok</button>
         </div>
