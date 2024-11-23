@@ -29,8 +29,6 @@
     overflow-x: hidden;
     padding-top: 80px;
     border-right: none;
-    transition: filter 0.3s ease;
-    
 }
 
 .navbar__menu {
@@ -346,18 +344,19 @@ body::before {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
     z-index: 1000;
-    border-bottom: 2px solid var(--primary-color);
+    border-bottom: 1px solid rgba(203, 213, 224, 0.3);
     height: 60px;
+    border-bottom: 2px solid var(--primary-color);
 }
 
 .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 /* Logo Styles */
@@ -368,8 +367,8 @@ body::before {
 }
 
 .logo-img {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     border: 2px solid var(--primary-color);
 }
@@ -380,13 +379,13 @@ body::before {
 }
 
 .brand-name {
-    font-size: 18px;
-    font-weight: bold;
-    color: #2F855A;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
 }
 
 .tagline {
-    font-size: 12px;
+    font-size: 0.7rem;
     color: #666;
 }
 
@@ -399,8 +398,7 @@ body::before {
 
 .main-nav ul {
     display: flex;
-    align-items: center;
-    gap: 25px;
+    gap: 30px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -409,46 +407,39 @@ body::before {
 .nav-link {
     display: flex;
     align-items: center;
-    gap: 6px;
-    color: #2F855A;
+    gap: 8px;
+    color: #333;
     text-decoration: none;
     font-size: 14px;
-    padding: 6px 10px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
+    padding: 8px 12px;
     position: relative;
+    transition: color 0.3s ease;
 }
 
 .nav-link::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -2px;
     left: 0;
     width: 0;
-    height: 1.5px;
+    height: 2px;
     background-color: var(--primary-color);
     transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
 }
 
 .nav-link:hover::after {
     width: 100%;
 }
 
-.nav-link:hover {
-    color: #236C46;
-}
-
-.nav-link:hover i {
-    color: #236C46;
-}
-
 .nav-link i {
-    font-size: 16px;
-    color: #2F855A;
-}
-
-.nav-link span {
-    font-weight: 500;
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
 }
 
 /* Auth Button Styles */
@@ -456,7 +447,7 @@ body::before {
     margin-left: 20px;
 }
 
-    .auth-btn {
+.auth-btn {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -809,7 +800,6 @@ input[type="checkbox"] {
     transition: width 0.3s ease;
     overflow-x: hidden;
     padding-top: 80px;
-    transition: filter 0.3s ease;
 }
 
 .navbar__menu {
@@ -1642,7 +1632,7 @@ body {
 .main-nav ul {
     display: flex;
     align-items: center;
-    gap: 25px;
+    gap: 20px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -1683,6 +1673,7 @@ body {
 /* Add this to ensure proper spacing in the header */
 .header-container {
     padding: 0 20px;
+    height: 60px;
 }
 
 /* Ensure the navigation items are properly aligned */
@@ -1892,22 +1883,7 @@ body.overlay-active {
 }
 
 /* Optional: Add transition for smoother blur effect */
-.navbar {
-    position: fixed;
-    left: 0;
-    top: 60px;
-    height: calc(100vh - 60px);
-    width: 60px;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(8px);
-    z-index: 999;
-    transition: width 0.3s ease;
-    overflow-x: hidden;
-    padding-top: 80px;
-    transition: filter 0.3s ease;
-}
-
-.navbar,.header-container, .form-container {
+.navbar, .header-container, .form-container {
     transition: filter 0.3s ease;
 }
 
@@ -2082,7 +2058,6 @@ body.overlay-active {
 .header-container {
     position: relative;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.9);   
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
-    border-bottom: var(--primary-color);
 }
