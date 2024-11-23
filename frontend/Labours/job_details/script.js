@@ -53,14 +53,14 @@ async function fetchJobDetails(jobId) {
 
         const jobData = await response.json();
         console.log('Job Data:', jobData);
-        console.log(jobData.data.job)
+       // console.log(jobData.data.job)
 
-        if (!jobData || !jobData.job) {
+        if (!jobData || !jobData.data.job) {
             return console.error("Job data could not be fetched.");
         }
 
-        populateJobDetails(jobData.job);
-        displayWorkerDetails(jobData.job.workers);
+        populateJobDetails(jobData.data.job);
+        displayLandownerDetails(jobData.data.landowner);
     } catch (error) {
         console.error('Error fetching job data:', error);
     }
@@ -77,66 +77,30 @@ function populateJobDetails(job) {
     document.getElementById('noofworkers').value = job.number_of_workers;
 }
 
-// Enhanced worker details display
-function displayWorkerDetails(workers) {
+// Enhanced landowner details display
+function displayLandownerDetails(landowner) {
     const jobContainer = document.querySelector('.job-created-section');
-    jobContainer.innerHTML = `
-        <h3>Workers Assigned to This Job</h3>
-        <div class="workers-grid">
-            ${workers && workers.length > 0 
-                ? workers.map((worker, index) => `
-                    <div class="worker-container" data-aos="fade-up" data-aos-delay="${index * 100}">
-                        <div class="worker-summary" onclick="toggleWorkerDetails(this)">
-                            <p>
-                                <span>
-                                    <i class="fas fa-user-circle"></i>
-                                    ${worker.username}
-                                </span>
-                                <span class="arrow">▼</span>
-                            </p>
-                        </div>
-                        <div class="worker-details" style="display: none;">
-                            <p>
-                                <i class="fas fa-venus-mars"></i>
-                                <strong>Gender:</strong> ${worker.gender}
-                            </p>
-                            <p>
-                                <i class="fas fa-phone"></i>
-                                <strong>Mobile:</strong> ${worker.mobile_number}
-                            </p>
-                            <p>
-                                <i class="fas fa-tools"></i>
-                                <strong>Skills:</strong> ${worker.job_skills}
-                            </p>
-                            <p>
-                                <i class="fas fa-map-marker-alt"></i>
-                                <strong>Location:</strong> ${worker.address}, ${worker.city}, ${worker.state}
-                            </p>
-                        </div>
-                    </div>
-                `).join('')
-                : '<p class="no-workers">No workers assigned to this job yet.</p>'
-            }
+    jobContainer.innerHTML += `  
+        <h3>Landowner Details</h3>
+        <div class="landowner-container" data-aos="fade-up">
+            <div class="landowner-summary">
+                <div class="landowner-avatar">
+                    <i class="fas fa-user-circle fa-3x"></i>
+                </div>
+                <div class="landowner-info">
+                    <h4>${landowner.username}</h4>
+                    <p>
+                        <i class="fas fa-phone"></i>
+                        <strong>Mobile:</strong> ${landowner.mobile_number}
+                    </p>
+                    <p>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <strong>Address:</strong> ${landowner.address}
+                    </p>
+                </div>
+            </div>
         </div>
     `;
-}
-
-// Enhanced toggle animation
-function toggleWorkerDetails(workerSummaryElement) {
-    const workerDetails = workerSummaryElement.nextElementSibling;
-    const arrow = workerSummaryElement.querySelector('.arrow');
-    
-    if (workerDetails.style.display === 'none') {
-        workerDetails.style.display = 'block';
-        arrow.style.transform = 'rotate(180deg)';
-        workerDetails.style.maxHeight = workerDetails.scrollHeight + 'px';
-    } else {
-        arrow.style.transform = 'rotate(0deg)';
-        workerDetails.style.maxHeight = '0';
-        setTimeout(() => {
-            workerDetails.style.display = 'none';
-        }, 300);
-    }
 }
 
 // Authentication functions (auth popup, getToken, etc.)
