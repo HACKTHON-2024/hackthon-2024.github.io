@@ -1,6 +1,43 @@
 document.addEventListener('DOMContentLoaded', function() {
+    sessionStorage.setItem('lastVisitedPage', window.location.href);
     fetchRequests();
 });
+
+// Function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // When back online, check server status
+        checkServerStatus();
+    }
+}
+
+// Function to check if the server is running
+async function checkServerStatus() {
+    try {
+        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+            signal: AbortSignal.timeout(5000) // Set a timeout for the request
+        });
+        // If the server is reachable, redirect to the last visited page
+        const lastVisitedPage = sessionStorage.getItem('lastVisitedPage');
+        if (lastVisitedPage) {
+            window.location.href = lastVisitedPage; // Redirect back to the last visited page
+        }
+    } catch (error) {
+        console.error('Server is still down:', error);
+        // Optionally, you can show a message or keep the user on the current page
+    }
+}
+
+// Add event listeners for network status changes
+window.addEventListener('online', handleNetworkChange);
+window.addEventListener('offline', handleNetworkChange);
 
 async function fetchRequests() {
     try {
@@ -11,8 +48,6 @@ async function fetchRequests() {
             return;
         }
 
-        
-
         const response = await fetch('http://localhost:3000/labour/landowner_request_details', {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -21,6 +56,12 @@ async function fetchRequests() {
         });
        
         if (!response.ok) {
+            // Handle server errors
+            if (response.status === 404) {
+                window.location.href = 'http://localhost:5500/frontend/static/404/index.html'; // Redirect to 404 page
+            } else {
+                window.location.href = 'http://localhost:5500/frontend/static/server-error.html'; // Redirect to server error page
+            }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -54,15 +95,22 @@ function displayRequests(requests) {
 
         const requestCard = document.createElement('div');
         requestCard.className = 'request-card';
-        
+
         // Different button/status display based on request status
         let actionButtons = '';
         let statusDisplay = '';
-        
+
+        // Use Font Awesome icons for accepted and rejected statuses
         if (status === 'ACCEPTED') {
-            statusDisplay = `<span class="status-badge accepted">Accepted</span>`;
+            statusDisplay = `
+                <span class="status-badge accepted">
+                    <i class="fas fa-check-circle status-icon"></i> Accepted
+                </span>`;
         } else if (status === 'REJECTED') {
-            statusDisplay = `<span class="status-badge rejected">Rejected</span>`;
+            statusDisplay = `
+                <span class="status-badge rejected">
+                    <i class="fas fa-times-circle status-icon"></i> Rejected
+                </span>`;
         } else {
             actionButtons = `
                 <div class="request-actions">
@@ -72,8 +120,7 @@ function displayRequests(requests) {
                     <button onclick="handleRequest('${request._id}', 'REJECTED')" class="reject-btn">
                         <i class="fas fa-times"></i> Reject
                     </button>
-                </div>
-            `;
+                </div>`;
         }
 
         requestCard.innerHTML = `

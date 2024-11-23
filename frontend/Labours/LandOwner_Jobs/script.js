@@ -1,5 +1,17 @@
+// Function to parse JWT token and return the payload
+function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
 document.addEventListener('DOMContentLoaded', async function() {
     await checkAuthStatus();
+    showWelcomeMessage();
     
     const datepicker = document.getElementById('datepicker');
     const today = new Date().toISOString().split('T')[0];
@@ -38,6 +50,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     window.addEventListener('click', function(event) {
         if (event.target === jobListModal) closeModal();
     });
+
+    // Store the current page in sessionStorage when the page loads
+    sessionStorage.setItem('lastVisitedPage', window.location.href);
 });
 
 // Setup OTP input functionality
@@ -81,34 +96,50 @@ function handleBackButton() {
 // Job fetching and display functions
 async function fetchJobs(selectedDate) {
     try {
-        const token = getToken();
-        if (!token) {
-            showAuthPopup();
+        if (!navigator.onLine) {
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html'; // Redirect to network error page
             return;
         }
 
+        const token = getToken(); // Get JWT token
+        if (!token) {
+            showAuthPopup(); // Show login/signup popup if not logged in
+            return;
+        }
+
+        // Construct the API URL with the selected date as a query parameter
         const url = `http://localhost:3000/labour/available_jobs${selectedDate ? `?selectedDate=${selectedDate}` : ''}`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`, // Add JWT to Authorization header
                 'Content-Type': 'application/json'
             }
         });
 
         if (!response.ok) {
+            // Check for 404 and redirect to 404 page if necessary
             if (response.status === 404) {
-                window.location.href = '../404/index.html';
+                window.location.href = 'http://localhost:5500/frontend/static/404/index.html'; // Adjust the path to your 404 page
+            } else {
+                window.location.href = 'http://localhost:5500/frontend/static/server-error.html'; // Redirect to server error page
             }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
         if (data.success) {
-            displayJobs(data.data);
+            displayJobs(data.data); // Display jobs based on the selected date
+        } else {
+            console.error(data.message);
         }
     } catch (error) {
         console.error('Error fetching jobs:', error);
+        if (!navigator.onLine) {
+            window.location.href = 'http://localhost:5500/frontend/static/network-error.html'; // Redirect to network error page
+        } else {
+            window.location.href = 'http://localhost:5500/frontend/static/server-error.html'; // Redirect to server error page
+        }
     }
 }
 
@@ -423,7 +454,8 @@ async function checkAuthStatus() {
         return false;
     }
     
-    // Get the container and clear any existing content
+    // User is authenticated
+    document.querySelector('.container').style.display = 'block';
     const authBtnContainer = document.getElementById('auth-btn-container');
     if (authBtnContainer) {
         authBtnContainer.innerHTML = ''; // Clear existing content
@@ -437,6 +469,8 @@ async function checkAuthStatus() {
         authBtnContainer.appendChild(logoutBtn);
     }
 
+    // Call the welcome message function here
+    showWelcomeMessage(); // Ensure this is called after checking auth status
     return true;
 }
 
@@ -449,3 +483,93 @@ function getToken() {
 document.addEventListener('DOMContentLoaded', function() {
     checkAuthStatus();
 });
+
+// Function to show a welcome message
+function showWelcomeMessage() {
+    const hasVisited = sessionStorage.getItem('currentSessionVisited');
+    const jwt = localStorage.getItem('jwt');
+    
+    let username = '';
+    if (jwt) {
+        try {
+            const decodedToken = parseJwt(jwt);
+            username = decodedToken.username || '';
+        } catch (error) {
+            console.error('Error decoding token:', error);
+        }
+    }
+
+    if (!hasVisited && jwt) {
+        const welcomePopup = document.createElement('div');
+        welcomePopup.className = 'welcome-popup';
+        welcomePopup.innerHTML = `
+            <div class="welcome-content">
+                <h2>Welcome!${username ? ', ' + username : ''}! 👋</h2>
+                <p>Here you can find all available job listings.</p>
+                <div class="welcome-features">
+                    <div class="feature">
+                        <i class="fas fa-search"></i>
+                        <span>Browse Jobs</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Find Local Work</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-handshake"></i>
+                        <span>Connect with LandOwners</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(welcomePopup);
+
+        // Set the flag in sessionStorage
+        sessionStorage.setItem('currentSessionVisited', 'true');
+
+        // Remove popup after 10 seconds (doubled from 5 seconds)
+        setTimeout(() => {
+            welcomePopup.style.opacity = '0';
+            setTimeout(() => {
+                welcomePopup.remove();
+            }, 500);
+        }, 10000000000);
+    }
+}
+
+// Add this function to handle network changes
+function handleNetworkChange(event) {
+    if (!navigator.onLine) {
+        // Redirect to network error page when offline
+        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+    } else {
+        // When back online, check server status
+        checkServerStatus();
+    }
+}
+
+// Function to check if the server is running
+async function checkServerStatus() {
+    try {
+        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+            signal: AbortSignal.timeout(5000) // Set a timeout for the request
+        });
+        // If the server is reachable, redirect to the last visited page
+        const lastVisitedPage = sessionStorage.getItem('lastVisitedPage');
+        if (lastVisitedPage) {
+            window.location.href = lastVisitedPage; // Redirect back to the last visited page
+        }
+    } catch (error) {
+        console.error('Server is still down:', error);
+        // Optionally, you can show a message or keep the user on the current page
+    }
+}
+
+// Add event listeners for network status changes
+window.addEventListener('online', handleNetworkChange);
+window.addEventListener('offline', handleNetworkChange);

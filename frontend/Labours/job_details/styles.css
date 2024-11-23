@@ -498,6 +498,7 @@ body::before {
     gap: 15px;
     margin-top: 10px;
     margin-bottom: 35px;
+    
 }
 
 .form-row-box .box {
@@ -525,6 +526,7 @@ body::before {
 .form .form-row {
     display: block;
     margin-bottom: 10px;
+    
 }
 
 .form .form-row label {
@@ -762,7 +764,7 @@ body::before {
 /* Job Title */
 .job-title {
     padding: 10px;
-    background-color: #b8b8b8;
+    background-color: transparent;
     cursor: pointer;
     font-weight: bold;
     display: flex;
@@ -1031,46 +1033,54 @@ button:hover {
 
 /* Landowner Container Styles */
 .landowner-container {
-    background-color: #f9f9f9; /* Light background for contrast */
-    border: 1px solid #ddd; /* Subtle border */
-    border-radius: 8px; /* Rounded corners */
-    padding: 20px; /* Padding for spacing */
-    margin-top: 20px; /* Space above the section */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    background-color: transparent; /* Make the background transparent */
+    border: 2px solid rgba(47, 133, 90, 0.5); /* Solid border with a semi-transparent color */
+    border-radius: 12px; /* Rounded corners */
+    padding: 25px; /* Increased padding for a more spacious look */
+    margin: 20px auto; /* Center the card with auto margins */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    max-width: 400px; /* Set a maximum width for the card */
+    width: 100%; /* Full width relative to the parent container */
+}
+
+/* Hover Effect for Landowner Container */
+.landowner-container:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Optional: Increase shadow on hover */
+    transform: translateY(-2px); /* Slight lift effect */
 }
 
 /* Landowner Summary Styles */
 .landowner-summary {
     display: flex; /* Flexbox for layout */
     align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space between items */
+    background: linear-gradient(135deg, rgba(47, 133, 90, 0.1), rgba(72, 187, 120, 0.1)); /* Gradient background */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px; /* Increased padding for a more spacious look */
+    width: 100%; /* Full width */
 }
 
-.landowner-avatar {
-    margin-right: 15px; /* Space between avatar and info */
+/* Landowner Info Styles */
+.landowner-info {
+    text-align: center; /* Center text */
+    margin-top: 10px; /* Space above the info */
 }
 
 .landowner-info h4 {
     margin: 0; /* Remove default margin */
     color: #2F855A; /* Darker text for the name */
-    font-size: 1.5em; /* Larger font size for the name */
+    font-size: 1.8em; /* Increased font size for the name */
+    font-weight: bold; /* Bold font for emphasis */
 }
 
 .landowner-info p {
     margin: 5px 0; /* Space between paragraphs */
     color: #555; /* Slightly lighter text for details */
-    font-size: 14px; /* Font size for details */
-}
-
-.landowner-info i {
-    margin-right: 5px; /* Space between icon and text */
-    color: var(--primary-color); /* Match the primary color */
-}
-
-/* Hover Effect for Landowner Container */
-.landowner-container:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
-    transform: translateY(-2px); /* Slight lift effect */
-    transition: all 0.3s ease; /* Smooth transition */
+    font-size: 14px; /* Increased font size for details */
+    line-height: 1.5; /* Improved line height for readability */
 }
 
 /* Enhanced Page Title */
@@ -1117,6 +1127,7 @@ button:hover {
 
 /* Job details section */
 .job-created-section {
+    width: 50%;
     background: white; /* Solid white background */
     border: 1px solid rgba(47, 133, 90, 0.3);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

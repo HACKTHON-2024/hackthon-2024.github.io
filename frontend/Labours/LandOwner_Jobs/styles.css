@@ -578,7 +578,6 @@ h2 {
     width: 92%;
     max-width: 1100px;
     transition: all 0.3s ease;
-    position: relative;
 }
 
 .card-header {
@@ -688,6 +687,7 @@ h2 {
     right: 20px;
     display: flex;
     gap: 12px;
+    z-index: 10;
 }
 
 .details-btn, .request-btn {
@@ -1234,6 +1234,10 @@ h2 {
 }
 
 .welcome-content h2 {
+    text-align: center; /* Center the h2 text */
+    margin: 0; /* Remove default margin */
+    width: 100%; /* Ensure it takes full width for centering */
+    display: block; /* Ensure it behaves as a block element */
     color: var(--primary-color);
     margin-bottom: 10px;
     font-size: 24px;
