@@ -733,12 +733,12 @@ router.post('/validate-user', async (req, res) => {
 // this endpoint is used to fetch the request history of the landowner
 router.get("/request_history", landownerMiddleware, async (req, res) => {
     try {
-        console.log("request history api called");
+       
         const user_id = req.user._id;
         
         const requests = await Requests.find({ landowner_id: user_id })
             .populate('labour_id', 'username ') // Populate labour details
-            .populate('job_id', 'title description amount start_date end_date number_of_workers') // Populate job details
+            .populate('job_id', 'title description amount start_date end_date number_of_workers worker_id') // Populate job details
             .sort({ date: -1 }); // Sort by date, newest first
 
         console.log("Fetched requests:", requests); // Debug log

@@ -260,7 +260,7 @@ function handleNetworkChange(event) {
 // Function to check if server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+        const response = await fetch('http://localhost:3000/', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
