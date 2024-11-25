@@ -250,8 +250,12 @@ async function handleVerifyButton() {
 
             const enrollData = await enrollResponse.json();
             if (enrollData.success) {
-                alert("Registration successful");
-                closeModal();
+                // Send SMS with labor ID and job ID
+            const laborId = enrollData.laborId; // Assuming the response contains labour_id
+            const jobId = selectedJobId; // Use the selected job ID
+            await sendSms(laborId, jobId); // Properly await the sendSms function
+            alert("Registration successful");
+             closeModal();
 
               
             } else {
@@ -279,16 +283,20 @@ async function handleSelfRegistration() {
         });
 
         const data = await response.json();
-        console.log(data.labour_id)
-             
-         if (data.success) {
+        console.log(data)
+        if(data.success){
             // Send SMS with labor ID and job ID
+            console.log("hii")
             const laborId = data.labour_id; // Assuming the response contains labour_id
             const jobId = selectedJobId; // Use the selected job ID
             console.log("Sending SMS with Labor ID:", laborId, "and Job ID:", jobId);
 
             await sendSms(laborId, jobId); // Properly await the sendSms function
 
+        }
+             
+         if (data.success) {
+            
             alert("Registration successful");
             closeModal();
             

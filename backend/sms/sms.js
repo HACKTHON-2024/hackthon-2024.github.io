@@ -29,10 +29,14 @@ router.post('/send-sms', async (req, res) => {
     const { laborId, jobId } = req.body; // Include phoneNumber in the request body
 
     try {
+        console.log(laborId)
         // Fetch only the mobile_number field from Labour
         const labour = await Labour.findById(laborId).select('mobile_number'); // Fetch only the mobile_number field
         if (!labour) {
-            return res.status(404).send('Labor not found');
+            return res.status(404).json({
+                success: false,
+                message: 'Labor not found'
+            });
         }
 
         // Fetch job details and populate only the mobile_number of the created_By (landowner)
@@ -41,7 +45,10 @@ router.post('/send-sms', async (req, res) => {
             select: 'mobile_number' // Only retrieve the mobile_number field
         });
         if (!job) {
-            return res.status(404).send('Job not found');
+            return res.status(404).json({
+                success: false,
+                message: 'Job not found'
+            });
         }
        
 
@@ -69,10 +76,20 @@ Job Details:\n
         // Log success message
         console.log('SMS sent successfully to:', phoneNumber); // Log the phone number to which the SMS was sent
 
-        res.status(200).send({ success: true, message: 'SMS sent successfully' });
+        // Respond with success
+        return res.status(200).json({
+            success: true,
+            message: 'SMS sent successfully',
+            data: message // Include any relevant data
+        });
     } catch (error) {
-        console.error('Error fetching details or sending SMS:', error);
-        res.status(500).send('Failed to send SMS');
+        console.error('Error sending SMS:', error);
+        // Respond with an error in JSON format
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to send SMS',
+            error: error.message // Include error details if necessary
+        });
     }
 });
 

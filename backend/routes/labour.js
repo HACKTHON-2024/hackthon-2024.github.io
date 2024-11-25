@@ -229,12 +229,15 @@ router.post("/endroll", labourMiddleware, async function(req, res) {
 
         return res.status(200).json({ 
             message: "Labour successfully enrolled in job", 
-            labour_id: labour_id // Include the labour_id in the response
+            labour_id: labour_id ,// Include the labour_id in the response
+            success: true
         });
 
     } catch (error) {
         console.error("Error enrolling labour in job: ", error);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error",
+            success: false
+         });
     }
 });
 
@@ -345,9 +348,9 @@ router.post("/job_endroll_for_others", labourMiddleware, async function (req, re
             user.refferal.push(labour._id);
             await user.save();
         }
-
+        console.log(labour._id)
         // Send success response
-        res.status(200).json({ success: true, message: 'Labour enrolled successfully' });
+        res.status(200).json({ success: true, message: 'Labour enrolled successfully', laborId:labour._id});
 
     } catch (error) {
         console.error('Error enrolling labour for job:', error);
