@@ -534,7 +534,7 @@ function showWelcomeMessage() {
             setTimeout(() => {
                 welcomePopup.remove();
             }, 500);
-        }, 10000000000);
+        }, 10000);
     }
 }
 
