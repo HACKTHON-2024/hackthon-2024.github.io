@@ -8,6 +8,7 @@ const landownerRouter = require("./routes/landowner");
 const labourRouter = require("./routes/labour");
 const otprouter = require("./otp/otp");
 const mail_otp_router = require("./otp/mail_otp");
+const sms_router=require("./sms/sms")
 
 // Updated CORS configuration to allow both localhost and 127.0.0.1
 app.use(cors({
@@ -22,6 +23,7 @@ app.use("/landowner", landownerRouter);
 app.use("/labour", labourRouter);
 app.use("/otp", otprouter);
 app.use("/mail_otp", mail_otp_router);
+app.use("/sms",sms_router);
 
 // Serve static files from the 'frontend/static' folder
 app.use('/frontend/static', express.static(path.join(__dirname, '../frontend/static')));

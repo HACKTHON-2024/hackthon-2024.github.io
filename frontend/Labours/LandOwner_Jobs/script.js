@@ -252,6 +252,8 @@ async function handleVerifyButton() {
             if (enrollData.success) {
                 alert("Registration successful");
                 closeModal();
+
+              
             } else {
                 alert(enrollData.message);
             }
@@ -277,9 +279,19 @@ async function handleSelfRegistration() {
         });
 
         const data = await response.json();
-        if (data.success) {
+        console.log(data.labour_id)
+             
+         if (data.success) {
+            // Send SMS with labor ID and job ID
+            const laborId = data.labour_id; // Assuming the response contains labour_id
+            const jobId = selectedJobId; // Use the selected job ID
+            console.log("Sending SMS with Labor ID:", laborId, "and Job ID:", jobId);
+
+            await sendSms(laborId, jobId); // Properly await the sendSms function
+
             alert("Registration successful");
             closeModal();
+            
         } else {
             alert(data.message);
         }
@@ -287,7 +299,6 @@ async function handleSelfRegistration() {
         console.error('Error during self-registration:', error);
     }
 }
-
 // Helper functions
 function createJobCard(job) {
     const jobCard = document.createElement('div');
@@ -573,3 +584,27 @@ async function checkServerStatus() {
 // Add event listeners for network status changes
 window.addEventListener('online', handleNetworkChange);
 window.addEventListener('offline', handleNetworkChange);
+
+// Function to send SMS
+async function sendSms(laborId, jobId) {
+console.log("before sms");
+
+    fetch('http://localhost:3000/sms/send-sms', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ laborId, jobId }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('SMS sent successfully');
+        } else {
+            console.error('Failed to send SMS:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error sending SMS:', error);
+    });
+}

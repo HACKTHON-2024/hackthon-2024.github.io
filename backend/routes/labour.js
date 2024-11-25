@@ -227,7 +227,10 @@ router.post("/endroll", labourMiddleware, async function(req, res) {
             $addToSet: { worker_id: labour_id }  // $addToSet ensures no duplicates
         });
 
-        return res.status(200).json({ message: "Labour successfully enrolled in job" });
+        return res.status(200).json({ 
+            message: "Labour successfully enrolled in job", 
+            labour_id: labour_id // Include the labour_id in the response
+        });
 
     } catch (error) {
         console.error("Error enrolling labour in job: ", error);
