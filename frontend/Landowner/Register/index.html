@@ -193,7 +193,9 @@
                 </div>
 
                 <div class="overlay"></div>
-                <div id="error-message"></div>
+                <div id="error-message" class="modal">
+                    <!-- Error message content will be injected here -->
+                </div>
 
                 <div class="terms-group">
                     <label class="checkbox-label">
@@ -305,6 +307,10 @@
             overlay.addEventListener('click', hideModal);
         });
     </script>
+
+    <div id="success-message" class="modal">
+        <!-- Success message content will be injected here -->
+    </div>
     
 </body>
 </html>

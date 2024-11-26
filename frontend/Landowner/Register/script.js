@@ -65,50 +65,15 @@ async function onclickconfirm() {
         const failedValidations = validations.filter(v => !v.result);
         
         if (failedValidations.length > 0) {
-            const errorMessageElement = document.getElementById('error-message');
             const failedFields = failedValidations.map(v => v.name);
-            
-            // Create formatted error message
-            errorMessageElement.innerHTML = `
-                <button id="error-message-close">&times;</button>
-                <h3>Please Fix the Following Errors:</h3>
-                <ul>
-                    ${failedFields.map(field => `<li>${field}</li>`).join('')}
-                </ul>
-            `;
-            
-            // Show both error message and overlay
-            errorMessageElement.classList.add('show');
-            document.querySelector('.overlay').classList.add('show');
-            
-            // Scroll to error message smoothly
-            errorMessageElement.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'center' 
-            });
-            
-            // Add close button functionality
-            document.getElementById('error-message-close').onclick = function() {
-                errorMessageElement.classList.remove('show');
-                document.querySelector('.overlay').classList.remove('show');
-            };
-            
+            showModal('Please Fix the Following Errors:', failedFields);
             return;
         }
 
         // Check terms acceptance
         const termsAccepted = document.querySelector('input[type="checkbox"]').checked;
         if (!termsAccepted) {
-            const errorMessageElement = document.getElementById('error-message');
-            errorMessageElement.innerHTML = `
-                <button id="error-message-close">&times;</button>
-                <h3>Please Accept Terms and Conditions</h3>
-            `;
-            errorMessageElement.classList.add('show');
-            
-            document.getElementById('error-message-close').onclick = function() {
-                errorMessageElement.classList.remove('show');
-            };
+            showModal('Please Accept Terms and Conditions', []);
             return;
         }
 
@@ -932,4 +897,42 @@ function validateLocation() {
     }
     
     return isValid;
+}
+
+// Function to show modal with messages
+function showModal(title, messages) {
+    const modal = document.getElementById('error-message');
+    const messageList = messages.map(msg => `<li>${msg}</li>`).join('');
+    modal.innerHTML = `
+        <button id="error-message-close">&times;</button>
+        <h3>${title}</h3>
+        <ul>${messageList}</ul>
+    `;
+    modal.classList.add('show');
+    document.querySelector('.overlay').classList.add('show');
+
+    // Close button functionality
+    document.getElementById('error-message-close').onclick = function() {
+        modal.classList.remove('show');
+        document.querySelector('.overlay').classList.remove('show');
+    };
+}
+
+function showSuccessMessage(title, messages) {
+    const successModal = document.getElementById('success-message');
+    const messageList = messages.map(msg => `<li>${msg}</li>`).join('');
+    successModal.innerHTML = `
+        <button id="success-message-close">&times;</button>
+        <h3>${title}</h3>
+        <ul>${messageList}</ul>
+    `;
+    
+    successModal.classList.add('show');
+    document.querySelector('.overlay').classList.add('show');
+
+    // Close button functionality
+    document.getElementById('success-message-close').onclick = function() {
+        successModal.classList.remove('show');
+        document.querySelector('.overlay').classList.remove('show');
+    };
 }

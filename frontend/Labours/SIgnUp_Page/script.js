@@ -52,50 +52,15 @@ async function onclickconfirm() {
         const failedValidations = validations.filter(v => !v.result);
         
         if (failedValidations.length > 0) {
-            const errorMessageElement = document.getElementById('error-message');
             const failedFields = failedValidations.map(v => v.name);
-            
-            // Create formatted error message
-            errorMessageElement.innerHTML = `
-                <button id="error-message-close">&times;</button>
-                <h3>Please Fix the Following Errors:</h3>
-                <ul>
-                    ${failedFields.map(field => `<li>${field}</li>`).join('')}
-                </ul>
-            `;
-            
-            // Show both error message and overlay
-            errorMessageElement.classList.add('show');
-            document.querySelector('.overlay').classList.add('show');
-            
-            // Scroll to error message smoothly
-            errorMessageElement.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'center' 
-            });
-            
-            // Add close button functionality
-            document.getElementById('error-message-close').onclick = function() {
-                errorMessageElement.classList.remove('show');
-                document.querySelector('.overlay').classList.remove('show');
-            };
-            
+            showModal('Please Fix the Following Errors:', failedFields);
             return;
         }
 
         // Check terms acceptance
         const termsAccepted = document.querySelector('input[type="checkbox"]').checked;
         if (!termsAccepted) {
-            const errorMessageElement = document.getElementById('error-message');
-            errorMessageElement.innerHTML = `
-                <button id="error-message-close">&times;</button>
-                <h3>Please Accept Terms and Conditions</h3>
-            `;
-            errorMessageElement.classList.add('show');
-            
-            document.getElementById('error-message-close').onclick = function() {
-                errorMessageElement.classList.remove('show');
-            };
+            showModal('Please Accept Terms and Conditions', []);
             return;
         }
 
@@ -135,82 +100,12 @@ async function onclickconfirm() {
         const result = await response.json();
         console.log(result);
         if (!response.ok) {
-            const errorMessageElement = document.getElementById('error-message');
-            errorMessageElement.innerHTML = `
-                <button id="error-message-close">&times;</button>
-                <h3>Registration Failed</h3>
-                <p>${result.message || 'Please try again later.'}</p>
-            `;
-            errorMessageElement.classList.add('show');
-            document.querySelector('.overlay').classList.add('show');
-            
-            document.getElementById('error-message-close').onclick = function() {
-                errorMessageElement.classList.remove('show');
-                document.querySelector('.overlay').classList.remove('show');
-            };
+            showModal('Registration Failed', [result.message || 'Please try again later.']);
             return;
         }
 
         // Show success message
-        const successMessage = document.createElement('div');
-        successMessage.id = 'success-message';
-        successMessage.innerHTML = `
-            <div class="success-content">
-                <i class="fas fa-check-circle"></i>
-                <h3>Registration Successful!</h3>
-                <p>You will be redirected to the login page shortly...</p>
-            </div>
-        `;
-        document.body.appendChild(successMessage);
-        document.querySelector('.overlay').classList.add('show');
-
-        // Add success message styles
-        const successStyles = `
-            #success-message {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: white;
-                padding: 30px;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                z-index: 1000;
-                text-align: center;
-                border: 2px solid #4CAF50;
-            }
-
-            #success-message .success-content {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-
-            #success-message i {
-                font-size: 48px;
-                color: #4CAF50;
-            }
-
-            #success-message h3 {
-                color: #4CAF50;
-                margin: 0;
-                font-size: 24px;
-            }
-
-            #success-message p {
-                color: #666;
-                margin: 0;
-            }
-        `;
-        const styleElement = document.createElement('style');
-        styleElement.textContent = successStyles;
-        document.head.appendChild(styleElement);
-
-        // Redirect after 2 seconds
-        setTimeout(() => {
-            window.location.href = 'http://localhost:5500/frontend/Labours/login/index.html';
-        }, 2000);
+        showSuccessMessage('Registration Successful!', ['You will be redirected to the login page shortly...']);
 
     } catch (error) {
         console.error('Error:', error);
@@ -919,4 +814,42 @@ function validateLocation() {
     }
     
     return isValid;
+}
+
+// Function to show modal with messages
+function showModal(title, messages) {
+    const modal = document.getElementById('error-message');
+    const messageList = messages.map(msg => `<li>${msg}</li>`).join('');
+    modal.innerHTML = `
+        <button id="error-message-close">&times;</button>
+        <h3>${title}</h3>
+        <ul>${messageList}</ul>
+    `;
+    modal.classList.add('show');
+    document.querySelector('.overlay').classList.add('show');
+
+    // Close button functionality
+    document.getElementById('error-message-close').onclick = function() {
+        modal.classList.remove('show');
+        document.querySelector('.overlay').classList.remove('show');
+    };
+}
+
+function showSuccessMessage(title, messages) {
+    const successModal = document.getElementById('success-message');
+    const messageList = messages.map(msg => `<li>${msg}</li>`).join('');
+    successModal.innerHTML = `
+        <button id="success-message-close">&times;</button>
+        <h3>${title}</h3>
+        <ul>${messageList}</ul>
+    `;
+    
+    successModal.classList.add('show');
+    document.querySelector('.overlay').classList.add('show');
+
+    // Close button functionality
+    document.getElementById('success-message-close').onclick = function() {
+        successModal.classList.remove('show');
+        document.querySelector('.overlay').classList.remove('show');
+    };
 }
