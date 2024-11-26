@@ -557,8 +557,8 @@ router.get("/view_requests", landownerMiddleware, async function(req, res) {
 router.post("/request_confirm", landownerMiddleware,async (req, res) => {
   const { job_id,  labour_id } = req.body;
   const user_id=req.user._id;
-  console.log("api called");
-  console.log("job:",job_id,"labour:",labour_id)
+  
+ 
   
   try {
     // Step 1: Validate if job_id and labour_id exist

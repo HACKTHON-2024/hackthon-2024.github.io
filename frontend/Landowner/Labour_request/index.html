@@ -168,21 +168,34 @@
             <!-- Labour cards will be dynamically inserted here -->
         </div>
 
-        <!-- Confirmation popup -->
+        <!-- Popup Overlay for Confirmation -->
+        <div class="popup-overlay hidden"></div>
+
+        <!-- Confirmation Popup -->
         <div id="confirmation-popup" class="confirmation-popup hidden">
-            <div class="confirmation-content">
-                <p>Do you want to confirm this job request?</p>
-                <div class="popup-buttons">
-                    <button id="confirm-btn">Confirm</button>
-                    <button id="cancel-btn">Cancel</button>
+            <h3>Confirm Job Request</h3>
+            <p>Are you sure you want to confirm this job request?</p>
+            <button id="confirm-btn">Confirm</button>
+            <button id="cancel-btn">Cancel</button>
+        </div>
+
+        <!-- Alert Overlay -->
+        <div class="alert-overlay hidden"></div>
+
+        <!-- Alert Popup -->
+        <div id="alert-popup" class="alert-popup hidden">
+            <div class="alert-content">
+                <div class="alert-icon"></div>
+                <div class="alert-message">
+                    <h4 class="alert-title"></h4>
+                    <p class="alert-description"></p>
                 </div>
+                <button class="alert-close">Close</button>
             </div>
         </div>
 
-        <!-- Popup Overlay for confirmation -->
-        <div class="popup-overlay hidden"></div>
-
         <!-- Job list modal -->
+        <div class="job-modal-overlay hidden"></div>
         <div id="job-list-modal" class="job-modal hidden">
             <button id="close-job-modal" class="close-btn">X</button>
             <div class="job-container">

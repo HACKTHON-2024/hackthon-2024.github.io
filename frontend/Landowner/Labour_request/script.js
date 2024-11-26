@@ -179,9 +179,15 @@ document.addEventListener('DOMContentLoaded', function () {
  // Show job list modal and fetch active jobs
 function showJobModal(labourId) {
     const jobModal = document.getElementById('job-list-modal');
+    const jobModalOverlay = document.querySelector('.job-modal-overlay');
+
     jobModal.classList.remove('hidden');
+    jobModalOverlay.classList.remove('hidden'); // Show the overlay
+
     jobModal.style.opacity = 0;
-    setTimeout(() => jobModal.style.opacity = 1, 50);
+    setTimeout(() => {
+        jobModal.style.opacity = 1; // Fade in the modal
+    }, 50);
 
     fetchActiveAndFutureJobs(labourId);
 }
@@ -303,7 +309,7 @@ function fetchActiveAndFutureJobs(labourId) {
  const closeJobModalBtn = document.getElementById('close-job-modal');
  closeJobModalBtn.addEventListener('click', function () {
      const jobModal = document.getElementById('job-list-modal');
-     jobModal.classList.add('hidden');
+     closeJobModal(jobModal);
  });
  
  // Show confirmation popup
@@ -312,64 +318,101 @@ function showConfirmationPopup(labourId, jobId) {
     const popupOverlay = document.querySelector('.popup-overlay');
 
     // Show popup and overlay
-    confirmationPopup.style.display = 'block';
-    popupOverlay.style.display = 'block';
+    const jobModal = document.getElementById('job-list-modal');
+    jobModal.classList.add('hidden');
+    confirmationPopup.classList.remove('hidden'); // Ensure the popup is visible
+    popupOverlay.classList.remove('hidden'); // Ensure the overlay is visible
+    
+
+    // Center the popup
+    confirmationPopup.style.display = 'block'; // Ensure it's displayed
+    confirmationPopup.style.opacity = 0; // Start with opacity 0 for fade-in effect
+    setTimeout(() => {
+        confirmationPopup.style.opacity = 1; // Fade in the popup
+    }, 50);
 
     // Clear existing event listeners
     const confirmBtn = document.getElementById('confirm-btn');
     const cancelBtn = document.getElementById('cancel-btn');
-    
+
     // Remove old event listeners
     confirmBtn.replaceWith(confirmBtn.cloneNode(true));
     cancelBtn.replaceWith(cancelBtn.cloneNode(true));
-    
+
     // Get new references after cloning
     const newConfirmBtn = document.getElementById('confirm-btn');
     const newCancelBtn = document.getElementById('cancel-btn');
 
     // Add new event listeners
     newConfirmBtn.addEventListener('click', () => {
-        handleConfirm(labourId, jobId);
-        confirmationPopup.style.display = 'none';
-        popupOverlay.style.display = 'none';
+        handleConfirm(labourId, jobId); // Call the function to handle confirmation
     });
 
     newCancelBtn.addEventListener('click', () => {
-        confirmationPopup.style.display = 'none';
-        popupOverlay.style.display = 'none';
+        closePopup(); // Close the popup on cancel
     });
 }
- 
- // Send job confirmation request to the backend
- function handleConfirm(labour_id, job_id) {
-     const token = getToken();
-     fetch('http://localhost:3000/landowner/request_confirm', {
-         method: 'POST',
-         headers: {
-             'Content-Type': 'application/json',
-             'Authorization': `Bearer ${token}`,
-         },
-         body: JSON.stringify({
-             job_id: job_id,
-             labour_id: labour_id
-         })
-     })
-     .then(response => response.json())
-     .then(data => {
-         if (data.success || data.message) {
-             showAlert('Your job request has been confirmed successfully!', 'success');
-             const jobModal = document.getElementById('job-list-modal');
-             jobModal.classList.add('hidden');
-         } else {
-             showAlert((data.error || 'Failed to confirm job request'), 'error');
-         }
-     })
-     .catch(error => {
-         console.error('Error during confirmation:', error);
-         showAlert('An error occurred while confirming the job request', 'error');
-     });
- }
- 
+
+// Function to handle job confirmation
+function handleConfirm(labourId, jobId) {
+    const token = getToken(); // Get JWT token
+    const jobModal = document.getElementById('job-list-modal'); // Reference to the job modal
+    fetch('http://localhost:3000/landowner/request_confirm', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            job_id: jobId,
+            labour_id: labourId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            // Check if the response contains a success message
+            alert(data.message, 'success');
+            closeJobModal(jobModal); // Close the job modal on success
+        } else if (data.error) {
+            // Check if the response contains an error message
+            alert(data.error, 'error');
+        } else {
+            // Handle unexpected response
+            alert('An unexpected error occurred.', 'error');
+        }
+        closePopup(); // Close the confirmation popup after handling the response
+    })
+    .catch(error => {
+        console.error('Error during confirmation:', error);
+        alert('An error occurred while confirming the job request', 'error');
+        closePopup(); // Close the popup on error
+    });
+}
+
+// Function to close the popup
+function closePopup() {
+    console.log("Closing popup"); // Debugging log
+    const confirmationPopup = document.getElementById('confirmation-popup');
+    const popupOverlay = document.querySelector('.popup-overlay');
+    const jobModalOverlay = document.querySelector('.job-modal-overlay');
+    
+    // Directly set display to none
+    confirmationPopup.style.display = 'none'; // Hide the popup
+    popupOverlay.style.display = 'none'; // Hide the overlay
+    jobModalOverlay.classList.add('hidden'); // Hide the overlay
+}
+
+// Function to close the job modal
+function closeJobModal(modal) {
+    const jobModalOverlay = document.querySelector('.job-modal-overlay');
+
+    if (modal) {
+        modal.classList.add('hidden'); // Hide the job modal
+        jobModalOverlay.classList.add('hidden'); // Hide the overlay
+    }
+}
+
  // Function to check the login status and update the button
  function updateAuthButton() {
      const authBtnContainer = document.getElementById('auth-btn-container');
@@ -492,7 +535,7 @@ function changeLanguage(lang) {
             // Add more translations as needed
         },
         ta: {
-            title: 'தொழிலாளர் கோரிக்கை',
+            title: 'ொழிலாளர் கோரிக்கை',
             home: 'முகப்பு',
             about: 'எங்களை பற்றி',
             services: 'சேவைகள்',
@@ -500,7 +543,7 @@ function changeLanguage(lang) {
             // Add more translations as needed
         },
         hi: {
-            title: 'श्रमि�� अनुरोध',
+            title: 'श्रमि अनुरोध',
             home: 'होम',
             about: 'हमारे बारे में',
             services: 'सेवाएं',
@@ -517,11 +560,12 @@ function changeLanguage(lang) {
 }
 
 function showAlert(message, type = 'success') {
-    const alertContainer = document.getElementById('alert-container');
-    const alertTitle = alertContainer.querySelector('.alert-title');
-    const alertDescription = alertContainer.querySelector('.alert-description');
-    const alertIcon = alertContainer.querySelector('.alert-icon');
-    
+    const alertPopup = document.getElementById('alert-popup');
+    const alertOverlay = document.querySelector('.alert-overlay');
+    const alertTitle = alertPopup.querySelector('.alert-title');
+    const alertDescription = alertPopup.querySelector('.alert-description');
+    const alertIcon = alertPopup.querySelector('.alert-icon');
+
     // Define icons
     const icons = {
         success: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -540,20 +584,25 @@ function showAlert(message, type = 'success') {
         alertTitle.textContent = 'Error!';
         alertDescription.textContent = message;
     }
-    
+
     // Set icon
     alertIcon.innerHTML = icons[type];
-    
-    // Set alert type class
-    alertContainer.className = 'alert-container';
-    alertContainer.classList.add(`alert-${type}`);
-    
-    // Show alert
-    alertContainer.classList.remove('hidden');
-    
+
+    // Show alert popup and overlay
+    alertPopup.classList.remove('hidden');
+    alertOverlay.classList.remove('hidden');
+
+    // Close button functionality
+    const closeButton = alertPopup.querySelector('.alert-close');
+    closeButton.onclick = () => {
+        alertPopup.classList.add('hidden');
+        alertOverlay.classList.add('hidden');
+    };
+
     // Auto-hide after 3 seconds
     setTimeout(() => {
-        alertContainer.classList.add('hidden');
+        alertPopup.classList.add('hidden');
+        alertOverlay.classList.add('hidden');
     }, 3000);
 }
 
