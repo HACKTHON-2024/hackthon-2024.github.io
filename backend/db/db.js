@@ -10,7 +10,7 @@
       aadhaar_ID: { type: String, required: true, unique: true },
       mobile_number: { type: String, required: true },
       alternate_mobile_number: { type: String, required: false },
-      email: { type: String, required: true, unique: true },
+      email: { type: String, required: false, unique: true },
       address:  { type: String, required: true },
       land_location: String,
       land_size: String,
