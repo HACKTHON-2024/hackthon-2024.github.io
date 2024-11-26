@@ -17,7 +17,7 @@ function handleNetworkChange(event) {
 // Function to check if the server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+        const response = await fetch('http://localhost:3000', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -66,7 +66,7 @@ async function fetchRequests() {
         }
 
         const result = await response.json();
-        console.log('Fetched data:', result); // For debugging
+        //console.log('Fetched data:', result); // For debugging
 
         if (!result.data || !Array.isArray(result.data)) {
             throw new Error('Invalid data format received');
@@ -141,9 +141,9 @@ function displayRequests(requests) {
                 </div>
                 <div class="job-info">
                     <h4>Job Details:</h4>
-                    <p><i class="fas fa-rupee-sign"></i> Daily Wage: ₹${jobDetails.daily_wage || 'N/A'}</p>
+                    <p><i class="fas fa-rupee-sign"></i> Daily Wage: ₹${jobDetails.amount || 'N/A'}</p>
                     <p><i class="fas fa-calendar"></i> Duration: ${formatDate(jobDetails.start_date)} to ${formatDate(jobDetails.end_date)}</p>
-                    <p><i class="fas fa-users"></i> Required Workers: ${jobDetails.required_workers || 'N/A'}</p>
+                    <p><i class="fas fa-users"></i> Required Workers: ${jobDetails.number_of_workers || 'N/A'}</p>
                     ${jobDetails.description ? `<p><i class="fas fa-info-circle"></i> Description: ${jobDetails.description}</p>` : ''}
                 </div>
             </div>
