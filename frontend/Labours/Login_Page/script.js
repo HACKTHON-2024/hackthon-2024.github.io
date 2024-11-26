@@ -195,6 +195,27 @@ otpButton.addEventListener('click', async function () {
         otpContainer.classList.add('hidden');
         passwordContainer.classList.remove('hidden');
     });
+
+    // Add event listener for Enter key on email input
+    document.getElementById('email-input').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            continueButton.click(); // Simulate a click on the continue button
+        }
+    });
+
+    // Add event listener for Enter key on password input
+    document.getElementById('password-input').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            passwordContinueButton.click(); // Simulate a click on the password continue button
+        }
+    });
+
+    // Add event listener for Enter key on OTP input
+    document.getElementById('otp-input').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            otpLoginButton.click(); // Simulate a click on the OTP login button
+        }
+    });
 });
 
 function showMessage(type, title, message) {
