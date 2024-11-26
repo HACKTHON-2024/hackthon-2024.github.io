@@ -96,6 +96,11 @@ async function fetchJobData() {
 
         // Get the current date to compare with job dates
         const currentDate = new Date();
+        if (!Array.isArray(jobs) || jobs.length === 0) {
+            const jobContainer = document.querySelector('.job-created-section');
+            jobContainer.innerHTML = '<h2>No jobs available.</h2>'; // Show no jobs message
+            return; // Exit the function early
+        }
 
         // Separate jobs into completed and future
         const completedJobs = jobs.filter(job => new Date(job.end_date) < currentDate);

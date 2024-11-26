@@ -4,7 +4,7 @@
   mongoose.connect("mongodb+srv://melvin:melvin0011@cluster0.do87x1x.mongodb.net/labour_field");
   // Mongoose schema for landowner
   const landownerSchema = new mongoose.Schema({
-      username: { type: String, required: true, unique: true },
+      username: { type: String, required: true },
       gender: { type: String, required: true },
       DOB: { type: Date, required: true },
       aadhaar_ID: { type: String, required: true, unique: true },
@@ -27,7 +27,7 @@
     
   // Mongoose schema for labours
   const labourSchema = new mongoose.Schema({
-    username:{ type: String, required: true ,unique: true},
+    username:{ type: String, required: true },
     gender:{ type: String, required: true },
     DOB:{ type: Date , required: true },
     aadhaar_ID: { type: String, required: true, unique: true },
