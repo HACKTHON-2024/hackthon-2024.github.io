@@ -614,6 +614,7 @@ router.post("/request_confirm", landownerMiddleware,async (req, res) => {
 // this endpoint /request_by_owner appears to be used when a landowner wants to directly request a specific laborer for a job using their mobile number.
 router.post("/request_by_owner", landownerMiddleware, async function(req, res) {
   const { jobId, mobileNumber } = req.body;
+  const user=req.user;
 
   try {
       // Step 1: Find the Labour by Mobile Number
@@ -645,7 +646,7 @@ router.post("/request_by_owner", landownerMiddleware, async function(req, res) {
 
       // Step 6: Create a new Request Record
       const newRequest = new Requests({
-          landowner_id: user_id,
+          landowner_id: user._id,
           labour_id: labour._id,
           status: null, // You can set status based on your logic
           job_id: job._id,
