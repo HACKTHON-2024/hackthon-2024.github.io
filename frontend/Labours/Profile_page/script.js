@@ -345,7 +345,7 @@ function toggleEdit() {
         input.style.display = 'block';
         // Set input value to current display value
         const spanId = input.id.replace('Input', 'Display');
-        input.value = document.getElementById(spanId).innerText;
+        input.value = document.getElementById(spanId).innerText || '';
     });
 
     editButton.style.display = 'none';
@@ -365,9 +365,6 @@ async function saveChanges() {
             aadhaar_ID: document.getElementById('aadhaarInput').value,
             email: document.getElementById('emailInput').value,
             address: document.getElementById('addressInput').value,
-            land_location: document.getElementById('land_locationInput').value,
-            land_size: document.getElementById('land_sizeInput').value,
-            land_type: document.getElementById('land_typeInput').value,
             state: document.getElementById('stateInput').value,
             city: document.getElementById('cityInput').value,
             taluk: document.getElementById('talukInput').value
@@ -381,10 +378,17 @@ async function saveChanges() {
             },
             body: JSON.stringify(updatedData)
         });
-
+       
+        // Check if the response is OK
         if (!response.ok) {
+            const errorText = await response.text(); // Get the response as text
+            console.error('Error response:', errorText); // Log the error response
             throw new Error('Failed to update profile');
         }
+
+        // Attempt to parse the response as JSON
+        const responseData = await response.json();
+        console.log('Response from server:', responseData);
 
         // Update display values
         Object.keys(updatedData).forEach(key => {

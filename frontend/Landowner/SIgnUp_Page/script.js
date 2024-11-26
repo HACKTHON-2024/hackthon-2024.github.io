@@ -1,6 +1,27 @@
 // Add network status monitoring
 window.addEventListener('online', handleNetworkChange);
 window.addEventListener('offline', handleNetworkChange);
+function validateLandSize() {
+    const landSize = document.getElementById('land-size');
+    const errorElement = document.getElementById('land-size-error');
+    
+    if (!landSize || !landSize.value) {
+        showError(landSize, 'land-size-error', 'Land size is required');
+        return false;
+    }
+    
+    const size = parseFloat(landSize.value);
+    const minSize = 1; // Minimum land size in acres
+    const maxSize = 1000; // Maximum land size in acres
+
+    if (isNaN(size) || size < minSize || size > maxSize) {
+        showError(landSize, 'land-size-error', `Please enter a valid land size between ${minSize} and ${maxSize} acres`);
+        return false;
+    }
+    
+    clearError(landSize, 'land-size-error');
+    return true;
+}
 function togglePassword(id) {
     const passwordField = document.getElementById(id);
     const eyeIcon = document.getElementById(`eye-icon-${id}`);

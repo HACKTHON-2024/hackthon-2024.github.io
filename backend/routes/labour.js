@@ -260,7 +260,7 @@ router.get("/view_profile", labourMiddleware,async function(req, res) {
   });
 
    //test this update_profile
-  router.post("/update_profile", labourMiddleware, async function (req, res) {
+  router.put("/update_profile", labourMiddleware, async function (req, res) {
     try {
 
       const createpayload = req.body;
@@ -288,7 +288,7 @@ router.get("/view_profile", labourMiddleware,async function(req, res) {
         const user_id = req.user._id; // Assuming user is authenticated and user ID is attached to req.user
 
         // Step 3: Update landowner details in the database
-        const updatedProfile = await Landowner.findByIdAndUpdate(user_id, {
+        const updatedProfile = await Labour.findByIdAndUpdate(user_id, {
             username, gender, DOB, aadhaar_ID, mobile_number, alternate_mobile_number,
             email, address, state, city, taluk
         }, { new: true, runValidators: true });
@@ -296,7 +296,7 @@ router.get("/view_profile", labourMiddleware,async function(req, res) {
         if (!updatedProfile) {
             return res.status(404).json({ message: "Profile not found" });
         }
-
+      
         // Step 4: Respond with the updated profile data
         res.status(200).json({
             message: "Profile updated successfully",
