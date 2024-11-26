@@ -190,6 +190,9 @@ async function onclickconfirm() {
             window.location.href = 'http://localhost:5500/frontend/Landowner/Register/index.html';
         }, 2000);
 
+        // Clear stored data
+        localStorage.removeItem('formData');
+
     } catch (error) {
         console.error('Error:', error);
         const errorMessageElement = document.getElementById('error-message');
@@ -936,3 +939,48 @@ function showSuccessMessage(title, messages) {
         document.querySelector('.overlay').classList.remove('show');
     };
 }
+
+// Add this function to save form data to localStorage
+function saveFormData() {
+    const formData = {
+        name: document.getElementById('name').value.trim(),
+        gender: document.getElementById('gender').value,
+        dob: document.getElementById('dob').value,
+        aadhaar: document.getElementById('aadhaar').value.trim(),
+        mobile: document.getElementById('mobile').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        state: document.getElementById('state').value,
+        city: document.getElementById('city').value,
+        taluk: document.getElementById('taluk').value,
+        password: document.getElementById('password').value,
+        skills: document.getElementById('skills').value.trim(),
+        alternatePhone: document.getElementById('alternate-phone')?.value?.trim(),
+    };
+    localStorage.setItem('formData', JSON.stringify(formData));
+}
+
+// Add event listeners to save data on input
+document.querySelectorAll('input, select, textarea').forEach(input => {
+    input.addEventListener('input', saveFormData);
+});
+
+// Load form data from localStorage on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const savedData = JSON.parse(localStorage.getItem('formData'));
+    if (savedData) {
+        document.getElementById('name').value = savedData.name || '';
+        document.getElementById('gender').value = savedData.gender || '';
+        document.getElementById('dob').value = savedData.dob || '';
+        document.getElementById('aadhaar').value = savedData.aadhaar || '';
+        document.getElementById('mobile').value = savedData.mobile || '';
+        document.getElementById('alternate-phone').value = savedData.alternatePhone || '';
+        document.getElementById('email').value = savedData.email || '';
+        document.getElementById('address').value = savedData.address || '';
+        document.getElementById('state').value = savedData.state || '';
+        document.getElementById('city').value = savedData.city || '';
+        document.getElementById('taluk').value = savedData.taluk || '';
+        document.getElementById('skills').value = savedData.skills || '';
+        document.getElementById('password').value = savedData.password || '';
+    }
+});
