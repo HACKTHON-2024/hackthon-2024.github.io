@@ -1716,17 +1716,14 @@ body {
     display: block;
 }
 
-/* Error Message Content */
-#error-message h3 {
-    color: #E53E3E;
-    margin-bottom: 15px;
-    font-size: 18px;
+/* Success Message Styles */
+#error-message.success {
+    border: 2px solid #4CAF50;
+    color: #4CAF50;
 }
 
-#error-message ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+#error-message.success h3 {
+    color: #4CAF50;
 }
 
 #error-message li {
@@ -1769,7 +1766,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.3); /* Lighter overlay to show blur */
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     z-index: 999;
@@ -1779,7 +1776,6 @@ body {
 .overlay.show {
     display: block;
 }
-
 /* Animation */
 @keyframes fadeIn {
     from {
@@ -2063,7 +2059,6 @@ body.overlay-active {
 }
 
 /* Update header container styles */
-/* Update header container styles */
 .header-container {
     display: flex;
     justify-content: space-between;
@@ -2186,4 +2181,58 @@ body.overlay-active {
     .nav-link {
         font-size: 12px;
     }
+}
+
+/* Success Message Modal Styles */
+#success-message {
+    position: fixed;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for centering */
+    background: white;
+    padding: 40px; /* Increased padding for better spacing */
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow for depth */
+    z-index: 1002; /* Higher than error message */
+    width: 400px; /* Fixed width */
+    max-width: 90vw; /* Responsive width */
+    display: none; /* Initially hidden */
+    text-align: center; /* Center text */
+}
+
+#success-message.show {
+    display: block; /* Show when active */
+}
+
+#success-message h3 {
+    color: #4CAF50; /* Green heading for success */
+    font-size: 24px; /* Larger font size for emphasis */
+    margin-bottom: 15px; /* Space below heading */
+}
+
+#success-message ul {
+    color: #4CAF50; /* Green text for success messages */
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+}
+
+#success-message ul li {
+    margin: 5px 0; /* Space between list items */
+    font-size: 16px; /* Slightly larger font size */
+}
+
+/* Close button styles */
+#success-message-close {
+    background: none; /* No background */
+    border: none; /* No border */
+    color: #4CAF50; /* Green color for close button */
+    font-size: 20px; /* Larger font size */
+    cursor: pointer; /* Pointer cursor */
+    position: absolute; /* Position it in the top right */
+    top: 10px; /* Distance from top */
+    right: 10px; /* Distance from right */
+}
+
+#success-message-close:hover {
+    color: #2F855A; /* Darker green on hover */
 }

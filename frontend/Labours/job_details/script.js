@@ -74,7 +74,6 @@ function populateJobDetails(job) {
     document.getElementById('jobdescription').value = job.description;
     document.getElementById('joblocation').value = job.location;
     document.getElementById('amount').value = job.amount;
-    document.getElementById('noofworkers').value = job.number_of_workers;
 }
 
 // Enhanced landowner details display
