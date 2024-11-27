@@ -12,7 +12,7 @@ router.post('/signup', async (req, res) => {
     if (typeof createpayload.DOB === 'string') {
         createpayload.DOB = new Date(createpayload.DOB);
     }
-    console.log("hii",createpayload);
+    
     // Validate input using Zod's safeParse
     const parsedPayload = registerlabours.safeParse(createpayload);    
     // Check if the validation passed

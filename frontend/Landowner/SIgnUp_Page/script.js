@@ -17,7 +17,7 @@ function validateLandSize() {
     if (isNaN(size) || size < minSize || size > maxSize) {
         showError(landSize, 'land-size-error', `Please enter a valid land size between ${minSize} and ${maxSize} acres`);
         return false;
-    }
+    }   
     
     clearError(landSize, 'land-size-error');
     return true;
@@ -395,22 +395,19 @@ function validateAlternateMobile() {
     const errorId = 'alternate-phone-error';
     const mobileRegex = /^[6-9]\d{9}$/;
     
-    // If the field exists but is empty, it's valid (optional field)
-    if (!altMobile.value.trim()) {
-        clearError(altMobile, errorId);
-        return true;
-    }
-
     // If a value is provided, validate it
-    if (!mobileRegex.test(altMobile.value)) {
-        showError(altMobile, errorId, 'Enter valid 10-digit mobile number starting with 6-9');
-        return false;
-    } 
-    
-    // Check if it's the same as primary number
-    if (mainMobile && altMobile.value === mainMobile.value) {
-        showError(altMobile, errorId, 'Alternate number should be different from primary number');
-        return false;
+    if (altMobile.value.trim()) {
+        // Validate only if a value is entered
+        if (!mobileRegex.test(altMobile.value)) {
+            showError(altMobile, errorId, 'Enter valid 10-digit mobile number starting with 6-9');
+            return false;
+        } 
+        
+        // Check if it's the same as primary number
+        if (mainMobile && altMobile.value === mainMobile.value) {
+            showError(altMobile, errorId, 'Alternate number should be different from primary number');
+            return false;
+        }
     }
 
     clearError(altMobile, errorId);
@@ -423,17 +420,22 @@ function validateEmail() {
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
-    if (!email.value) {
-        showError(email, errorId, 'Email is required');
-        return false;
-    } else if (!emailRegex.test(email.value)) {
-        showError(email, errorId, 'Please enter a valid email address');
-        return false;
-    } else {
-        clearError(email, errorId);
-        return true;
+    // Validate only if a value is entered
+    if (email.value.trim()) {
+        if (!emailRegex.test(email.value)) {
+            showError(email, errorId, 'Please enter a valid email address');
+            return false;
+        } else {
+            clearError(email, errorId);
+            return true;
+        }
     }
+
+    // If no value is entered, clear any existing error
+    clearError(email, errorId);
+    return true; // Treat as valid if not provided
 }
+
 
 function validateLandSize() {
     const landSize = document.getElementById('land-size');
