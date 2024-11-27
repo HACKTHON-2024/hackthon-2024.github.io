@@ -54,7 +54,7 @@ async function onclickconfirm() {
             { name: 'Date of Birth', result: validateDOB() },
             { name: 'Aadhaar', result: validateAadhaar() },
             { name: 'Mobile', result: validateMobile() },
-            { name: 'Email', result: validateEmail() },
+           
             { name: 'Location', result: validateLocation() },
             { name: 'Password', result: validatePassword() },
             { name: 'Confirm Password', result: validateConfirmPassword() },
@@ -84,7 +84,6 @@ async function onclickconfirm() {
             DOB: document.getElementById('dob').value,
             aadhaar_ID: document.getElementById('aadhaar').value.trim(),
             mobile_number: document.getElementById('mobile').value.trim(),
-            email: document.getElementById('email').value.trim(),
             address: document.getElementById('address').value.trim(),
             state: document.getElementById('state').value,
             city: document.getElementById('city').value,
@@ -95,6 +94,11 @@ async function onclickconfirm() {
 
         // Only add alternate_mobile_number if it has a value
         const altMobile = document.getElementById('alternate-phone')?.value?.trim();
+        const email= document.getElementById('email').value.trim()
+
+        if(email){
+            formData.email=email;
+        }
         if (altMobile) {
             formData.alternate_mobile_number = altMobile;
         }

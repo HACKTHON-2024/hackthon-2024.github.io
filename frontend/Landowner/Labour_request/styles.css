@@ -1646,18 +1646,78 @@ h2 {
 }
 
 /* Confirmation Popup */
+/* General popup styling */
 .confirmation-popup {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center the popup */
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1001; /* Ensure it's above the overlay */
+    transform: translate(-50%, -50%);
+    background: #fefefe;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
     display: none; /* Hidden by default */
+    animation: fadeIn 0.3s;
+    width: 300px;
+    text-align: center; /* Center align all text */
 }
+
+/* Header styling */
+.confirmation-popup h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Paragraph styling */
+.confirmation-popup p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Buttons container */
+.confirmation-popup .buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Confirm button */
+.confirmation-popup #confirm-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.confirmation-popup #confirm-btn:hover {
+    background-color: #45a049;
+}
+
+/* Cancel button */
+.confirmation-popup #cancel-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.confirmation-popup #cancel-btn:hover {
+    background-color: #d32f2f;
+}
+
 
 /* Show popup */
 .confirmation-popup:not(.hidden) {
