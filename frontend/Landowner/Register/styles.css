@@ -27,7 +27,6 @@
     z-index: 999;
     transition: width 0.3s ease;
     overflow-x: hidden;
-    padding-top: 80px;
     border-right: none;
 }
 

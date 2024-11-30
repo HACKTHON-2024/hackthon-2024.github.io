@@ -128,11 +128,21 @@ function logTransaction(amount, type) {
     const transactionItem = document.createElement('li');
     const date = new Date().toLocaleDateString();
     const time = new Date().toLocaleTimeString();
-    
-    transactionItem.textContent = `₹${amount} ${type} on ${date} at ${time}`;
-    transactionItem.className = type === 'added' ? 'transaction-added' : 'transaction-debited';
+
+    transactionItem.className = 'transaction-item';
+    transactionItem.innerHTML = `
+        <div class="transaction-icon">
+            <i class="${type === 'added' ? 'fas fa-wallet' : 'fas fa-shopping-cart'}"></i>
+        </div>
+        <div class="transaction-details">
+            <div class="transaction-amount">₹${amount}</div>
+            <div class="transaction-date">${date} at ${time}</div>
+        </div>
+    `;
+    transactionItem.classList.add(type === 'added' ? 'transaction-added' : 'transaction-debited');
     transactionList.appendChild(transactionItem);
 }
+
 
 // Confirm Payment and Add to Wallet
 confirmPayment.addEventListener('click', () => {

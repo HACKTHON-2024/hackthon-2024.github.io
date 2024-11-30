@@ -111,6 +111,10 @@ function displayWorkerDetails(workers) {
                                 <i class="fas fa-map-marker-alt"></i>
                                 <strong>Location:</strong> ${worker.address}, ${worker.city}, ${worker.state}
                             </p>
+                            <p>
+                                <i class="fas fa-wallet"></i>
+                                <strong>Amount:</strong> 1000
+                            </p>
                         </div>
                     </div>
                 `).join('')
