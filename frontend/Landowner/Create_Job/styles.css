@@ -867,3 +867,19 @@ textarea:focus {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
 }
+
+/* Add styles for the job type select box */
+#job-type {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s;
+    margin-bottom: 20px;
+}
+
+#job-type:focus {
+    border-color: var(--primary-color); /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}

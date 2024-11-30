@@ -73,6 +73,33 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
+    // Move the job type event listener here
+    document.getElementById('job-type').addEventListener('change', function () {
+        const jobType = this.value;
+
+        // Fixed standard amounts for each job type
+        const standardAmounts = {
+            harvesting: 2000,
+            ploughing: 1500,
+            seeding: 1000,
+            irrigation: 1200,
+            weeding: 800,
+            "pesticide-spraying": 1800,
+            "fertilizer-application": 1600,
+            "crop-monitoring": 1400,
+            "soil-testing": 2200,
+            packaging: 1300,
+        };
+
+        // Update the standard amount field
+        const standardAmountField = document.getElementById('standard-amount');
+        if (standardAmounts[jobType]) {
+            standardAmountField.value = `₹${standardAmounts[jobType]}`;
+        } else {
+            standardAmountField.value = '';
+        }
+    });
 });
 
 
