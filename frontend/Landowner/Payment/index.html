@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labour Assigned</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kavoon&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        feather.replace();
+    });
+</script>
+
+<body>
+
+    <div class="container">
+        <nav class="navbar">
+            <ul class="navbar__menu">
+                <li class="navbar__item">
+                    <a href="../job_listing/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="home"></i>
+                        <span>LandOwner Jobs</span>
+                    </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../active_job/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="briefcase"></i>
+                        <span>Active Jobs</span>
+                    </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../Register/" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="edit"></i>
+                        <span>Register</span>
+                    </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../Labour_request/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="user-check"></i>
+                        <span>Available Labour</span>
+                    </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../Profile_page/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../Create_Job/index.html" class="navbar__link" style="font-size: 15px;">
+                        <i data-feather="plus"></i>
+                        <span>Create Job</span>
+                    </a>
+                </li>
+                <li class="navbar__item">
+                    <a href="../request_history/index.html" class="navbar__link">
+                        <i data-feather="clock"></i>
+                        <span>Request History</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    
+        <header class="site-header">
+            <div class="header-container">
+                <div class="logo-container">
+                    <img src="../../static/Images/logo.png" alt="Logo" class="logo-img">
+                    <div class="logo-text">
+                        <span class="brand-name">LabourField</span>
+                        <span class="tagline">Connecting Farms & Labor</span>
+                    </div>
+                </div>
+                
+                <div class="nav-group">
+                    <nav class="main-nav">
+                        <ul class="header-nav-list">
+                            <li class="header-nav-item">
+                                <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
+                                    <i class="fas fa-home"></i>
+                                    <span>Home</span>
+                                </a>
+                            </li>
+                            <li class="header-nav-item">
+                                <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>About Us</span>
+                                </a>
+                            </li>
+                            <li class="header-nav-item">
+                                <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
+                                    <i class="fas fa-tractor"></i>
+                                    <span>Services</span>
+                                </a>
+                            </li>
+                            <li class="header-nav-item">
+                                <a href="http://localhost:5500/frontend/static/home_page/index.html" class="nav-link">
+                                    <i class="fas fa-headset"></i>
+                                    <span>Help & Support</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+
+    </div>
+
+    <main></main>
+        <section class="wallet-section">
+            <div class="wallet-balance">
+                <h2>Wallet Balance: ₹<span id="wallet-balance">5000</span></h2>
+                <button id="add-funds-btn" class="btn primary-btn">Add Funds</button>
+            </div>
+            <div class="wallet-info">
+                <p>Tip: Keep your wallet topped up for seamless transactions!</p>
+            </div>
+        </section>
+        
+        <section class="labour-card-section">
+            <h2>Transaction History</h2>
+            <div class="labour-card">
+                <div class="circle-stars-group">
+                    <div class="circle">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+                <div class="labour-info">
+                    <div class="info-item">
+                        <i class="fas fa-user-tag"></i>
+                        <div class="info-content">
+                            <strong>Name</strong>
+                            <span>Muthu Manickam</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-venus-mars"></i>
+                        <div class="info-content">
+                            <strong>Gender</strong>
+                            <span>Male</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-tools"></i>
+                        <div class="info-content">
+                            <strong>Skills</strong>
+                            <span>Harvesting</span>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-rupee-sign"></i>
+                        <div class="info-content">
+                            <strong>Amount</strong>
+                            <span>10000</span>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-calendar-day"></i>
+                        <div class="info-content">
+                            <strong>Start Date</strong>
+                            <span>12-11-2024</span>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-calendar-day"></i>
+                        <div class="info-content">
+                            <strong>End Date</strong>
+                            <span>13-11-2024</span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+                <div class="location">
+                    <div class="location-box">
+                        <div class="location-header">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <strong>Location</strong>
+                        </div>
+                        <div class="location-text">
+                            Chennai
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add Funds Popup -->
+    <div id="add-funds-popup" class="popup hidden">
+        <div class="popup-content">
+            <h2>Add Funds to Wallet</h2>
+            <label for="payment-method">Select Payment Method:</label>
+            <select id="payment-method" class="input-field">
+                <option value="upi">UPI (Min: ₹500)</option>
+                <option value="card">Credit/Debit Card (Min: ₹1000)</option>
+                <option value="netbanking">Net Banking (Min: ₹2000)</option>
+            </select>
+            <label for="amount">Enter Amount:</label>
+            <input type="number" id="amount" class="input-field" placeholder="Enter amount">
+            <div class="button-container">
+                <button id="confirm-payment" class="btn primary-btn">Confirm Payment</button>
+                <button id="close-popup" class="btn secondary-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <button class="floating-info">
+        <i class="fas fa-info-circle"></i>
+        <span>Page Info</span>
+    </button>
+
+    <div class="info-overlay"></div>
+    <div class="info-modal">
+        <div class="modal-content">
+            <h3>👥 Labour Assignment Details</h3>
+            <div class="feature-list">
+                <p>👨‍🌾 View details of labourers assigned to your job</p>
+                <p>📝 Access job title and description</p>
+                <p>📅 Check job duration (start and end dates)</p>
+                <p>📍 View job location information</p>
+                <p>💰 See payment details for the job</p>
+                <p>👥 Track number of workers assigned</p>
+            </div>
+            <button class="close-modal">Got it!</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoButton = document.querySelector('.floating-info');
+            const infoModal = document.querySelector('.info-modal');
+            const overlay = document.querySelector('.info-overlay');
+            const closeButton = document.querySelector('.close-modal');
+
+            function showModal() {
+                infoModal.classList.add('active');
+                overlay.classList.add('active');
+            }
+
+            function hideModal() {
+                infoModal.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+
+            infoButton.addEventListener('click', showModal);
+            closeButton.addEventListener('click', hideModal);
+            overlay.addEventListener('click', hideModal);
+        });
+    </script>
+
+</body>
+
+</html>
