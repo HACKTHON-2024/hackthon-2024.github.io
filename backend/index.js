@@ -30,9 +30,11 @@ app.use('/frontend/', express.static(path.join(__dirname, '../frontend/')));
 
 
 // Define routes
+// Set home page as default
 app.get('/', (req, res) => {
-    res.send('Home Page');
-  });
+    res.sendFile(path.join(__dirname, 'frontend/static/home_page/index.html'));
+});
+
 const PORT = 3000||process.env.PORT;
 
 app.listen(PORT, () => {
