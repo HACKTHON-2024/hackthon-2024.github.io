@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Redirect root to index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  res.sendFile(path.join(__dirname, '../frontend/static/home_page/index.html'));
 });
 
 const PORT = 3000||process.env.PORT;
