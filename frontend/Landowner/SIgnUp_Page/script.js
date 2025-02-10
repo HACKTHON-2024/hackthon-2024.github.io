@@ -39,7 +39,7 @@ async function onclickconfirm() {
     try {
         
         if (!navigator.onLine) {
-            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
             return;
         }else {
             checkServerStatus();
@@ -94,7 +94,7 @@ async function onclickconfirm() {
             password: document.getElementById('password').value
         };
 
-        const response = await fetch('http://localhost:3000/landowner/signup', {
+        const response = await fetch('https://labourfieldtest.onrender.com/landowner/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -200,7 +200,7 @@ async function onclickconfirm() {
             document.querySelector('.overlay').classList.remove('show');
         };
         if (!navigator.onLine) {
-            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
             return;
         }else {
             checkServerStatus();
@@ -209,7 +209,7 @@ async function onclickconfirm() {
 }
 
 async function loadLocationData() {
-    const response = await fetch('http://localhost:3000/frontend/static/india_data.json');
+    const response = await fetch('https://labourfieldtest.onrender.com/frontend/static/india_data.json');
     const data = await response.json();
     const stateSelect = document.getElementById('state');
     const citySelect = document.getElementById('city');
@@ -838,7 +838,7 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.removeItem('jwt');
             
             // Redirect to home page
-            window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/home_page/index.html';
         });
     }
 
@@ -855,7 +855,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         // Optional: Reload the current page when coming back online
         // Only reload if we were previously on the job listing page
@@ -892,7 +892,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         const currentPath = window.location.pathname;
         if (currentPath.includes('network-error') || currentPath.includes('server-error')) {
@@ -908,7 +908,7 @@ function handleNetworkChange(event) {
 // Function to check if server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+        const response = await fetch('https://labourfieldtest.onrender.com/api/users/check-auth', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -918,7 +918,7 @@ async function checkServerStatus() {
         return true;
     } catch (error) {
         if (!window.location.pathname.includes('server-error.html')) {
-            window.location.href = 'http://localhost:5500/frontend/static/server-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/server-error.html';
         }
         return false;
     }

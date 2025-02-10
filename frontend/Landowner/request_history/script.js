@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded');
     const container = document.querySelector('.request-list');
     if (!navigator.onLine) {
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
         return;
     }else {
         checkServerStatus();
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadRequestHistory() {
     try {
         if (!navigator.onLine) {
-            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
             return;
         }else {
             checkServerStatus();
@@ -41,7 +41,7 @@ async function loadRequestHistory() {
         const token = localStorage.getItem('jwt');
         console.log('Token:', token ? 'Present' : 'Missing');
 
-        const response = await fetch('http://localhost:3000/landowner/request_history', {
+        const response = await fetch('https://labourfieldtest.onrender.com/landowner/request_history', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ async function loadRequestHistory() {
             showError('Failed to load request history. Please try again later.');
         }
         if (!navigator.onLine) {
-            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
             return;
         }else {
             checkServerStatus();
@@ -259,7 +259,7 @@ function redirectToLabourAssigned(jobId) {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         // Optional: Reload the current page when coming back online
         // Only reload if we were previously on the job listing page
@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         const currentPath = window.location.pathname;
         if (currentPath.includes('network-error') || currentPath.includes('server-error')) {
@@ -312,7 +312,7 @@ function handleNetworkChange(event) {
 // Function to check if server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+        const response = await fetch('https://labourfieldtest.onrender.com/api/users/check-auth', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -322,7 +322,7 @@ async function checkServerStatus() {
         return true;
     } catch (error) {
         if (!window.location.pathname.includes('server-error.html')) {
-            window.location.href = 'http://localhost:5500/frontend/static/server-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/server-error.html';
         }
         return false;
     }

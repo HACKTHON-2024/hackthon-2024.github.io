@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let isEmail = false; // This will store whether the input is email or mobile number
 
     if (!navigator.onLine) {
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
         return;
     }else {
         checkServerStatus();
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listener for Continue button
     continueButton.addEventListener('click', function () {
         if (!navigator.onLine) {
-            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
             return;
         }
         const identifier = document.getElementById('email-input').value;
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Send login request
         try {
-            const response = await fetch('http://localhost:3000/landowner/signin', {
+            const response = await fetch('https://labourfieldtest.onrender.com/landowner/signin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ identifier, password })
@@ -94,7 +94,7 @@ otpButton.addEventListener('click', async function () {
 
     try {
         // Validate if the user exists (email or mobile number)
-        const validateResponse = await fetch('http://localhost:3000/landowner/validate-user', {
+        const validateResponse = await fetch('https://labourfieldtest.onrender.com/landowner/validate-user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ identifier })
@@ -109,7 +109,7 @@ otpButton.addEventListener('click', async function () {
         }
 
         // User exists, now send OTP
-        const route = isEmail ? 'http://localhost:3000/mail_otp/send-otp' : 'http://localhost:3000/otp/send-otp';
+        const route = isEmail ? 'https://labourfieldtest.onrender.com/mail_otp/send-otp' : 'https://labourfieldtest.onrender.com/otp/send-otp';
         const response = await fetch(route, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -142,7 +142,7 @@ otpButton.addEventListener('click', async function () {
         }
 
         try {
-            const route = isEmail ? 'http://localhost:3000/mail_otp/verify-otp' : 'http://localhost:3000/otp/verify-otp';
+            const route = isEmail ? 'https://labourfieldtest.onrender.com/mail_otp/verify-otp' : 'https://labourfieldtest.onrender.com/otp/verify-otp';
             const response = await fetch(route, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -151,7 +151,7 @@ otpButton.addEventListener('click', async function () {
 
             const result = await response.json();
             if (response.ok) {
-                const loginResponse = await fetch('http://localhost:3000/landowner/signin_by_otp', {
+                const loginResponse = await fetch('https://labourfieldtest.onrender.com/landowner/signin_by_otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ identifier })
@@ -182,7 +182,7 @@ otpButton.addEventListener('click', async function () {
         const identifier = document.getElementById('email-input').value;
 
         try {
-            const route = isEmail ? 'http://localhost:3000/mail_otp/send-otp' : 'http://localhost:3000/otp/send-otp';
+            const route = isEmail ? 'https://labourfieldtest.onrender.com/mail_otp/send-otp' : 'https://labourfieldtest.onrender.com/otp/send-otp';
             const response = await fetch(route, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -270,7 +270,7 @@ function showMessage(type, title, message) {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         const currentPath = window.location.pathname;
         if (currentPath.includes('network-error') || currentPath.includes('server-error')) {
@@ -286,7 +286,7 @@ function handleNetworkChange(event) {
 // Function to check if server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+        const response = await fetch('https://labourfieldtest.onrender.com/api/users/check-auth', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -296,7 +296,7 @@ async function checkServerStatus() {
         return true;
     } catch (error) {
         if (!window.location.pathname.includes('server-error.html')) {
-            window.location.href = 'http://localhost:5500/frontend/static/server-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/server-error.html';
         }
         return false;
     }

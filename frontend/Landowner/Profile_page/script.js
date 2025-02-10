@@ -28,7 +28,7 @@ function formatDate(dateString) {
 async function fetchProfileData() {
     try {
         if (!navigator.onLine) {
-            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
             return;
         }else {
             checkServerStatus();
@@ -36,7 +36,7 @@ async function fetchProfileData() {
         const token = getToken();
         console.log('Token:', token);
 
-        const response = await fetch('http://localhost:3000/landowner/view_profile', {
+        const response = await fetch('https://labourfieldtest.onrender.com/landowner/view_profile', {
             method: 'GET',
             headers: {
                 'authorization': `Bearer ${token}`, // Add JWT to Authorization header
@@ -67,7 +67,7 @@ async function fetchProfileData() {
     } catch (error) {
         console.error('Error fetching profile data:', error);
         if (!navigator.onLine) {
-            window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
             return;
         }else {
             checkServerStatus();
@@ -86,7 +86,7 @@ function formatDate(dateString) {
 async function fetchJobData() {
     try {
         const token = getToken();
-        const response = await fetch('http://localhost:3000/landowner/get_job_history', {
+        const response = await fetch('https://labourfieldtest.onrender.com/landowner/get_job_history', {
             method: 'GET',
             headers: {
                 'authorization': `Bearer ${token}`, // Add JWT to Authorization header
@@ -222,7 +222,7 @@ function logoutUser() {
     removeAuthPopup();
 
     // Redirect to the desired page after logging out
-    window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html'; // Change to your logout redirect page
+    window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/home_page/index.html'; // Change to your logout redirect page
 }
 
 // Check authentication status and show popup or logout button
@@ -260,7 +260,7 @@ function getToken() {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         // Optional: Reload the current page when coming back online
         // Only reload if we were previously on the job listing page
@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         const currentPath = window.location.pathname;
         if (currentPath.includes('network-error') || currentPath.includes('server-error')) {
@@ -313,7 +313,7 @@ function handleNetworkChange(event) {
 // Function to check if server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+        const response = await fetch('https://labourfieldtest.onrender.com/api/users/check-auth', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -323,7 +323,7 @@ async function checkServerStatus() {
         return true;
     } catch (error) {
         if (!window.location.pathname.includes('server-error.html')) {
-            window.location.href = 'http://localhost:5500/frontend/static/server-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/server-error.html';
         }
         return false;
     }
@@ -370,7 +370,7 @@ async function saveChanges() {
             taluk: document.getElementById('talukInput').value
         };
 
-        const response = await fetch('http://localhost:3000/landowner/update_profile', {
+        const response = await fetch('https://labourfieldtest.onrender.com/landowner/update_profile', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
