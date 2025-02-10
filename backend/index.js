@@ -26,7 +26,7 @@ app.use("/mail_otp", mail_otp_router);
 app.use("/sms",sms_router);
 
 // Serve static files from the 'frontend/static' folder
-app.use('/frontend/static', express.static(path.join(__dirname, '../frontend/static')));
+app.use('/frontend/static', express.static(path.join(__dirname, '../frontend/')));
 
 // Define routes
 app.get('/', (req, res) => {
