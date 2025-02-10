@@ -12,7 +12,11 @@ const sms_router=require("./sms/sms")
 
 // Updated CORS configuration to allow both localhost and 127.0.0.1
 app.use(cors({
-    origin: ['http://localhost:5500', 'http://127.0.0.1:5500'],  // Allow both URLs
+    origin: [
+        'http://localhost:5500',
+        'http://127.0.0.1:5500',
+        'https://labourfieldtest.onrender.com'  // Add your deployed frontend domain
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -33,7 +37,8 @@ app.use('/frontend/', express.static(path.join(__dirname, '../frontend/')));
 app.get('/', (req, res) => {
     res.send('Home Page');
   });
-const PORT = 3000||process.env.PORT;
+  const PORT = process.env.PORT || 3000;
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
