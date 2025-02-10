@@ -27,12 +27,16 @@ app.use("/sms",sms_router);
 
 // // Serve static files from the 'frontend/static' folder
 // app.use('/frontend/static', express.static(path.join(__dirname, '../frontend/')));
-// Serve static files from the 'frontend' directory
+
+
+// Serve static files from the frontend folder
 app.use(express.static(path.join(__dirname, '../frontend')));
-// Define routes
+
+// Redirect root to index.html
 app.get('/', (req, res) => {
-    res.send('Home Page');
-  });
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
 const PORT = 3000||process.env.PORT;
 
 app.listen(PORT, () => {
