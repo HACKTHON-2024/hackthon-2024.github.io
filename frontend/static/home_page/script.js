@@ -252,6 +252,6 @@ labourBtn.onclick = function() {
         window.location.href = "https://labourfieldtest.onrender.com/frontend/Labours/Login_Page/index.html";
     } else {
         localStorage.setItem('userType', 'labour'); // Set user type
-        window.location.href = "https://labourfieldtest.onrender.com/frontend/Labours/SignUp_Page/index.html";
+        window.location.href = "https://labourfieldtest.onrender.com/frontend/Labours/SIgnUp_Page/index.html";
     }
 }
