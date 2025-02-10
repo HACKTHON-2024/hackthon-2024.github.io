@@ -66,6 +66,12 @@
                         <span>Request History</span>
                     </a>
                 </li>
+                <li class="navbar__item">
+                    <a href="../Payment/index.html" class="navbar__link">
+                        <i data-feather="shopping-cart"></i>
+                        <span>Payment</span>
+                    </a>
+                </li>
             </ul>
         </nav>
     
@@ -115,108 +121,71 @@
 
     </div>
 
-    <main></main>
+    <div class="main">
         <section class="wallet-section">
             <div class="wallet-balance">
-                <h2>Wallet Balance: ₹<span id="wallet-balance">5000</span></h2>
+                <h2>Wallet Balance: ₹<span id="wallet-balance">0</span></h2>
                 <button id="add-funds-btn" class="btn primary-btn">Add Funds</button>
             </div>
-            <div class="wallet-info">
-                <p>Tip: Keep your wallet topped up for seamless transactions!</p>
+    
+            <div class="quick-actions">
+                <div class="preset-amounts">
+                    <button class="preset-btn" data-amount="100">₹100</button>
+                    <button class="preset-btn" data-amount="500">₹500</button>
+                    <button class="preset-btn" data-amount="1000">₹1000</button>
+                </div>
             </div>
-        </section>
-        
-        <section class="labour-card-section">
-            <h2>Transaction History</h2>
-            <div class="labour-card">
-                <div class="circle-stars-group">
-                    <div class="circle">
-                        <i class="fas fa-user-circle"></i>
+    
+            <div class="payment-methods">
+                <h3>Payment Methods</h3>
+                <div class="payment-options">
+                    <div class="payment-option">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Credit/Debit Card</span>
                     </div>
-                </div>
-                <div class="labour-info">
-                    <div class="info-item">
-                        <i class="fas fa-user-tag"></i>
-                        <div class="info-content">
-                            <strong>Name</strong>
-                            <span>Muthu Manickam</span>
-                        </div>
+                    <div class="payment-option">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>UPI</span>
                     </div>
-                    <div class="info-item">
-                        <i class="fas fa-venus-mars"></i>
-                        <div class="info-content">
-                            <strong>Gender</strong>
-                            <span>Male</span>
-                        </div>
-                    </div>
-                    
-                    <div class="info-item">
-                        <i class="fas fa-tools"></i>
-                        <div class="info-content">
-                            <strong>Skills</strong>
-                            <span>Harvesting</span>
-                        </div>
-                    </div>
-
-                    <div class="info-item">
-                        <i class="fas fa-rupee-sign"></i>
-                        <div class="info-content">
-                            <strong>Amount</strong>
-                            <span>10000</span>
-                        </div>
-                    </div>
-
-                    <div class="info-item">
-                        <i class="fas fa-calendar-day"></i>
-                        <div class="info-content">
-                            <strong>Start Date</strong>
-                            <span>12-11-2024</span>
-                        </div>
-                    </div>
-
-                    <div class="info-item">
-                        <i class="fas fa-calendar-day"></i>
-                        <div class="info-content">
-                            <strong>End Date</strong>
-                            <span>13-11-2024</span>
-                        </div>
-                    </div>
-
-                    
-                </div>
-                <div class="location">
-                    <div class="location-box">
-                        <div class="location-header">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <strong>Location</strong>
-                        </div>
-                        <div class="location-text">
-                            Chennai
-                        </div>
+                    <div class="payment-option">
+                        <i class="fas fa-university"></i>
+                        <span>Net Banking</span>
                     </div>
                 </div>
             </div>
         </section>
-    </main>
-
-    <!-- Add Funds Popup -->
-    <div id="add-funds-popup" class="popup hidden">
-        <div class="popup-content">
-            <h2>Add Funds to Wallet</h2>
-            <label for="payment-method">Select Payment Method:</label>
-            <select id="payment-method" class="input-field">
-                <option value="upi">UPI (Min: ₹500)</option>
-                <option value="card">Credit/Debit Card (Min: ₹1000)</option>
-                <option value="netbanking">Net Banking (Min: ₹2000)</option>
-            </select>
-            <label for="amount">Enter Amount:</label>
-            <input type="number" id="amount" class="input-field" placeholder="Enter amount">
-            <div class="button-container">
-                <button id="confirm-payment" class="btn primary-btn">Confirm Payment</button>
-                <button id="close-popup" class="btn secondary-btn">Close</button>
+    
+        <!-- Add Funds Popup -->
+        <div id="add-funds-popup" class="popup hidden">
+            <div class="popup-content">
+                <h2>Add Funds to Wallet</h2>
+                <div class="form-group">
+                    <label for="payment-method">Select Payment Method:</label>
+                    <select id="payment-method" class="input-field">
+                        <option value="upi">UPI</option>
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="netbanking">Net Banking</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Enter Amount:</label>
+                    <input type="number" id="amount" class="input-field" placeholder="Enter amount">
+                </div>
+                <div class="button-container">
+                    <button id="confirm-payment" class="btn primary-btn">Add Money</button>
+                    <button id="close-popup" class="btn secondary-btn">Cancel</button>
+                </div>
             </div>
         </div>
+        
+        <div class="wallet-section">
+            <h3>Transaction History</h3>
+            <ul id="transaction-list">
+                <!-- Transactions will be dynamically added here -->
+            </ul>
+        </div>
     </div>
+
 
     <script src="script.js"></script>
 

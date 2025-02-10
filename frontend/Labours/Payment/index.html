@@ -21,44 +21,25 @@
 
 <body>
 
-    <div id="auth-btn-container"></div>
-
-    <div id="auth-overlay" class="auth-overlay hidden">
-        <div class="auth-popup">
-            <h2>Please Login or Sign Up</h2>
-            <p>You need to be logged in to access this page.</p>
-            <div class="auth-buttons">
-                <button id="login-btn">Login</button>
-                <button id="signup-btn">Sign Up</button>
-            </div>
-        </div>
-    </div>
-
     <div class="container">
         <nav class="navbar">
             <ul class="navbar__menu">
                 <li class="navbar__item">
-                    <a href="../job_listing/index.html" class="navbar__link" style="font-size: 15px;">
+                    <a href="../LandOwner_Jobs/index.html" class="navbar__link" style="font-size: 15px;">
                         <i data-feather="home"></i>
                         <span>LandOwner Jobs</span>
                     </a>
                 </li>
                 <li class="navbar__item">
-                    <a href="../active_job/index.html" class="navbar__link" style="font-size: 15px;">
+                    <a href="../Active_Jobs/index.html" class="navbar__link" style="font-size: 15px;">
                         <i data-feather="briefcase"></i>
                         <span>Active Jobs</span>
                     </a>
                 </li>
                 <li class="navbar__item">
-                    <a href="../Register/" class="navbar__link" style="font-size: 15px;">
+                    <a href="../labour_register/index.html" class="navbar__link" style="font-size: 15px;">
                         <i data-feather="edit"></i>
                         <span>Register</span>
-                    </a>
-                </li>
-                <li class="navbar__item">
-                    <a href="../Labour_request/index.html" class="navbar__link" style="font-size: 15px;">
-                        <i data-feather="user-check"></i>
-                        <span>Available Labour</span>
                     </a>
                 </li>
                 <li class="navbar__item">
@@ -68,15 +49,9 @@
                     </a>
                 </li>
                 <li class="navbar__item">
-                    <a href="../Create_Job/index.html" class="navbar__link" style="font-size: 15px;">
-                        <i data-feather="plus"></i>
-                        <span>Create Job</span>
-                    </a>
-                </li>
-                <li class="navbar__item">
-                    <a href="../request_history/index.html" class="navbar__link">
+                    <a href="../landowner_request/index.html" class="navbar__link">
                         <i data-feather="clock"></i>
-                        <span>Request History</span>
+                        <span>Request</span>
                     </a>
                 </li>
                 <li class="navbar__item">
@@ -131,68 +106,74 @@
             </div>
         </header>
 
-        <h2>Labours Details</h2>
-
-        <!-- Form Section -->
-        <div class="form">
-            <form id="profileForm">
-                <div class="form-row-box">
-                    <div class="box">
-                        <div class="form-row">
-                            <label>Job Title:</label>
-                            <input type="text" id="jobtitle">
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="form-row">
-                            <label>Start Date:</label>
-                            <input type="date" id="startdate" class="datepicker" readonly>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="form-row">
-                            <label>End Date:</label>
-                            <input type="date" id="enddate" class="datepicker" readonly>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="form-row">
-                            <label>Job Description:</label>
-                            <input type="text" id="jobdescription" >
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="form-row">
-                            <label>Job Location:</label>
-                            <input type="text" id="joblocation">
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="form-row">
-                            <label>Amount:</label>
-                            <input type="text" id="amount" >
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="form-row">
-                            <label>No. of Workers:</label>
-                            <input type="text" id="noofworkers">
-                        </div>
-                    </div>                  
-                </div>
-
-                
-            </form>
-        </div>
-
-        <!-- Job Created Section -->
-        <section class="job-created-section">
-            <!-- Jobs will be dynamically inserted here -->
-        </section>
-
-        
 
     </div>
+
+    <div class="main">
+        <section class="wallet-section">
+            <div class="wallet-balance">
+                <h2>Wallet Balance: ₹<span id="wallet-balance">0</span></h2>
+                <button id="add-funds-btn" class="btn primary-btn">Add Funds</button>
+            </div>
+    
+            <div class="quick-actions">
+                <div class="preset-amounts">
+                    <button class="preset-btn" data-amount="100">₹100</button>
+                    <button class="preset-btn" data-amount="500">₹500</button>
+                    <button class="preset-btn" data-amount="1000">₹1000</button>
+                </div>
+            </div>
+    
+            <div class="payment-methods">
+                <h3>Payment Methods</h3>
+                <div class="payment-options">
+                    <div class="payment-option">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Credit/Debit Card</span>
+                    </div>
+                    <div class="payment-option">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>UPI</span>
+                    </div>
+                    <div class="payment-option">
+                        <i class="fas fa-university"></i>
+                        <span>Net Banking</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+        <!-- Add Funds Popup -->
+        <div id="add-funds-popup" class="popup hidden">
+            <div class="popup-content">
+                <h2>Add Funds to Wallet</h2>
+                <div class="form-group">
+                    <label for="payment-method">Select Payment Method:</label>
+                    <select id="payment-method" class="input-field">
+                        <option value="upi">UPI</option>
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="netbanking">Net Banking</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Enter Amount:</label>
+                    <input type="number" id="amount" class="input-field" placeholder="Enter amount">
+                </div>
+                <div class="button-container">
+                    <button id="confirm-payment" class="btn primary-btn">Add Money</button>
+                    <button id="close-popup" class="btn secondary-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="wallet-section">
+            <h3>Transaction History</h3>
+            <ul id="transaction-list">
+                <!-- Transactions will be dynamically added here -->
+            </ul>
+        </div>
+    </div>
+
 
     <script src="script.js"></script>
 

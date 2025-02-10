@@ -62,6 +62,12 @@
                     <span>Request History</span>
                 </a>
             </li>
+            <li class="navbar__item">
+                <a href="../Payment/index.html" class="navbar__link">
+                    <i data-feather="shopping-cart"></i>
+                    <span>Payment</span>
+                </a>
+            </li>
         </ul>
     </nav>
 
@@ -120,6 +126,30 @@
                 <label for="job-title">Job Title:</label>
             </div>
             <input type="text" id="job-title" name="job-title" placeholder="Enter job title">
+
+            <div class="label-group">
+                <i class="fas fa-tasks"></i>
+                <label for="job-type">Job Type:</label>
+            </div>
+            <select id="job-type" name="job-type">
+                <option value="" selected disabled>Select Job Type</option>
+                <option value="harvesting">Harvesting</option>
+                <option value="ploughing">Ploughing</option>
+                <option value="seeding">Seeding</option>
+                <option value="irrigation">Irrigation</option>
+                <option value="weeding">Weeding</option>
+                <option value="pesticide-spraying">Pesticide Spraying</option>
+                <option value="fertilizer-application">Fertilizer Application</option>
+                <option value="crop-monitoring">Crop Monitoring</option>
+                <option value="soil-testing">Soil Testing</option>
+                <option value="packaging">Packaging</option>
+            </select>
+
+            <div class="label-group">
+                <i class="fas fa-rupee-sign"></i>
+                <label for="standard-amount">Standard Amount:</label>
+            </div>
+            <input type="text" id="standard-amount" name="standard-amount" readonly placeholder="Amount will be auto-filled">
         </div>
 
         <div class="date-buttons">
