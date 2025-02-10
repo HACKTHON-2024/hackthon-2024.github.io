@@ -32,7 +32,7 @@ app.use('/frontend/static', express.static(path.join(__dirname, '../frontend/sta
 app.get('/', (req, res) => {
     res.send('Home Page');
   });
-const PORT = 3000;
+const PORT = 3000||process.env.PORT;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
