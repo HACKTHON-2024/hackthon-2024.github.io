@@ -25,18 +25,14 @@ app.use("/otp", otprouter);
 app.use("/mail_otp", mail_otp_router);
 app.use("/sms",sms_router);
 
-// // Serve static files from the 'frontend/static' folder
-// app.use('/frontend/static', express.static(path.join(__dirname, '../frontend/')));
+// Serve static files from the 'frontend/static' folder
+app.use('/frontend/', express.static(path.join(__dirname, '../frontend/')));
 
 
-// Serve static files from the frontend folder
-app.use(express.static(path.join(__dirname, '../frontend')));
-
-// Redirect root to index.html
+// Define routes
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/static/home_page/index.html'));
-});
-
+    res.send('Home Page');
+  });
 const PORT = 3000||process.env.PORT;
 
 app.listen(PORT, () => {
