@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
      updateAuthButton(); // Call the function to update the button based on login status
     
      if (!navigator.onLine) {
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
         return;
     }else {
         checkServerStatus();
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
      
      labourList.innerHTML = '<p>Loading...</p>'; // Show loading indicator
  
-     fetch('http://localhost:3000/landowner/available_labours', {
+     fetch('https://labourfieldtest.onrender.com/landowner/available_labours', {
          method: 'GET',
          headers: {
              'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
@@ -202,7 +202,7 @@ function fetchActiveAndFutureJobs(labourId) {
     activeJobsContainer.innerHTML = '<p>Loading jobs...</p>';
     futureJobsContainer.innerHTML = '<p>Loading jobs...</p>';
 
-    fetch('http://localhost:3000/landowner/active_jobs_for_request_menu', {
+    fetch('https://labourfieldtest.onrender.com/landowner/active_jobs_for_request_menu', {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,  // Add JWT to Authorization header
@@ -357,7 +357,7 @@ function showConfirmationPopup(labourId, jobId) {
 function handleConfirm(labourId, jobId) {
     const token = getToken(); // Get JWT token
     const jobModal = document.getElementById('job-list-modal'); // Reference to the job modal
-    fetch('http://localhost:3000/landowner/request_confirm', {
+    fetch('https://labourfieldtest.onrender.com/landowner/request_confirm', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -448,7 +448,7 @@ function closeJobModal(modal) {
      localStorage.removeItem('jwt'); // Remove JWT token from localStorage
      showAlert('You have been logged out.', 'success');
      updateAuthButton(); // Update the button to reflect the login state
-     window.location.href = 'http://localhost:3000/frontend/static/home_page/index.html'; // Redirect to login page after logout
+     window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/home_page/index.html'; // Redirect to login page after logout
  }
 
 // Show the authentication popup when logged out
@@ -618,7 +618,7 @@ document.querySelector('.alert-close').addEventListener('click', () => {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         // Optional: Reload the current page when coming back online
         // Only reload if we were previously on the job listing page
@@ -655,7 +655,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         const currentPath = window.location.pathname;
         if (currentPath.includes('network-error') || currentPath.includes('server-error')) {
@@ -671,7 +671,7 @@ function handleNetworkChange(event) {
 // Function to check if server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/', {
+        const response = await fetch('https://labourfieldtest.onrender.com/', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -681,7 +681,7 @@ async function checkServerStatus() {
         return true;
     } catch (error) {
         if (!window.location.pathname.includes('server-error.html')) {
-            window.location.href = 'http://localhost:5500/frontend/static/server-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/server-error.html';
         }
         return false;
     }
