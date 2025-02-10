@@ -8,7 +8,7 @@ checkNetworkStatus();
 // Function to check network status initially
 function checkNetworkStatus() {
     if (!navigator.onLine) {
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         checkServerStatus();
     }
@@ -17,13 +17,13 @@ function checkNetworkStatus() {
 // Function to handle network changes
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         const currentPath = window.location.pathname;
         if (currentPath.includes('network-error') || currentPath.includes('server-error')) {
             checkServerStatus().then(isServerRunning => {
                 if (isServerRunning) {
-                    window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
+                    window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/home_page/index.html';
                 }
             });
         }
@@ -136,7 +136,7 @@ function handleServiceRedirect(userType) {
         return;
     }
 
-    const baseUrl = 'http://localhost:5500/frontend';
+    const baseUrl = 'https://labourfieldtest.onrender.com/frontend';
     let redirectUrl;
 
     if (userType === 'labour') {
@@ -164,9 +164,9 @@ if (activeJobsBtn) {
 
         // Specific handling for Active Jobs
         if (userType === 'labour') {
-            window.location.href = 'http://localhost:5500/frontend/Labours/Active_Jobs/index.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/Labours/Active_Jobs/index.html';
         } else if (userType === 'landowner') {
-            window.location.href = 'http://localhost:5500/frontend/Landowner/active_job/index.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/Landowner/active_job/index.html';
         }
     }
 }
@@ -184,9 +184,9 @@ if (jobListingsBtn) {
 
         // Specific handling for Job Listings
         if (userType === 'labour') {
-            window.location.href = 'http://localhost:5500/frontend/Labours/LandOwner_Jobs/index.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/Labours/LandOwner_Jobs/index.html';
         } else if (userType === 'landowner') {
-            window.location.href = 'http://localhost:5500/frontend/Landowner/job_listing/index.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/Landowner/job_listing/index.html';
         }
     }
 }
@@ -204,9 +204,9 @@ if (labourRequestBtn) {
 
         // Specific handling for Labour Request
         if (userType === 'labour') {
-            window.location.href = 'http://localhost:5500/frontend/Labours/Labour_Request/index.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/Labours/Labour_Request/index.html';
         } else if (userType === 'landowner') {
-            window.location.href = 'http://localhost:5500/frontend/Landowner/Labour_Request/index.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/Landowner/Labour_Request/index.html';
         }
     }
 }
@@ -239,19 +239,19 @@ window.onclick = function(event) {
 landownerBtn.onclick = function() {
     if (isLogin) {
         localStorage.setItem('userType', 'landowner'); // Set user type
-        window.location.href = "http://localhost:5500/frontend/Landowner/signin/index.html";
+        window.location.href = "https://labourfieldtest.onrender.com/frontend/Landowner/signin/index.html";
     } else {
         localStorage.setItem('userType', 'landowner'); // Set user type
-        window.location.href = "http://localhost:5500/frontend/Landowner/SignUp_Page/index.html";
+        window.location.href = "https://labourfieldtest.onrender.com/frontend/Landowner/SignUp_Page/index.html";
     }
 }
 
 labourBtn.onclick = function() {
     if (isLogin) {
         localStorage.setItem('userType', 'labour'); // Set user type
-        window.location.href = "http://localhost:5500/frontend/Labours/Login_Page/index.html";
+        window.location.href = "https://labourfieldtest.onrender.com/frontend/Labours/Login_Page/index.html";
     } else {
         localStorage.setItem('userType', 'labour'); // Set user type
-        window.location.href = "http://localhost:5500/frontend/Labours/SignUp_Page/index.html";
+        window.location.href = "https://labourfieldtest.onrender.com/frontend/Labours/SignUp_Page/index.html";
     }
 }
