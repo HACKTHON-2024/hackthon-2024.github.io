@@ -242,7 +242,7 @@ landownerBtn.onclick = function() {
         window.location.href = "https://labourfieldtest.onrender.com/frontend/Landowner/signin/index.html";
     } else {
         localStorage.setItem('userType', 'landowner'); // Set user type
-        window.location.href = "https://labourfieldtest.onrender.com/frontend/Landowner/SignUp_Page/index.html";
+        window.location.href = "https://labourfieldtest.onrender.com/frontend/Landowner/SIgnUp_Page/index.html";
     }
 }
 
