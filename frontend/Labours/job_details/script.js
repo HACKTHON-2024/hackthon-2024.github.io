@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.error('No job ID provided in the URL.');
     }
     if (!navigator.onLine) {
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
         return;
     }else {
         checkServerStatus();
@@ -43,7 +43,7 @@ function formatDate(dateString) {
 async function fetchJobDetails(jobId) {
     try {
         const token = getToken();
-        const response = await fetch(`http://localhost:3000/labour/job/${jobId}`, {
+        const response = await fetch(`https://labourfieldtest.onrender.com/labour/job/${jobId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -131,7 +131,7 @@ function removeAuthPopup() {
 function logoutUser() {
     localStorage.removeItem('jwt');
     removeAuthPopup();
-    window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html';
+    window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/home_page/index.html';
 }
 
 // Check authentication status
@@ -171,7 +171,7 @@ function getToken() {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         // Optional: Reload the current page when coming back online
         // Only reload if we were previously on the job listing page
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         const currentPath = window.location.pathname;
         if (currentPath.includes('network-error') || currentPath.includes('server-error')) {
@@ -224,7 +224,7 @@ function handleNetworkChange(event) {
 // Function to check if server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/', {
+        const response = await fetch('https://labourfieldtest.onrender.com/', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -234,7 +234,7 @@ async function checkServerStatus() {
         return true;
     } catch (error) {
         if (!window.location.pathname.includes('server-error.html')) {
-            window.location.href = 'http://localhost:5500/frontend/static/server-error.html';
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/server-error.html';
         }
         return false;
     }

@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/labour/signin', {
+            const response = await fetch('https://labourfieldtest.onrender.com/labour/signin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ identifier, password })
@@ -77,7 +77,7 @@ otpButton.addEventListener('click', async function () {
 
     try {
         // Validate if the user exists (email or mobile number)
-        const validateResponse = await fetch('http://localhost:3000/labour/validate-user', {
+        const validateResponse = await fetch('https://labourfieldtest.onrender.com/labour/validate-user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ identifier })
@@ -92,7 +92,7 @@ otpButton.addEventListener('click', async function () {
         }
 
         // User exists, now send OTP
-        const route = isEmail ? 'http://localhost:3000/mail_otp/send-otp' : 'http://localhost:3000/otp/send-otp';
+        const route = isEmail ? 'https://labourfieldtest.onrender.com/mail_otp/send-otp' : 'https://labourfieldtest.onrender.com/otp/send-otp';
         const response = await fetch(route, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -127,7 +127,7 @@ otpButton.addEventListener('click', async function () {
 
         try {
             // Verify OTP based on the earlier check (isEmail)
-            const route = isEmail ? 'http://localhost:3000/mail_otp/verify-otp' : 'http://localhost:3000/otp/verify-otp';
+            const route = isEmail ? 'https://labourfieldtest.onrender.com/mail_otp/verify-otp' : 'https://labourfieldtest.onrender.com/otp/verify-otp';
             const response = await fetch(route, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -137,7 +137,7 @@ otpButton.addEventListener('click', async function () {
             const result = await response.json();
             if (response.ok) {
                 // Now log in the user using the same /signin route
-                const loginResponse = await fetch('http://localhost:3000/labour/signin_by_otp', {
+                const loginResponse = await fetch('https://labourfieldtest.onrender.com/labour/signin_by_otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ identifier })
@@ -168,7 +168,7 @@ otpButton.addEventListener('click', async function () {
         const identifier = document.getElementById('email-input').value;
 
         try {
-            const route = isEmail ? 'http://localhost:3000/mail_otp/send-otp' : 'http://localhost:3000/otp/send-otp';
+            const route = isEmail ? 'https://labourfieldtest.onrender.com/mail_otp/send-otp' : 'https://labourfieldtest.onrender.com/otp/send-otp';
             const response = await fetch(route, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

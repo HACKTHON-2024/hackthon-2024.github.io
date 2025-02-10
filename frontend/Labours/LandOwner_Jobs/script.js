@@ -97,7 +97,7 @@ function handleBackButton() {
 async function fetchJobs(selectedDate) {
     try {
         if (!navigator.onLine) {
-            window.location.href = 'http://localhost:5500/frontend/static/network-error.html'; // Redirect to network error page
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html'; // Redirect to network error page
             return;
         }
 
@@ -108,7 +108,7 @@ async function fetchJobs(selectedDate) {
         }
 
         // Construct the API URL with the selected date as a query parameter
-        const url = `http://localhost:3000/labour/available_jobs${selectedDate ? `?selectedDate=${selectedDate}` : ''}`;
+        const url = `https://labourfieldtest.onrender.com/labour/available_jobs${selectedDate ? `?selectedDate=${selectedDate}` : ''}`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -120,9 +120,9 @@ async function fetchJobs(selectedDate) {
         if (!response.ok) {
             // Check for 404 and redirect to 404 page if necessary
             if (response.status === 404) {
-                window.location.href = 'http://localhost:5500/frontend/static/404/index.html'; // Adjust the path to your 404 page
+                window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/404/index.html'; // Adjust the path to your 404 page
             } else {
-                window.location.href = 'http://localhost:5500/frontend/static/server-error.html'; // Redirect to server error page
+                window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/server-error.html'; // Redirect to server error page
             }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -136,9 +136,9 @@ async function fetchJobs(selectedDate) {
     } catch (error) {
         console.error('Error fetching jobs:', error);
         if (!navigator.onLine) {
-            window.location.href = 'http://localhost:5500/frontend/static/network-error.html'; // Redirect to network error page
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html'; // Redirect to network error page
         } else {
-            window.location.href = 'http://localhost:5500/frontend/static/server-error.html'; // Redirect to server error page
+            window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/server-error.html'; // Redirect to server error page
         }
     }
 }
@@ -198,7 +198,7 @@ async function handleNextButton() {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/otp/send-otp', {
+        const response = await fetch('https://labourfieldtest.onrender.com/otp/send-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ identifier: phoneNumber })
@@ -227,7 +227,7 @@ async function handleVerifyButton() {
     }
 
     try {
-        const verifyResponse = await fetch('http://localhost:3000/otp/verify-otp', {
+        const verifyResponse = await fetch('https://labourfieldtest.onrender.com/otp/verify-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ identifier: phoneNumber, otp })
@@ -236,7 +236,7 @@ async function handleVerifyButton() {
         const verifyData = await verifyResponse.json();
         if (verifyData.success) {
             const token = getToken();
-            const enrollResponse = await fetch('http://localhost:3000/labour/job_endroll_for_others', {
+            const enrollResponse = await fetch('https://labourfieldtest.onrender.com/labour/job_endroll_for_others', {
                 method: 'POST', // Changed from GET to POST
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -273,7 +273,7 @@ async function handleVerifyButton() {
 async function handleSelfRegistration() {
     try {
         const token = getToken();
-        const response = await fetch('http://localhost:3000/labour/endroll', {
+        const response = await fetch('https://labourfieldtest.onrender.com/labour/endroll', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -461,7 +461,7 @@ function logoutUser() {
     removeAuthPopup();
 
     // Redirect to the desired page after logging out
-    window.location.href = 'http://localhost:5500/frontend/static/home_page/index.html'; // Change to your logout redirect page
+    window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/home_page/index.html'; // Change to your logout redirect page
 }
 
 // Check authentication status and show popup or logout button
@@ -561,7 +561,7 @@ function showWelcomeMessage() {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         // When back online, check server status
         checkServerStatus();
@@ -571,7 +571,7 @@ function handleNetworkChange(event) {
 // Function to check if the server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000/api/users/check-auth', {
+        const response = await fetch('https://labourfieldtest.onrender.com/api/users/check-auth', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -597,7 +597,7 @@ window.addEventListener('offline', handleNetworkChange);
 async function sendSms(laborId, jobId) {
 console.log("before sms");
 
-    fetch('http://localhost:3000/sms/send-sms', {
+    fetch('https://labourfieldtest.onrender.com/sms/send-sms', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

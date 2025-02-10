@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function handleNetworkChange(event) {
     if (!navigator.onLine) {
         // Redirect to network error page when offline
-        window.location.href = 'http://localhost:5500/frontend/static/network-error.html';
+        window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/network-error.html';
     } else {
         // When back online, check server status
         checkServerStatus();
@@ -17,7 +17,7 @@ function handleNetworkChange(event) {
 // Function to check if the server is running
 async function checkServerStatus() {
     try {
-        const response = await fetch('http://localhost:3000', {
+        const response = await fetch('https://labourfieldtest.onrender.com', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -48,7 +48,7 @@ async function fetchRequests() {
             return;
         }
 
-        const response = await fetch('http://localhost:3000/labour/landowner_request_details', {
+        const response = await fetch('https://labourfieldtest.onrender.com/labour/landowner_request_details', {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -58,9 +58,9 @@ async function fetchRequests() {
         if (!response.ok) {
             // Handle server errors
             if (response.status === 404) {
-                window.location.href = 'http://localhost:5500/frontend/static/404/index.html'; // Redirect to 404 page
+                window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/404/index.html'; // Redirect to 404 page
             } else {
-                window.location.href = 'http://localhost:5500/frontend/static/server-error.html'; // Redirect to server error page
+                window.location.href = 'https://labourfieldtest.onrender.com/frontend/static/server-error.html'; // Redirect to server error page
             }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -194,7 +194,7 @@ async function handleRequest(requestId, action) {
             return;
         }
 
-        const response = await fetch('http://localhost:3000/labour/handle_request', {
+        const response = await fetch('https://labourfieldtest.onrender.com/labour/handle_request', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
