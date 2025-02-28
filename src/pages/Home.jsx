@@ -19,7 +19,7 @@ function Home() {
       <header className="site-header fixed top-0 left-0 w-full h-16 bg-white bg-opacity-90 backdrop-blur-md shadow-lg z-50 flex justify-between items-center px-6">
         {/* Logo Section (Left Side) */}
         <div className="logo-container flex items-center gap-4">
-          <img src="https://labourfieldtest.onrender.com/frontend/static/Images/logo.png" alt="Logo" className="logo-img w-10 h-10 border-2 border-green-600 rounded-full" />
+          <img src="logo.png" alt="Logo" className="logo-img w-10 h-10 border-2 border-green-600 rounded-full" />
           <div className="logo-text flex flex-col">
             <span className="brand-name text-xl font-bold text-green-600">LabourField</span>
             <span className="tagline text-sm text-gray-600">Connecting Farms & Labor</span>
@@ -93,7 +93,7 @@ function Home() {
 
       {/* Hero Section */}
       <section className="hero relative flex items-center justify-center text-center h-screen bg-cover bg-center" 
-  style={{ backgroundImage: "url('https://labourfieldtest.onrender.com/frontend/static/Images/background.jpg')" }}>
+  style={{ backgroundImage: "url('background.jpg')" }}>
         <div className="absolute inset-0 bg-black bg-opacity-50" style={{opacity: 0.5}}></div>
         <div className="relative z-10 p-8">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-5">Connecting Landlords & Laborers</h1>
