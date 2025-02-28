@@ -16,48 +16,6 @@ function Home() {
   return (
     <div className="font-sans text-gray-200 bg-black">
       {/* Header */}
-      <header className="site-header fixed top-0 left-0 w-full h-16 bg-white bg-opacity-90 backdrop-blur-md shadow-lg z-50 flex justify-between items-center px-6">
-        {/* Logo Section (Left Side) */}
-        <div className="logo-container flex items-center gap-4">
-          <img src="logo.png" alt="Logo" className="logo-img w-10 h-10 border-2 border-green-600 rounded-full" />
-          <div className="logo-text flex flex-col">
-            <span className="brand-name text-xl font-bold text-green-600">LabourField</span>
-            <span className="tagline text-sm text-gray-600">Connecting Farms & Labor</span>
-          </div>
-        </div>
-        {/* Hamburger Menu Icon */}
-        <div className="md:hidden">
-          <button onClick={toggleMenu} className="text-black focus:outline-none">
-            <i className={`fas fa-${isMenuOpen ? 'times' : 'bars'} text-2xl`} />
-          </button>
-        </div>
-        {/* Navigation for larger screens */}
-        <nav className="hidden md:block">
-          <ul className="flex items-center gap-8">
-            {[
-              { href: "#home", icon: "home", label: "Home" },
-              { href: "#team_section", icon: "info-circle", label: "About Us" },
-              { href: "#features", icon: "tractor", label: "Services" },
-              { href: "#help-support", icon: "headset", label: "Help & Support" },
-            ].map((item, index) => (
-              <motion.li
-                key={index}
-                className="nav-item"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <a href={item.href} className="nav-link flex items-center gap-2 text-black hover:text-green-800 hover:underline transition">
-                  <i className={`fas fa-${item.icon}`} />
-                  <span>{item.label}</span>
-                </a>
-              </motion.li>
-            ))}
-          </ul>
-        </nav>
-      </header>
 
       {/* Sidebar Navigation */}
       <nav className={`fixed top-16 left-0 h-full w-64 bg-white bg-opacity-90 backdrop-blur-md shadow-lg z-40 transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
